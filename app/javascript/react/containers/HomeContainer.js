@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import StocksContainer from "./StocksContainer";
 
 class HomeContainer extends Component {
   constructor(props) {
@@ -7,7 +8,12 @@ class HomeContainer extends Component {
   }
 
   render() {
-    return <div>SP10 Tracker</div>;
+    return (
+      <div>
+        SP10 Tracker
+        <StocksContainer />
+      </div>
+    );
   }
 }
 
