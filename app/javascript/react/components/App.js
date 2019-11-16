@@ -1,7 +1,14 @@
 import React from "react";
+import { browserHistory, Router, Route, Redirect } from "react-router";
+import HomeContainer from "../containers/HomeContainer";
 
 export const App = props => {
-  return <h1>Hello From SP10 Tracker!</h1>;
+  return (
+    <Router history={browserHistory}>
+      <Route path="/" component={HomeContainer} />
+      <Redirect from="*" to="/" />
+    </Router>
+  );
 };
 
 export default App;
