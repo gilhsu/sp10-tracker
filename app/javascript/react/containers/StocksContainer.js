@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import StockRow from "../tiles/StockRow";
 
 class StocksContainer extends Component {
   constructor(props) {
@@ -7,7 +8,18 @@ class StocksContainer extends Component {
   }
 
   render() {
-    return <div>Hello from Stocks Container</div>;
+    return (
+      <div>
+        Hello from Stocks Container
+        <StockRow />
+        <StockRow />
+        <StockRow />
+        <StockRow />
+        <StockRow />
+        <StockRow />
+        <StockRow />
+      </div>
+    );
   }
 }
 
