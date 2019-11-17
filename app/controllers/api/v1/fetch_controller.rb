@@ -9,7 +9,7 @@ class Api::V1::FetchController < ApplicationController
 
     endpoint = "https://www.alphavantage.co/"
 
-    request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbols[0]}&apikey=#{key}"
+    request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbols[1]}&apikey=#{key}"
 
     response_raw = HTTParty.get(request_url)
     
