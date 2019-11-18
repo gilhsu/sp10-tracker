@@ -8,8 +8,6 @@ class StocksContainer extends Component {
   }
 
   render() {
-    console.log(this.props.stockData);
-
     const displayStocks =
       this.props.stockData.length > 0
         ? this.props.stockData.map(stockData => {
@@ -22,11 +20,9 @@ class StocksContainer extends Component {
           })
         : "no stock data yet";
 
-    console.log(displayStocks);
-
     return (
       <div>
-        Hello from Stocks Container
+        Individual Stocks
         <div>{displayStocks}</div>
       </div>
     );
