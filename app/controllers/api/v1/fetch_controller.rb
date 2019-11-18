@@ -11,7 +11,7 @@ class Api::V1::FetchController < ApplicationController
     symbols_first_five = params["_json"][1...6]
     symbols_last_five = params["_json"][6...11]
 
-    symbols_sp500_data = fetch_symbols_data(symbols_sp500)
+    sp500_data = fetch_symbols_data(symbols_sp500)
     
     timer(60)
     
@@ -29,10 +29,29 @@ class Api::V1::FetchController < ApplicationController
       symbols_data << symbol_data
     end
 
+    sp10_data = get_sp10_data(symbols_data)
+
     render json: {
-      sp500: symbols_sp500_data[0],
+      sp10: sp10_data,
+      sp500: sp500_data[0],
       fetchedData: symbols_data
     }
+  end
+
+  def get_sp10_data(stock_data_array)
+    percentage_return_sum = 0
+    stock_data_array.each do |stock_data|
+      percentage_return_sum = percentage_return_sum + stock_data["change-percent"].to_f
+    end
+
+    sp10_percentage_return = (percentage_return_sum / 10).round(2)
+
+    sp10_data = {}
+    sp10_data["date"] = stock_data_array[0]["date"]
+    sp10_data["symbol"] = "SP10"
+    sp10_data["change-percent"] = sp10_percentage_return
+
+    sp10_data
   end
 
   def fetch_symbols_data(symbols_array)
@@ -49,7 +68,7 @@ class Api::V1::FetchController < ApplicationController
       format_data["date"] = response_raw["Global Quote"]["07. latest trading day"]
       format_data["symbol"] = response_raw["Global Quote"]["01. symbol"]
       format_data["price"] = response_raw["Global Quote"]["05. price"]
-      format_data["change-percent"] = response_raw["Global Quote"]["10. change percent"]
+      format_data["change-percent"] = response_raw["Global Quote"]["10. change percent"].to_f.round(2)
 
       symbols_data << format_data
     end

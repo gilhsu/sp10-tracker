@@ -74,11 +74,13 @@ class HomeContainer extends Component {
   componentDidMount() {
     console.log(this.state.fetchedData);
     console.log(this.state.sp500);
+    console.log(this.state.sp10);
   }
 
   componentDidUpdate() {
     console.log(this.state.fetchedData);
     console.log(this.state.sp500);
+    console.log(this.state.sp10);
   }
 
   buttonClick = async () => {
@@ -150,7 +152,8 @@ class HomeContainer extends Component {
       .then(body => {
         this.setState({
           fetchedData: body.fetchedData,
-          sp500: body.sp500
+          sp500: body.sp500,
+          sp10: body.sp10
         });
       });
   };
