@@ -77,9 +77,10 @@ class HomeContainer extends Component {
     return (
       <div>
         <div className="row" id="sp10-title">
-          SP10
-          <button onClick={this.buttonClick}>Fetch Data</button>
-          <button onClick={this.testClick}>Test Click</button>
+          <div className="small-6 columns">SP10</div>
+          <div className="small-6 columns right">
+            <button onClick={this.buttonClick}>Fetch Data</button>
+          </div>
         </div>
         <div className="row">
           <div className="outline small-8 columns">
