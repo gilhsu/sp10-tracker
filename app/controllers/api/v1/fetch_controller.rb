@@ -34,7 +34,7 @@ class Api::V1::FetchController < ApplicationController
     render json: {
       sp10: sp10_data,
       sp500: sp500_data[0],
-      fetchedData: symbols_data
+      indivStockData: symbols_data
     }
   end
 
@@ -67,7 +67,7 @@ class Api::V1::FetchController < ApplicationController
       format_data = {}
       format_data["date"] = response_raw["Global Quote"]["07. latest trading day"]
       format_data["symbol"] = response_raw["Global Quote"]["01. symbol"]
-      format_data["price"] = response_raw["Global Quote"]["05. price"]
+      format_data["price"] = response_raw["Global Quote"]["05. price"].to_f.round(2)
       format_data["change-percent"] = response_raw["Global Quote"]["10. change percent"].to_f.round(2)
 
       symbols_data << format_data
