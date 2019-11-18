@@ -5,7 +5,7 @@ import Chart from "../tiles/Chart";
 import Ticker from "../tiles/Ticker";
 import DailyHistoryContainer from "./DailyHistoryContainer";
 
-async function fetchSymbolData() {
+const fetchSingleSymbol = async symbol => {
   const key = "2NSG0O0E1I8ESDEZ";
 
   try {
@@ -13,58 +13,115 @@ async function fetchSymbolData() {
       `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`
     );
 
-    console.log(response);
-    return "hello";
+    return response["data"]["Global Quote"];
   } catch (error) {
     console.error(error);
   }
+};
 
-  // axios
-  //   .get(
-  //     `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${key}`
-  //   )
-  //   .then(function(response) {
-  //     // handle success
-  //     console.log(response);
-  //     const data = response.data["Global Quote"];
-  //     const symbol = data["01. symbol"];
-  //     const price = Number(data["05. price"]).toFixed(2);
-  //     const date = data["07. latest trading day"];
-  //     // const dateArray = Object.keys(data);
-  //     const printData = `${date} - ${symbol} Closing Price: $${price}`;
+const getAllSymbolData = async symbolList => {
+  const dataArray = [];
+  const stock1 = await fetchSingleSymbol(symbolList[0]);
+  dataArray.push(stock1);
+  const stock2 = await fetchSingleSymbol(symbolList[1]);
+  dataArray.push(stock2);
+  const stock3 = await fetchSingleSymbol(symbolList[2]);
+  dataArray.push(stock3);
+  const stock4 = await fetchSingleSymbol(symbolList[3]);
+  dataArray.push(stock4);
+  const stock5 = await fetchSingleSymbol(symbolList[4]);
+  dataArray.push(stock5);
+  // const stock6 = await fetchSingleSymbol(symbolList[5]);
+  // dataArray.push(stock6);
+  // const stock7 = await fetchSingleSymbol(symbolList[6]);
+  // dataArray.push(stock7);
+  // const stock8 = await fetchSingleSymbol(symbolList[7]);
+  // dataArray.push(stock8);
+  // const stock9 = await fetchSingleSymbol(symbolList[8]);
+  // dataArray.push(stock9);
+  // const stock10 = await fetchSingleSymbol(symbolList[9]);
+  // dataArray.push(stock10);
+  // const stock11 = await fetchSingleSymbol(symbolList[10]);
+  // dataArray.push(stock11);
 
-  //     debugger;
-
-  //     return printData;
-  //   })
-  //   .catch(function(error) {
-  //     // handle error
-  //     console.log(error);
-  //   })
-  //   .finally(function() {
-  //     // always executed
-  //   });
-}
+  return await dataArray;
+};
 
 class HomeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       spTen: 0,
-      spTenSymbols: ["MSFT", "AAPL"]
+      symbolList: [
+        "SPX",
+        "MSFT",
+        "AAPL",
+        "AMZN",
+        "FB",
+        "BRK-B",
+        "GOOG",
+        "GOOGL",
+        "JPM",
+        "JNJ",
+        "V"
+      ],
+      fetchedData: []
     };
+    this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
-    console.log(this.state.spTen);
+    console.log(this.state.fetchedData);
   }
 
-  buttonClick = () => {
-    const data = this.state.spTenSymbols.map(symbol => {
-      dataPrint = fetchSymbolData(symbol);
+  componentDidUpdate() {
+    console.log(this.state.fetchedData);
+  }
+
+  buttonClick = async () => {
+    this.fetchData(this.state.symbolList);
+
+    // getAllSymbolData(this.state.symbolList.slice(0, 5)).then(data => {
+    //   console.log(data);
+    //   this.setState({ fetchedData: data });
+    // });
+
+    // console.log("start 60 seconds");
+    // setTimeout(function() {
+    //   console.log("waited 60 seconds");
+    // }, 60000);
+
+    // getAllSymbolData(this.state.symbolList.slice(0, 5)).then(data => {
+    //   console.log(data);
+    //   this.setState({ fetchedData: data });
+    // });
+
+    // const a = await setTimeout(() => {
+    //   getAllSymbolData(this.state.symbolList).then(data => {
+    //     console.log(data);
+    //     this.setState({ symbolData: data });
+    //   });
+    // }, 5000);
+
+    // console.log(a);
+
+    // const b = await setTimeout(() => {
+    //   getAllSymbolData(this.state.symbolList).then(data => {
+    //     console.log(data);
+    //     this.setState({ symbolData: data });
+    //   });
+    // }, 5000);
+
+    // console.log(b);
+
+    // console.log(this.state.symbolData);
+  };
+
+  testClick = () => {
+    const cheese = this.state.symbolList.map(symbol => {
+      return `${symbol} is great`;
     });
-    debugger;
-    console.log(data);
+    console.log(cheese);
   };
 
   fetchData = symbolList => {
@@ -88,9 +145,7 @@ class HomeContainer extends Component {
       })
       .then(response => response.json())
       .then(body => {
-        this.setState({
-          spTen: body.spTen
-        });
+        this.setState({ fetchedData: body.fetchedData });
       });
   };
 
@@ -100,6 +155,7 @@ class HomeContainer extends Component {
         <div className="row" id="sp10-title">
           SP10
           <button onClick={this.buttonClick}>Fetch Data</button>
+          <button onClick={this.testClick}>Test Click</button>
         </div>
         <div className="row">
           <div className="outline small-8 columns">

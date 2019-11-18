@@ -3,17 +3,54 @@ class Api::V1::FetchController < ApplicationController
 
   def create
 
-    symbols = params["_json"]
+    symbolsData = []
 
-    key = "2NSG0O0E1I8ESDEZ"
+    symbolsFirst = params["_json"][0...5]
+    puts symbolsFirst.length
+    symbolsSecond = params["_json"][5...10]
+    puts symbolsSecond.length
+    symbolsThird = params["_json"][10]
+    puts symbolsThird.length
+
+    key1 = "2NSG0O0E1I8ESDEZ"
+    key2 = "GPVI77SN18N0LB1J"
+    key3 = "7FTS2A6T4HRYU6MC"
 
     endpoint = "https://www.alphavantage.co/"
 
-    request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbols[1]}&apikey=#{key}"
+    symbolsFirst.each do |symbol| 
+      request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbol}&apikey=#{key1}"
+      response_raw = HTTParty.get(request_url)
+      symbolsData << response_raw["Global Quote"]
+    end
 
-    response_raw = HTTParty.get(request_url)
+    n = 60
+    60.times do 
+      puts "#{n} seconds left"
+      n = n - 1
+      sleep 1
+    end
     
+    symbolsSecond.each do |symbol| 
+      request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbol}&apikey=#{key2}"
+      response_raw = HTTParty.get(request_url)
+      symbolsData << response_raw["Global Quote"]
+    end
+    
+    n = 60
+    60.times do 
+      puts "#{n} seconds left"
+      n = n - 1
+      sleep 1
+    end
+
+    request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbolsThird}&apikey=#{key3}"
+    response_raw = HTTParty.get(request_url)
+
     binding.pry
+
+    symbolsData << response_raw["Global Quote"]
+    
 
     # # The region you are interested in
     # endpoint = "webservices.amazon.com"
@@ -67,7 +104,7 @@ class Api::V1::FetchController < ApplicationController
     # return response
 
     render json: {
-      spTen: 100
+      fetchedData: symbolsData
     }
   end
 
