@@ -3,109 +3,68 @@ class Api::V1::FetchController < ApplicationController
 
   def create
 
-    symbolsData = []
+    symbols_data = []
 
-    symbolsFirst = params["_json"][0...5]
-    puts symbolsFirst.length
-    symbolsSecond = params["_json"][5...10]
-    puts symbolsSecond.length
-    symbolsThird = params["_json"][10]
-    puts symbolsThird.length
+    symbols_sp500 = []
+    symbols_sp500 << params["_json"][0]
+    # sp10 list is broken up into groups of 5 because the API limits 5 calls per minute
+    symbols_first_five = params["_json"][1...6]
+    symbols_last_five = params["_json"][6...11]
 
+    symbols_sp500_data = fetch_symbols_data(symbols_sp500)
+    
+    timer(60)
+    
+    symbols_first_five_data = fetch_symbols_data(symbols_first_five)
+    
+    symbols_first_five_data.each do |symbol_data|
+      symbols_data << symbol_data
+    end
+    
+    timer(60)
+    
+    symbols_last_five_data = fetch_symbols_data(symbols_last_five)
+
+    symbols_last_five_data.each do |symbol_data|
+      symbols_data << symbol_data
+    end
+
+    render json: {
+      sp500: symbols_sp500_data[0],
+      fetchedData: symbols_data
+    }
+  end
+
+  def fetch_symbols_data(symbols_array)
     key1 = "2NSG0O0E1I8ESDEZ"
     key2 = "GPVI77SN18N0LB1J"
     key3 = "7FTS2A6T4HRYU6MC"
-
     endpoint = "https://www.alphavantage.co/"
+    symbols_data = []
 
-    symbolsFirst.each do |symbol| 
+    symbols_array.each do |symbol| 
       request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbol}&apikey=#{key1}"
       response_raw = HTTParty.get(request_url)
-      symbolsData << response_raw["Global Quote"]
+      format_data = {}
+      format_data["date"] = response_raw["Global Quote"]["07. latest trading day"]
+      format_data["symbol"] = response_raw["Global Quote"]["01. symbol"]
+      format_data["price"] = response_raw["Global Quote"]["05. price"]
+      format_data["change-percent"] = response_raw["Global Quote"]["10. change percent"]
+
+      symbols_data << format_data
     end
 
-    n = 60
-    60.times do 
+    symbols_data
+  end
+
+  def timer(time)
+    n = time
+    rep = time
+    rep.times do 
       puts "#{n} seconds left"
       n = n - 1
       sleep 1
     end
-    
-    symbolsSecond.each do |symbol| 
-      request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbol}&apikey=#{key2}"
-      response_raw = HTTParty.get(request_url)
-      symbolsData << response_raw["Global Quote"]
-    end
-    
-    n = 60
-    60.times do 
-      puts "#{n} seconds left"
-      n = n - 1
-      sleep 1
-    end
-
-    request_url = "#{endpoint}query?function=GLOBAL_QUOTE&symbol=#{symbolsThird}&apikey=#{key3}"
-    response_raw = HTTParty.get(request_url)
-
-    binding.pry
-
-    symbolsData << response_raw["Global Quote"]
-    
-
-    # # The region you are interested in
-    # endpoint = "webservices.amazon.com"
-
-    # request_uri = "/onca/xml"
-
-    # params = {
-    #   "Service" => "AWSECommerceService",
-    #   "Operation" => "ItemSearch",
-    #   "AWSAccessKeyId" => "#{@access_key_id}",
-    #   "AssociateTag" => "#{@associate_tag}",
-    #   "Condition" => "New",
-    #   "RelationshipType" => "AuthorityTitle",
-    #   "SearchIndex" => "All",
-    #   "Keywords" => "#{keywords}",
-    #   "ResponseGroup" => "Large,RelatedItems,Reviews"
-    # }
-
-    # # Set current timestamp if not set
-    # params["Timestamp"] = Time.now.gmtime.iso8601 if !params.key?("Timestamp")
-
-    # # Generate the canonical query
-    # canonical_query_string = params.sort.collect do |key, value|
-    #   [URI.escape(key.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]")), URI.escape(value.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))].join('=')
-    # end.join('&')
-
-    # # Generate the string to be signed
-    # string_to_sign = "GET\n#{endpoint}\n#{request_uri}\n#{canonical_query_string}"
-
-    # # Generate the signature required by the Product Advertising API
-    # signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), @secret_key, string_to_sign)).strip()
-
-    # # Generate the signed URL
-    # request_url = "https://#{endpoint}#{request_uri}?#{canonical_query_string}&Signature=#{URI.escape(signature, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))}"
-
-    # response_raw = HTTParty.get(request_url)
-
-    
-    # response = response_raw["ItemSearchResponse"]["Items"]["Item"] ?response_raw["ItemSearchResponse"]["Items"]["Item"] : nil
-    
-    # if response
-    #   response.each do |item|
-    #     if item["ItemAttributes"]["ReleaseDate"]
-    #       release_date = Date.parse(item["ItemAttributes"]["ReleaseDate"])
-    #       release_date_human = release_date.strftime('%m/%d/%Y')
-    #       item["ItemAttributes"]["ReleaseDateHuman"] = release_date_human
-    #     end
-    #   end
-    # end
-
-    # return response
-
-    render json: {
-      fetchedData: symbolsData
-    }
   end
 
 end

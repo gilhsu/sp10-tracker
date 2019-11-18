@@ -51,7 +51,6 @@ class HomeContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      spTen: 0,
       symbolList: [
         "SPX",
         "MSFT",
@@ -65,17 +64,21 @@ class HomeContainer extends Component {
         "JNJ",
         "V"
       ],
-      fetchedData: []
+      fetchedData: [],
+      sp500: {},
+      sp10: {}
     };
     this.fetchData = this.fetchData.bind(this);
   }
 
   componentDidMount() {
     console.log(this.state.fetchedData);
+    console.log(this.state.sp500);
   }
 
   componentDidUpdate() {
     console.log(this.state.fetchedData);
+    console.log(this.state.sp500);
   }
 
   buttonClick = async () => {
@@ -145,7 +148,10 @@ class HomeContainer extends Component {
       })
       .then(response => response.json())
       .then(body => {
-        this.setState({ fetchedData: body.fetchedData });
+        this.setState({
+          fetchedData: body.fetchedData,
+          sp500: body.sp500
+        });
       });
   };
 
