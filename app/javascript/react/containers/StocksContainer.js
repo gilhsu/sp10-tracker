@@ -8,16 +8,22 @@ class StocksContainer extends Component {
   }
 
   render() {
+    const displayStocks =
+      this.props.stockData.length > 0
+        ? this.props.stockData.map(stockData => {
+            return (
+              <StockRow
+                key={Math.floor(Math.random() * 100000)}
+                stockData={stockData}
+              />
+            );
+          })
+        : "no stock data yet";
+
     return (
       <div>
-        Hello from Stocks Container
-        <StockRow />
-        <StockRow />
-        <StockRow />
-        <StockRow />
-        <StockRow />
-        <StockRow />
-        <StockRow />
+        Individual Stocks
+        <div>{displayStocks}</div>
       </div>
     );
   }

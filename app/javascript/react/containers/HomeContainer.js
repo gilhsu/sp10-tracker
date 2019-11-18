@@ -22,20 +22,20 @@ class HomeContainer extends Component {
         "JNJ",
         "V"
       ],
-      fetchedData: [],
+      indivStockData: [],
       sp500: {},
       sp10: {}
     };
   }
 
   componentDidMount() {
-    console.log(this.state.fetchedData);
+    console.log(this.state.indivStockData);
     console.log(this.state.sp500);
     console.log(this.state.sp10);
   }
 
   componentDidUpdate() {
-    console.log(this.state.fetchedData);
+    console.log(this.state.indivStockData);
     console.log(this.state.sp500);
     console.log(this.state.sp10);
   }
@@ -66,7 +66,7 @@ class HomeContainer extends Component {
       .then(response => response.json())
       .then(body => {
         this.setState({
-          fetchedData: body.fetchedData,
+          indivStockData: body.indivStockData,
           sp500: body.sp500,
           sp10: body.sp10
         });
@@ -85,10 +85,12 @@ class HomeContainer extends Component {
           <div className="outline small-8 columns">
             <div className="row">
               <div className="outline small-6 columns">
-                <Ticker />
+                Today
+                <Ticker sp10={this.state.sp10} sp500={this.state.sp500} />
               </div>
               <div className="outline small-6 columns">
-                <Ticker />
+                Last 365 Days
+                <Ticker sp10={this.state.sp10} sp500={this.state.sp500} />
               </div>
             </div>
             <div className="outline row">
@@ -96,7 +98,7 @@ class HomeContainer extends Component {
             </div>
           </div>
           <div className="outline small-4 columns">
-            <StocksContainer />
+            <StocksContainer stockData={this.state.indivStockData} />
           </div>
           <div className="outline">
             <DailyHistoryContainer />
