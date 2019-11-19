@@ -41,15 +41,15 @@ class Api::V1::FetchController < ApplicationController
   def get_sp10_data(stock_data_array)
     percentage_return_sum = 0
     stock_data_array.each do |stock_data|
-      percentage_return_sum = percentage_return_sum + stock_data["change-percent"].to_f
+      percentage_return_sum = percentage_return_sum + stock_data["change_percent"].to_f
     end
 
-    sp10_percentage_return = (percentage_return_sum / 10).round(2)
+    sp10_percentage_return = sprintf('%.2f', percentage_return_sum / 10)
 
     sp10_data = {}
     sp10_data["date"] = stock_data_array[0]["date"]
     sp10_data["symbol"] = "SP10"
-    sp10_data["change-percent"] = sp10_percentage_return
+    sp10_data["change_percent"] = sp10_percentage_return
 
     sp10_data
   end
@@ -80,7 +80,7 @@ class Api::V1::FetchController < ApplicationController
 
       change_percent = (change_price / prev_close) * 100
 
-      format_data["change-percent"] = sprintf('%.2f', change_percent)
+      format_data["change_percent"] = sprintf('%.2f', change_percent)
       
       symbols_data << format_data
     end

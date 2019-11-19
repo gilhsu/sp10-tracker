@@ -1,35 +1,15 @@
 indivStockData: [
-  { date: "2019-11-15", symbol: "MSFT", price: 149.97, "change-percent": 1.29 },
-  { date: "2019-11-15", symbol: "AAPL", price: 265.76, "change-percent": 1.19 },
-  {
-    date: "2019-11-15",
-    symbol: "AMZN",
-    price: 1739.49,
-    "change-percent": -0.86
-  },
-  { date: "2019-11-15", symbol: "FB", price: 195.1, "change-percent": 1.01 },
-  {
-    date: "2019-11-15",
-    symbol: "BRK-B",
-    price: 219.74,
-    "change-percent": 0.17
-  },
-  {
-    date: "2019-11-15",
-    symbol: "GOOG",
-    price: 1334.87,
-    "change-percent": 1.79
-  },
-  {
-    date: "2019-11-15",
-    symbol: "GOOGL",
-    price: 1333.54,
-    "change-percent": 1.86
-  },
-  { date: "2019-11-15", symbol: "JPM", price: 129.53, "change-percent": 0.72 },
-  { date: "2019-11-15", symbol: "JNJ", price: 134.94, "change-percent": 3.04 },
-  { date: "2019-11-15", symbol: "V", price: 179.77, "change-percent": 0.01 }
+  {date: "2019-11-18", symbol: "MSFT", price: "150.34", "change_price": "0.37", "change_percent": "0.25"},
+{date: "2019-11-18", symbol: "AAPL", price: "267.10", "change_price": "1.34", "change_percent": "0.50"},
+{date: "2019-11-18", symbol: "AMZN", price: "1752.53", "change_price": "13.04", "change_percent": "0.75"},
+{date: "2019-11-18", symbol: "FB", price: "197.40", "change_price": "2.30", "change_percent": "1.18"},
+{date: "2019-11-18", symbol: "BRK-B", price: "219.35", "change_price": "-0.39", "change_percent": "-0.18"},
+{date: "2019-11-18", symbol: "GOOG", price: "1320.70", "change_price": "-14.17", "change_percent": "-1.06"},
+{date: "2019-11-18", symbol: "GOOGL", price: "1319.84", "change_price": "-13.70", "change_percent": "-1.03"},
+{date: "2019-11-18", symbol: "JPM", price: "130.62", "change_price": "1.09", "change_percent": "0.84"},
+{date: "2019-11-18", symbol: "JNJ", price: "134.83", "change_price": "-0.11", "change_percent": "-0.08"},
+{date: "2019-11-18", symbol: "V", price: "179.66", "change_price": "-0.11", "change_percent": "-0.06"},
 ],
-sp500: {date: "2019-11-15", symbol: "INX", price: 3120.46, "change-percent": 0.77},
-sp10: {date: "2019-11-15", symbol: "SP10", "change-percent": 1.02}
+sp500: {date: "2019-11-18", symbol: "SPX", price: "3122.03", "change_price": "1.57", "change_percent": "0.05"},
+sp10: {date: "2019-11-18", symbol: "SP10", "change_percent": "0.11"}
 
