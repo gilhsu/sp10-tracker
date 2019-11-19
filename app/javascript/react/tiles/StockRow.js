@@ -7,8 +7,8 @@ const StockRow = props => {
 
   const percentChange =
     props.stockData["change-percent"] > 0
-      ? `+${props.stockData["change-percent"]}`
-      : props.stockData["change-percent"];
+      ? `+${props.stockData["change-percent"]}%`
+      : `${props.stockData["change-percent"]}%`;
 
   return (
     <div className="row">
