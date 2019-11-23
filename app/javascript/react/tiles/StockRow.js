@@ -1,7 +1,7 @@
 import React from "react";
 
 const StockRow = props => {
-  const symbol = props.stockData["symbol"];
+  const symbol = props.stockData["name"];
 
   const price = `$${props.stockData["price"]}`;
 

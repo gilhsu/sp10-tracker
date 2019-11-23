@@ -24,15 +24,16 @@ class HomeContainer extends Component {
       ],
       indivStockData: [],
       sp500: {},
+      sp500_365: {},
       sp10: {},
-      delta: ""
+      sp10_365: {},
+      delta: "",
+      delta_365: ""
     };
   }
 
   componentDidMount() {
-    console.log(this.state.indivStockData);
-    console.log(this.state.sp500);
-    console.log(this.state.sp10);
+    this.fetchData(this.state.symbolList);
   }
 
   componentDidUpdate() {
@@ -69,8 +70,11 @@ class HomeContainer extends Component {
         this.setState({
           indivStockData: body.indivStockData,
           sp500: body.sp500,
+          sp500_365: body.sp500_365,
           sp10: body.sp10,
-          delta: body.delta
+          sp10_365: body.sp10_365,
+          delta: body.delta,
+          delta_365: body.delta_365
         });
       });
   };
@@ -98,9 +102,9 @@ class HomeContainer extends Component {
               <div className="outline small-6 columns">
                 Last 365 Days
                 <Ticker
-                  sp10={this.state.sp10}
-                  sp500={this.state.sp500}
-                  delta={this.state.delta}
+                  sp10={this.state.sp10_365}
+                  sp500={this.state.sp500_365}
+                  delta={this.state.delta_365}
                 />
               </div>
             </div>
