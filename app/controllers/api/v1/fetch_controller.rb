@@ -3,37 +3,69 @@ class Api::V1::FetchController < ApplicationController
 
   def create
 
+    # symbols_data = []
+
+    # symbols_sp500 = []
+    # symbols_sp500 << params["_json"][0]
+    # # sp10 list is broken up into groups of 5 because the API limits 5 calls per minute
+    # symbols_first_five = params["_json"][1...6]
+    # symbols_last_five = params["_json"][6...11]
+
+    # sp500_data = fetch_symbols_data(symbols_sp500)
+    
+    # timer(60)
+    
+    # symbols_first_five_data = fetch_symbols_data(symbols_first_five)
+    
+    # symbols_first_five_data.each do |symbol_data|
+    #   symbols_data << symbol_data
+    # end
+    
+    # timer(60)
+    
+    # symbols_last_five_data = fetch_symbols_data(symbols_last_five)
+
+    # symbols_last_five_data.each do |symbol_data|
+    #   symbols_data << symbol_data
+    # end
+
+    # sp10_data = get_sp10_data(symbols_data)
+
+
+    sp10_last_data = {}
+    sp10 = Stock.find_by(name: "SP10")
+    sp10_last_record = Record.where(stock: sp10).last
+    sp10_last_data["date"] = sp10_last_record.date
+    sp10_last_data["name"] = sp10.name
+    sp10_last_data["change_percent"] = sp10_last_record.change_percent
+
+    sp500_last_data = {}
+    sp500 = Stock.find_by(name: "SPX")
+    sp500_last_record = Record.where(stock: sp500).last
+    sp500_last_data["date"] = sp500_last_record.date
+    sp500_last_data["name"] = sp500.name
+    sp500_last_data["price"] = sp500_last_record.price
+    sp500_last_data["change_price"] = sp500_last_record.change_price
+    sp500_last_data["change_percent"] = sp500_last_record.change_percent
+
+    stocks = Stock.where(in_fund: true)
     symbols_data = []
-
-    symbols_sp500 = []
-    symbols_sp500 << params["_json"][0]
-    # sp10 list is broken up into groups of 5 because the API limits 5 calls per minute
-    symbols_first_five = params["_json"][1...6]
-    symbols_last_five = params["_json"][6...11]
-
-    sp500_data = fetch_symbols_data(symbols_sp500)
-    
-    timer(60)
-    
-    symbols_first_five_data = fetch_symbols_data(symbols_first_five)
-    
-    symbols_first_five_data.each do |symbol_data|
-      symbols_data << symbol_data
-    end
-    
-    timer(60)
-    
-    symbols_last_five_data = fetch_symbols_data(symbols_last_five)
-
-    symbols_last_five_data.each do |symbol_data|
-      symbols_data << symbol_data
+    stocks.each do |stock|
+      format_data = {}
+      record  = Record.where(stock: stock).last
+      format_data["date"] = record.date
+      format_data["name"] = stock.name
+      format_data["price"] = record.price
+      format_data["change_price"] = record.change_price
+      format_data["change_percent"] = record.change_percent
+      symbols_data << format_data
     end
 
-    sp10_data = get_sp10_data(symbols_data)
+    binding.pry
 
     render json: {
-      sp10: sp10_data,
-      sp500: sp500_data[0],
+      sp10: sp10_last_data,
+      sp500: sp500_last_data,
       indivStockData: symbols_data
     }
   end

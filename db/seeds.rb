@@ -48,4 +48,6 @@ stocks_last_five.each do |stock|
   stock.backfill
 end
 
+Stock.last.backfill_sp10
+
 puts "Done!"

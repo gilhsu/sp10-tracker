@@ -66,7 +66,7 @@ class Stock < ApplicationRecord
       format_data[date] = response_raw["Time Series (Daily)"][date]["5. adjusted close"]
       date_price_array << format_data
     end
-
+    
     # use date_price_array to determine the percentage difference each day =>
     # returns date_percent_array
     date_percent_array = []
@@ -78,7 +78,8 @@ class Stock < ApplicationRecord
         prev_close = (date_price_array[n+1].values[0]).to_f
         change_price = today_close - prev_close
         change_percent = (change_price / prev_close) * 100
-        format_data[date_price_array[n].keys[0]] = sprintf('%.2f', change_percent)
+        binding.pry
+        format_data[date_price_array[n].keys[0]] = {"change_price": change_price, "change_percent": change_percent}
         date_percent_array << format_data
         n = n + 1
       end
@@ -86,20 +87,24 @@ class Stock < ApplicationRecord
 
     # create Record instance using the necessary data
     n = 0
-    date_array.each do |date|
+    date_array_365 = date_array[0,365]
+    date_array_365.reverse.each do |date|
       if n < date_price_array.length - 1
         name = response_raw["Meta Data"]["2. Symbol"]
         stock = Stock.find_by(name: name)
         record_date = Date.parse(date)
         price = (response_raw["Time Series (Daily)"][date]["5. adjusted close"]).to_f
-        change_percent = ""
+        
+        change_price = 0
+        change_percent = 0
         date_percent_array.each do |date_percent|
           if date_percent[date]
-            change_percent = date_percent[date]
+            change_price = date_percent[date][:change_price]
+            change_percent = date_percent[date][:change_percent]
           end
         end
         if Record.where(date: date, stock: stock).length === 0
-          Record.create(date: date, price: price, change_percent: change_percent, stock: stock)
+          Record.create(date: date, price: price, change_price: change_price, change_percent: change_percent, stock: stock)
         end
         n = n + 1
       end
@@ -110,24 +115,25 @@ class Stock < ApplicationRecord
 
   def backfill_sp10
     sp10 = Stock.find_by(name: "SP10")
-    first_stock = Stock.first
-    first_365_dates = []
-    get_365_records = Record.where(stock: first_stock)[0...365]
+    stock = Stock.second
+    get_365_records = Record.where(stock: stock)[0...365]
 
+    first_365_dates = []
     # use 365 records to insert first 365 dates into array
     get_365_records.each do |record|
       first_365_dates << record.date
     end
 
     n = 0
-    first_365_dates.each do |date|
-      change_percent_sum = 0
+    reverse_365_dates = first_365_dates.reverse
+    reverse_365_dates.each do |date|
       fund_stocks = Stock.where(in_fund: true)
       records_by_date_array = []
       fund_stocks.each do |stock|
         records_by_date_array << Record.where(date: date, stock: stock)[0]
       end
-
+      
+      change_percent_sum = 0
       records_by_date_array.each do |record|
         change_percent_sum = change_percent_sum + record.change_percent
       end
@@ -135,8 +141,7 @@ class Stock < ApplicationRecord
       Record.create(stock: sp10, date: date, change_percent: change_percent_average)
       n = n + 1
     end
-    binding.pry
-    puts "Successfully created #{n} records of #{name}"
+    puts "Successfully created #{n} records of #{sp10.name}"
   end
 
 end
