@@ -13,8 +13,7 @@ const Ticker = props => {
       ? `+${props.sp500["change_percent"]}%`
       : props.sp500["change_percent"];
 
-    const deltaPercentage =
-      props.sp10["change_percent"] - props.sp500["change_percent"];
+    const deltaPercentage = props.delta;
 
     displayDeltaPercentage =
       deltaPercentage > 0 ? `+${deltaPercentage}%` : deltaPercentage;

@@ -11,5 +11,6 @@ indivStockData: [
 {date: "2019-11-18", symbol: "V", price: "179.66", "change_price": "-0.11", "change_percent": "-0.06"},
 ],
 sp500: {date: "2019-11-18", symbol: "SPX", price: "3122.03", "change_price": "1.57", "change_percent": "0.05"},
-sp10: {date: "2019-11-18", symbol: "SP10", "change_percent": "0.11"}
+sp10: {date: "2019-11-18", symbol: "SP10", "change_percent": "0.11"},
+delta: "0.06"
 

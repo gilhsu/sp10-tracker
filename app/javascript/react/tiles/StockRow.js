@@ -10,6 +10,9 @@ const StockRow = props => {
       ? `+${props.stockData["change_percent"]}%`
       : `${props.stockData["change_percent"]}%`;
 
+  console.log("props.stockData");
+  console.log(props.stockData);
+
   return (
     <div className="row">
       <div className="small-4 columns">{symbol}</div>
