@@ -144,7 +144,7 @@ class Stock < ApplicationRecord
     puts "Successfully created #{n} records of #{sp10.name}"
   end
 
-  def format_data
+  def fetch_data
     format_data = {}
     record  = Record.where(stock: self).last
     format_data["date"] = record.date
@@ -156,6 +156,22 @@ class Stock < ApplicationRecord
     format_data["change_percent"] = sprintf('%.2f', record.change_percent)
     
     format_data
+  end
+
+  def fetch_365_data
+    data_365 = Record.where(stock: self).reverse[0...365]
+    data_365_reverse = data_365.reverse
+    change_percent_total = 1
+    change_percent_array = []
+    data_365_reverse.each do |record|
+      change_percent_total = change_percent_total * (1 + (record.change_percent / 100))
+      change_percent_array << 1 + (record.change_percent / 100)
+    end
+
+    data_365 = {}
+    data_365["change_percent"] = sprintf('%.2f', (change_percent_total - 1) * 100)
+
+    data_365
   end
 
 end
