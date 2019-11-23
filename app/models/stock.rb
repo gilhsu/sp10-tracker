@@ -144,4 +144,18 @@ class Stock < ApplicationRecord
     puts "Successfully created #{n} records of #{sp10.name}"
   end
 
+  def format_data
+    format_data = {}
+    record  = Record.where(stock: self).last
+    format_data["date"] = record.date
+    format_data["name"] = self.name
+    if record.price
+      format_data["price"] = sprintf('%.2f', record.price)
+      format_data["change_price"] = sprintf('%.2f', record.change_price)
+    end
+    format_data["change_percent"] = sprintf('%.2f', record.change_percent)
+    
+    format_data
+  end
+
 end

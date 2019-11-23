@@ -25,7 +25,8 @@ class HomeContainer extends Component {
       indivStockData: [],
       sp500: {},
       sp10: {},
-      delta: ""
+      delta: "",
+      sp10_change_percent_365: {}
     };
   }
 
@@ -70,6 +71,7 @@ class HomeContainer extends Component {
           indivStockData: body.indivStockData,
           sp500: body.sp500,
           sp10: body.sp10,
+          sp10_365: body.sp10_365,
           delta: body.delta
         });
       });
