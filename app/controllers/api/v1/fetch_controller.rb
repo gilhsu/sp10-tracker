@@ -27,9 +27,9 @@ class Api::V1::FetchController < ApplicationController
       sp10_365: sp10_365,
       sp500: sp500_last_data,
       sp500_365: sp500_365,
-      indivStockData: stocks_data,
       delta: delta_data,
-      delta_365: delta_365
+      delta_365: delta_365,
+      indivStockData: stocks_data,
     }
   end
 end
