@@ -24,7 +24,8 @@ class HomeContainer extends Component {
       ],
       indivStockData: [],
       sp500: {},
-      sp10: {}
+      sp10: {},
+      delta: ""
     };
   }
 
@@ -68,7 +69,8 @@ class HomeContainer extends Component {
         this.setState({
           indivStockData: body.indivStockData,
           sp500: body.sp500,
-          sp10: body.sp10
+          sp10: body.sp10,
+          delta: body.delta
         });
       });
   };
@@ -87,11 +89,19 @@ class HomeContainer extends Component {
             <div className="row">
               <div className="outline small-6 columns">
                 Today
-                <Ticker sp10={this.state.sp10} sp500={this.state.sp500} />
+                <Ticker
+                  sp10={this.state.sp10}
+                  sp500={this.state.sp500}
+                  delta={this.state.delta}
+                />
               </div>
               <div className="outline small-6 columns">
                 Last 365 Days
-                <Ticker sp10={this.state.sp10} sp500={this.state.sp500} />
+                <Ticker
+                  sp10={this.state.sp10}
+                  sp500={this.state.sp500}
+                  delta={this.state.delta}
+                />
               </div>
             </div>
             <div className="outline row">

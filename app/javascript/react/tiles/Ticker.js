@@ -4,17 +4,16 @@ const Ticker = props => {
   let sp10PercentChange = "";
   let sp500PercentChange = "";
   let displayDeltaPercentage = "";
-  if (props.sp10["change-percent"]) {
-    sp10PercentChange = props.sp10["change-percent"]
-      ? `+${props.sp10["change-percent"]}%`
-      : props.sp10["change-percent"];
+  if (props.sp10["change_percent"]) {
+    sp10PercentChange = props.sp10["change_percent"]
+      ? `+${props.sp10["change_percent"]}%`
+      : props.sp10["change_percent"];
 
-    sp500PercentChange = props.sp500["change-percent"]
-      ? `+${props.sp500["change-percent"]}%`
-      : props.sp500["change-percent"];
+    sp500PercentChange = props.sp500["change_percent"]
+      ? `+${props.sp500["change_percent"]}%`
+      : props.sp500["change_percent"];
 
-    const deltaPercentage =
-      props.sp10["change-percent"] - props.sp500["change-percent"];
+    const deltaPercentage = props.delta;
 
     displayDeltaPercentage =
       deltaPercentage > 0 ? `+${deltaPercentage}%` : deltaPercentage;
