@@ -3,15 +3,15 @@ class Api::V1::FetchController < ApplicationController
 
   def create
     sp10 = Stock.find_by(name: "SP10")
-    sp10_last_data = sp10.fetch_data
+    sp10_last_data = sp10.fetch_last_data
     
     sp500 = Stock.find_by(name: "SPX")
-    sp500_last_data = sp500.fetch_data
+    sp500_last_data = sp500.fetch_last_data
 
     stocks = Stock.where(in_fund: true)
     stocks_data = []
     stocks.each do |stock|
-      stocks_data << stock.fetch_data
+      stocks_data << stock.fetch_last_data
     end
 
     delta = sp10_last_data["change_percent"].to_f - sp500_last_data["change_percent"].to_f
