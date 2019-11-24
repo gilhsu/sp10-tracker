@@ -15,12 +15,12 @@ class Api::V1::FetchController < ApplicationController
     end
 
     delta = sp10_last_data["change_percent"].to_f - sp500_last_data["change_percent"].to_f
-    delta_data = sprintf('%.2f', delta)
+    delta_data = delta.round(2)
     
     sp10_365 = sp10.fetch_365_data
     sp500_365 = sp500.fetch_365_data
 
-    delta_365 = sprintf('%.2f', sp10_365["change_percent"].to_f - sp500_365["change_percent"].to_f)
+    delta_365 = (sp10_365["change_percent"] - sp500_365["change_percent"]).round(2)
 
     sp10_daily_history = sp10.fetch_daily_history
 

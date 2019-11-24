@@ -1,12 +1,37 @@
 import React from "react";
 
 const DailyHistoryRow = props => {
-  const date = props.data ? props.data["date"] : "N/A";
-  const percentChange = props.data ? `${props.data["change_percent"]}%` : "N/A";
-  const sp500PercentChange = props.data
-    ? `${props.data["sp500_change_percent"]}%`
-    : "N/A";
-  const delta = props.data ? `${props.data["delta"]}%` : "N/A";
+  let date = "N/A";
+  let percentChange = "N/A";
+  let sp500PercentChange = "N/A";
+  let delta = "N/A";
+  if (props.data) {
+    date = props.data["date"];
+    percentChange =
+      props.data["change_percent"] >= 0 ? (
+        <span className="green">
+          +{props.data["change_percent"].toFixed(2)}%
+        </span>
+      ) : (
+        <span className="red">{props.data["change_percent"].toFixed(2)}%</span>
+      );
+    sp500PercentChange =
+      props.data["sp500_change_percent"] >= 0 ? (
+        <span className="green">
+          +{props.data["sp500_change_percent"].toFixed(2)}%
+        </span>
+      ) : (
+        <span className="red">
+          {props.data["sp500_change_percent"].toFixed(2)}%
+        </span>
+      );
+    delta =
+      props.data["delta"] >= 0 ? (
+        <span className="green">+{props.data["delta"].toFixed(2)}%</span>
+      ) : (
+        <span className="red">{props.data["delta"].toFixed(2)}%</span>
+      );
+  }
   return (
     <div className="row">
       <div className="small-3 columns">{date}</div>
