@@ -24,7 +24,6 @@ class Api::V1::FetchController < ApplicationController
 
     sp10_daily_history = sp10.fetch_daily_history
 
-
     render json: {
       sp10: sp10_last_data,
       sp10_365: sp10_365,
