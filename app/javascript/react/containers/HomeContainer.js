@@ -28,7 +28,8 @@ class HomeContainer extends Component {
       sp10: {},
       sp10_365: {},
       delta: "",
-      delta_365: ""
+      delta_365: "",
+      sp10_daily_history: []
     };
   }
 
@@ -74,7 +75,8 @@ class HomeContainer extends Component {
           sp10: body.sp10,
           sp10_365: body.sp10_365,
           delta: body.delta,
-          delta_365: body.delta_365
+          delta_365: body.delta_365,
+          sp10_daily_history: body.sp10_daily_history
         });
       });
   };
@@ -116,7 +118,9 @@ class HomeContainer extends Component {
             <StocksContainer stockData={this.state.indivStockData} />
           </div>
           <div className="outline">
-            <DailyHistoryContainer />
+            <DailyHistoryContainer
+              sp10_daily_history={this.state.sp10_daily_history}
+            />
           </div>
         </div>
       </div>
