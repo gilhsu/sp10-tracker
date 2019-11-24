@@ -113,10 +113,10 @@ class Stock < ApplicationRecord
     format_data["date"] = record.date
     format_data["name"] = self.name
     if record.price
-      format_data["price"] = sprintf('%.2f', record.price)
-      format_data["change_price"] = sprintf('%.2f', record.change_price)
+      format_data["price"] = record.price.round(2)
+      format_data["change_price"] = record.change_price.round(2)
     end
-    format_data["change_percent"] = sprintf('%.2f', record.change_percent)
+    format_data["change_percent"] = record.change_percent.round(2)
     
     format_data
   end
@@ -130,7 +130,7 @@ class Stock < ApplicationRecord
     end
 
     data_365 = {}
-    data_365["change_percent"] = sprintf('%.2f', (change_percent_total - 1) * 100)
+    data_365["change_percent"] = ((change_percent_total - 1) * 100).round(2)
 
     data_365
   end
@@ -144,9 +144,9 @@ class Stock < ApplicationRecord
       sp500_record = Record.where(stock: sp500, date: record.date)[0]
       history_record["name"] = record.stock.name
       history_record["date"] = record.date.strftime("%a, %b %e, %Y")
-      history_record["sp500_change_percent"] = sprintf('%.2f', sp500_record.change_percent)
-      history_record["change_percent"] = sprintf('%.2f', record.change_percent)
-      history_record["delta"] = sprintf('%.2f', history_record["change_percent"].to_f - history_record["sp500_change_percent"].to_f)
+      history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
+      history_record["change_percent"] = record.change_percent.round(2)
+      history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
       daily_history_array << history_record
     end
     daily_history_array.reverse

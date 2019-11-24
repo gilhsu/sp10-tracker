@@ -41,6 +41,8 @@ class HomeContainer extends Component {
     console.log(this.state.indivStockData);
     console.log(this.state.sp500);
     console.log(this.state.sp10);
+    console.log(this.state.delta);
+    console.log(this.state.delta_365);
   }
 
   buttonClick = async () => {
