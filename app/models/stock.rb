@@ -1,10 +1,6 @@
 class Stock < ApplicationRecord
   validates :name, presence: true
 
-  def poop
-    puts "poop"
-  end
-
   def timer(time)
     n = time
     rep = time
@@ -15,48 +11,16 @@ class Stock < ApplicationRecord
     end
   end
 
-  def fetch_data(full_year = false)
-    key1 = "2NSG0O0E1I8ESDEZ"
-    key2 = "GPVI77SN18N0LB1J"
-    key3 = "7FTS2A6T4HRYU6MC"
-
-    endpoint = "https://www.alphavantage.co/"
-    output_size = "compact"
-
-    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{key1}"
-    response_raw = HTTParty.get(request_url)
-
-    format_data = {}
-    format_data["date"] = Date.parse(response_raw["Meta Data"]["3. Last Refreshed"])
-    format_data["symbol"] = response_raw["Meta Data"]["2. Symbol"]
-
-    today_close = response_raw["Time Series (Daily)"].values[0]["4. close"].to_f
-    prev_close = response_raw["Time Series (Daily)"].values[1]["4. close"].to_f
-    change_price = today_close - prev_close
-  
-    format_data["price"] = sprintf('%.2f', today_close)
-    format_data["change_price"] = sprintf('%.2f', today_close - prev_close)
-
-    change_percent = (change_price / prev_close) * 100
-
-    format_data["change_percent"] = sprintf('%.2f', change_percent)
-
-    format_data
-  end
-
   def backfill
-    key1 = "2NSG0O0E1I8ESDEZ"
-    key2 = "GPVI77SN18N0LB1J"
-    key3 = "7FTS2A6T4HRYU6MC"
-
     endpoint = "https://www.alphavantage.co/"
     output_size = "full"
 
-    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{key1}"
+    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
     response_raw = HTTParty.get(request_url)
 
     # get an array of last 366 dates
     date_array = response_raw["Time Series (Daily)"].keys[0,366]
+
     
     # use date_array for the keys to dig into the response raw data => 
     # returns a date_price_array
@@ -78,7 +42,6 @@ class Stock < ApplicationRecord
         prev_close = (date_price_array[n+1].values[0]).to_f
         change_price = today_close - prev_close
         change_percent = (change_price / prev_close) * 100
-        binding.pry
         format_data[date_price_array[n].keys[0]] = {"change_price": change_price, "change_percent": change_percent}
         date_percent_array << format_data
         n = n + 1
@@ -144,7 +107,7 @@ class Stock < ApplicationRecord
     puts "Successfully created #{n} records of #{sp10.name}"
   end
 
-  def fetch_data
+  def fetch_last_data
     format_data = {}
     record  = Record.where(stock: self).last
     format_data["date"] = record.date
