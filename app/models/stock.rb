@@ -162,16 +162,31 @@ class Stock < ApplicationRecord
     data_365 = Record.where(stock: self).reverse[0...365]
     data_365_reverse = data_365.reverse
     change_percent_total = 1
-    change_percent_array = []
     data_365_reverse.each do |record|
       change_percent_total = change_percent_total * (1 + (record.change_percent / 100))
-      change_percent_array << 1 + (record.change_percent / 100)
     end
 
     data_365 = {}
     data_365["change_percent"] = sprintf('%.2f', (change_percent_total - 1) * 100)
 
     data_365
+  end
+
+  def fetch_daily_history
+    daily_history_array = []
+    data_365 = Record.where(stock: self)
+    sp500 = Stock.find_by(name: "SPX")
+    data_365.each do |record|
+      history_record = {}
+      sp500_record = Record.where(stock: sp500, date: record.date)[0]
+      history_record["name"] = record.stock.name
+      history_record["date"] = record.date.strftime("%a, %b %e, %Y")
+      history_record["sp500_change_percent"] = sprintf('%.2f', sp500_record.change_percent)
+      history_record["change_percent"] = sprintf('%.2f', record.change_percent)
+      history_record["delta"] = sprintf('%.2f', history_record["change_percent"].to_f - history_record["sp500_change_percent"].to_f)
+      daily_history_array << history_record
+    end
+    daily_history_array.reverse
   end
 
 end

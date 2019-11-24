@@ -22,6 +22,8 @@ class Api::V1::FetchController < ApplicationController
 
     delta_365 = sprintf('%.2f', sp10_365["change_percent"].to_f - sp500_365["change_percent"].to_f)
 
+    sp10_daily_history = sp10.fetch_daily_history
+
     render json: {
       sp10: sp10_last_data,
       sp10_365: sp10_365,
@@ -30,6 +32,7 @@ class Api::V1::FetchController < ApplicationController
       delta: delta_data,
       delta_365: delta_365,
       indivStockData: stocks_data,
+      sp10_daily_history: sp10_daily_history,
     }
   end
 end

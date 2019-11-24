@@ -8,14 +8,21 @@ class DailyHistoryContainer extends Component {
   }
 
   render() {
+    let n = 0;
+    const dailyHistoryRows = this.props.sp10_daily_history.map(dataRow => {
+      n = n + 1;
+      return <DailyHistoryRow key={n} data={dataRow} />;
+    });
+
     return (
       <div>
-        Hello from DailyHistoryContainer
-        <DailyHistoryRow />
-        <DailyHistoryRow />
-        <DailyHistoryRow />
-        <DailyHistoryRow />
-        <DailyHistoryRow />
+        <div className="row">
+          <div className="small-3 columns">Date</div>
+          <div className="small-3 columns right">Delta</div>
+          <div className="small-3 columns right">S&P 500 % Change</div>
+          <div className="small-3 columns right">SP10 % Change</div>
+        </div>
+        {dailyHistoryRows}
       </div>
     );
   }
