@@ -18,8 +18,8 @@ class Stock < ApplicationRecord
     request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
     response_raw = HTTParty.get(request_url)
 
-    # get an array of last 366 dates
-    date_array = response_raw["Time Series (Daily)"].keys[0,366]
+    # get an array of last 254 (one year + 1) dates
+    date_array = response_raw["Time Series (Daily)"].keys[0,254]
 
     
     # use date_array for the keys to dig into the response raw data => 
@@ -50,8 +50,8 @@ class Stock < ApplicationRecord
 
     # create Record instance using the necessary data
     n = 0
-    date_array_365 = date_array[0,365]
-    date_array_365.reverse.each do |date|
+    date_array_year = date_array[0,253]
+    date_array_year.reverse.each do |date|
       if n < date_price_array.length - 1
         name = response_raw["Meta Data"]["2. Symbol"]
         stock = Stock.find_by(name: name)
@@ -79,17 +79,17 @@ class Stock < ApplicationRecord
   def backfill_sp10
     sp10 = Stock.find_by(name: "SP10")
     stock = Stock.second
-    get_365_records = Record.where(stock: stock)[0...365]
+    get_year_records = Record.where(stock: stock)[0...253]
 
-    first_365_dates = []
-    # use 365 records to insert first 365 dates into array
-    get_365_records.each do |record|
-      first_365_dates << record.date
+    one_year_dates = []
+    # use one year records to insert first one year dates into array
+    get_year_records.each do |record|
+      one_year_dates << record.date
     end
 
     n = 0
-    reverse_365_dates = first_365_dates.reverse
-    reverse_365_dates.each do |date|
+    reverse_year_dates = one_year_dates.reverse
+    reverse_year_dates.each do |date|
       fund_stocks = Stock.where(in_fund: true)
       records_by_date_array = []
       fund_stocks.each do |stock|
@@ -121,25 +121,25 @@ class Stock < ApplicationRecord
     format_data
   end
 
-  def fetch_365_data
-    data_365 = Record.where(stock: self).reverse[0...365]
-    data_365_reverse = data_365.reverse
+  def fetch_year_data
+    year_data = Record.where(stock: self).reverse[0...253]
+    year_data_reverse = year_data.reverse
     change_percent_total = 1
-    data_365_reverse.each do |record|
+    year_data_reverse.each do |record|
       change_percent_total = change_percent_total * (1 + (record.change_percent / 100))
     end
 
-    data_365 = {}
-    data_365["change_percent"] = ((change_percent_total - 1) * 100).round(2)
+    year_data = {}
+    year_data["change_percent"] = ((change_percent_total - 1) * 100).round(2)
 
-    data_365
+    year_data
   end
 
   def fetch_daily_history
     daily_history_array = []
-    data_365 = Record.where(stock: self)
+    year_data = Record.where(stock: self)
     sp500 = Stock.find_by(name: "SPX")
-    data_365.each do |record|
+    year_data.each do |record|
       history_record = {}
       sp500_record = Record.where(stock: sp500, date: record.date)[0]
       history_record["name"] = record.stock.name

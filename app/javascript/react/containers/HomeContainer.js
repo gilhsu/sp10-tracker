@@ -24,11 +24,11 @@ class HomeContainer extends Component {
       ],
       indivStockData: [],
       sp500: {},
-      sp500_365: {},
+      sp500_year: {},
       sp10: {},
-      sp10_365: {},
+      sp10_year: {},
       delta: "",
-      delta_365: "",
+      delta_year: "",
       sp10_daily_history: []
     };
   }
@@ -42,7 +42,7 @@ class HomeContainer extends Component {
     console.log(this.state.sp500);
     console.log(this.state.sp10);
     console.log(this.state.delta);
-    console.log(this.state.delta_365);
+    console.log(this.state.delta_year);
   }
 
   buttonClick = async () => {
@@ -73,11 +73,11 @@ class HomeContainer extends Component {
         this.setState({
           indivStockData: body.indivStockData,
           sp500: body.sp500,
-          sp500_365: body.sp500_365,
+          sp500_year: body.sp500_year,
           sp10: body.sp10,
-          sp10_365: body.sp10_365,
+          sp10_year: body.sp10_year,
           delta: body.delta,
-          delta_365: body.delta_365,
+          delta_year: body.delta_year,
           sp10_daily_history: body.sp10_daily_history
         });
       });
@@ -104,11 +104,11 @@ class HomeContainer extends Component {
                 />
               </div>
               <div className="outline small-6 columns">
-                Last 365 Days
+                Last Year (253 Trading Days)
                 <Ticker
-                  sp10={this.state.sp10_365}
-                  sp500={this.state.sp500_365}
-                  delta={this.state.delta_365}
+                  sp10={this.state.sp10_year}
+                  sp500={this.state.sp500_year}
+                  delta={this.state.delta_year}
                 />
               </div>
             </div>
