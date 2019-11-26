@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 import StocksContainer from "./StocksContainer";
 import Chart from "../tiles/Chart";
@@ -83,7 +83,9 @@ class HomeContainer extends Component {
       });
   };
 
+  const [post, setPost] = useState([]);
   render() {
+
     return (
       <div>
         <div className="row" id="sp10-title">
