@@ -34,20 +34,20 @@ stocks_first_five = stocks[0...5]
 stocks_last_five = stocks[5...10]
 
 
-sp500.backfill
+sp500.fetch_data(true)
 
 Stock.last.timer(60)
 
 stocks_first_five.each do |stock|
-  stock.backfill
+  stock.fetch_data(true)
 end
 
 Stock.last.timer(60)
 
 stocks_last_five.each do |stock|
-  stock.backfill
+  stock.fetch_data(true)
 end
 
-Stock.last.backfill_sp10
+Stock.last.fetch_data_sp10(true)
 
 puts "Done!"
