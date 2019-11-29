@@ -49,7 +49,6 @@ class Stock < ApplicationRecord
     end
 
     # reverse data array to create Record instances in cronological order
-    n = 0
     format_data_array.reverse.each do |record|
       date = record["date"]
       if Record.where(stock: self, date: date).length === 0
