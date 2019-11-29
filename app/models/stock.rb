@@ -102,7 +102,31 @@ class Stock < ApplicationRecord
         puts "SP10 record for #{date} already exists"
       end
     end
+
     puts "Data merge for SP10 complete."
+  end
+
+  def fetch_data_master(full_data = false)
+    sp500 = Stock.find_by(name: "SPX")
+    stocks = Stock.where(in_fund: true)
+    stocks_first_five = stocks[0...5]
+    stocks_last_five = stocks[5...10]
+
+    sp500.fetch_data(full_data)
+
+    Stock.last.timer(60)
+
+    stocks_first_five.each do |stock|
+      stock.fetch_data(full_data)
+    end
+
+    Stock.last.timer(60)
+
+    stocks_last_five.each do |stock|
+      stock.fetch_data(full_data)
+    end
+
+    Stock.last.fetch_data_sp10(full_data)
 
     request_label = full_data ? "1 year's worth of" : "today's"
 

@@ -37,17 +37,7 @@ class HomeContainer extends Component {
     this.fetchData(this.state.symbolList);
   }
 
-  componentDidUpdate() {
-    console.log(this.state.indivStockData);
-    console.log(this.state.sp500);
-    console.log(this.state.sp10);
-    console.log(this.state.delta);
-    console.log(this.state.delta_year);
-  }
-
-  buttonClick = async () => {
-    this.fetchData(this.state.symbolList);
-  };
+  componentDidUpdate() {}
 
   fetchData = symbolList => {
     fetch(`/api/v1/fetch/`, {
@@ -88,9 +78,6 @@ class HomeContainer extends Component {
       <div>
         <div className="row" id="sp10-title">
           <div className="small-6 columns">SP10</div>
-          <div className="small-6 columns right">
-            <button onClick={this.buttonClick}>Fetch Data</button>
-          </div>
         </div>
         <div className="row">
           <div className="outline small-8 columns">
