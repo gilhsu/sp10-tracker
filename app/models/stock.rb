@@ -21,16 +21,8 @@ class Stock < ApplicationRecord
 
     # used to collect either full year or 1 day of records
     number_of_records = full_data ? 253 : 1
-    
-    # use date_array for the keys to dig into the response_raw data and
-    # returns a date_price_array
-    # date_price_array = []
-    # date_array.each do |date|
-    #   format_data = {}
-    #   format_data[date] = response_raw["Time Series (Daily)"][date]["5. adjusted close"]
-    #   date_price_array << format_data
-    # end
 
+    # create array of hashes with daily data
     format_data_array = []
     n = 0
     number_of_records.times do
@@ -56,6 +48,7 @@ class Stock < ApplicationRecord
       n += 1
     end
 
+    # reverse data array to create Record instances in cronological order
     n = 0
     format_data_array.reverse.each do |record|
       date = record["date"]
@@ -71,78 +64,7 @@ class Stock < ApplicationRecord
     end
 
     puts "Data fetch for #{self.name} complete."
-    
-    # use date_price_array to determine the percentage difference each day =>
-    # returns date_percent_array
-    # date_price_percent_array = []
-    # n = 0
-    # date_price_array.each do |date_price|
-    #   if n < date_price_array.length - 1
-    #     format_data = {}
-    #     today_close = (date_price_array[n].values[0]).to_f
-    #     prev_close = (date_price_array[n+1].values[0]).to_f
-    #     change_price = today_close - prev_close
-    #     change_percent = (change_price / prev_close) * 100
-    #     format_data[date_price_array[n].keys[0]] = {price: today_close, "change_price": change_price, "change_percent": change_percent}
-    #     date_price_percent_array << format_data
-    #     n = n + 1
-    #   end
-    # end
-
-    # if full_data
-    #   self.record_full_year(response_raw, date_array, date_price_percent_array)
-    # else
-    #   self.record_today(response_raw, date_price_percent_array)
-    # end
-
   end
-
-
-
-  # def record_today(response_raw, date_price_percent_array)
-  #   date_text = date_price_percent_array[0].keys[0]
-  #   date = Date.parse(date_price_percent_array[0].keys[0])
-  #   price = date_price_percent_array[0][date_text][:price]
-  #   change_price = date_price_percent_array[0][date_text][:change_price]
-  #   change_percent = date_price_percent_array[0][date_text][:change_percent]
-  #   if Record.where(date: date, stock: self).length === 0
-  #     Record.create(date: date, price: price, change_price: change_price, change_percent: change_percent, stock: self)
-  #     puts "Fetched #{self.name} data for #{date_text}"
-  #   else
-  #     puts "#{self.name} record for #{date_text} already exists"
-  #   end
-  # end
-
-
-
-  # def record_full_year(response_raw, date_array, date_price_percent_array)
-  #   # create Record instance using the necessary data
-  #   n = 0
-  #   date_array_year = date_array[0,253]
-  #   date_array_year.reverse.each do |date|
-  #     if n < date_array.length - 1
-  #       record_date = Date.parse(date)
-  #       price = (response_raw["Time Series (Daily)"][date]["5. adjusted close"]).to_f
-        
-  #       change_price = 0
-  #       change_percent = 0
-  #       date_price_percent_array.each do |date_percent|
-  #         if date_percent[date]
-  #           change_price = date_percent[date][:change_price]
-  #           change_percent = date_percent[date][:change_percent]
-  #         end
-  #       end
-  #       # checks to see if this days record exists
-  #       binding.pry
-  #       if Record.where(date: date, stock: self).length === 0
-  #         Record.create(date: date, price: price, change_price: change_price, change_percent: change_percent, stock: self)
-  #         n = n + 1
-  #       end
-  #     end
-  #   end
-
-  #   puts "Successfully created #{n} records of #{response_raw["Meta Data"]["2. Symbol"]}"
-  # end
 
   def fetch_data_sp10(full_data = false)
     sp10 = Stock.find_by(name: "SP10")
