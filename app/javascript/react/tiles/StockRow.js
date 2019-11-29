@@ -3,13 +3,17 @@ import React from "react";
 const StockRow = props => {
   const name = props.stockData["name"];
 
-  const price = `$${props.stockData["price"]}`;
+  const price = `$${props.stockData["price"].toFixed(2)}`;
 
   const percentChange =
     props.stockData["change_percent"] >= 0 ? (
-      <span className="green">+{props.stockData["change_percent"]}%</span>
+      <span className="green">
+        +{props.stockData["change_percent"].toFixed(2)}%
+      </span>
     ) : (
-      <span className="red">{props.stockData["change_percent"]}%</span>
+      <span className="red">
+        {props.stockData["change_percent"].toFixed(2)}%
+      </span>
     );
 
   return (
