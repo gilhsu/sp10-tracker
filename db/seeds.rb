@@ -28,26 +28,4 @@ seed_stocks.each do |stock|
   end
 end
 
-sp500 = Stock.find_by(name: "SPX")
-stocks = Stock.where(in_fund: true)
-stocks_first_five = stocks[0...5]
-stocks_last_five = stocks[5...10]
-
-
-sp500.fetch_data(true)
-
-Stock.last.timer(60)
-
-stocks_first_five.each do |stock|
-  stock.fetch_data(true)
-end
-
-Stock.last.timer(60)
-
-stocks_last_five.each do |stock|
-  stock.fetch_data(true)
-end
-
-Stock.last.fetch_data_sp10(true)
-
-puts "Done!"
+Stock.last.fetch_data_master(true)
