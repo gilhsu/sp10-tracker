@@ -24,6 +24,10 @@ class Api::V1::FetchController < ApplicationController
 
     sp10_daily_history = sp10.fetch_daily_history
 
+    last_sp10_record = Record.where(stock: sp10).last
+    last_sp10_record_date = last_sp10_record.created_at.to_datetime.in_time_zone('Eastern Time (US & Canada)')
+    last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
+
     render json: {
       sp10: sp10_last_data,
       sp10_year: sp10_year,
@@ -33,6 +37,7 @@ class Api::V1::FetchController < ApplicationController
       delta_year: delta_year,
       indivStockData: stocks_data,
       sp10_daily_history: sp10_daily_history,
+      last_update: last_sp10_record_date_string
     }
   end
 end

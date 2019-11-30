@@ -29,7 +29,8 @@ class HomeContainer extends Component {
       sp10_year: {},
       delta: "",
       delta_year: "",
-      sp10_daily_history: []
+      sp10_daily_history: [],
+      lastUpdate: ""
     };
   }
 
@@ -68,7 +69,8 @@ class HomeContainer extends Component {
           sp10_year: body.sp10_year,
           delta: body.delta,
           delta_year: body.delta_year,
-          sp10_daily_history: body.sp10_daily_history
+          sp10_daily_history: body.sp10_daily_history,
+          lastUpdate: body.last_update
         });
       });
   };
@@ -76,8 +78,15 @@ class HomeContainer extends Component {
   render() {
     return (
       <div>
-        <div className="row" id="sp10-title">
-          <div className="small-6 columns">SP10</div>
+        <div className="row">
+          <div className="small-6 columns" id="sp10-title">
+            SP10
+          </div>
+          <div className="small-6 columns right" id="sp10-updated">
+            Last Updated
+            <br />
+            {this.state.lastUpdate}
+          </div>
         </div>
         <div className="row">
           <div className="outline small-8 columns">
