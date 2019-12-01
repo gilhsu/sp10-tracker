@@ -1,6 +1,6 @@
 import React from "react";
 
-const DailyHistoryRow = props => {
+export const DailyHistoryRow = props => {
   let date = "N/A";
   let percentChange = "N/A";
   let sp500PercentChange = "N/A";
@@ -41,5 +41,3 @@ const DailyHistoryRow = props => {
     </div>
   );
 };
-
-export default DailyHistoryRow;

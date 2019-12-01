@@ -1,10 +1,10 @@
 import React from "react";
 
-const Ticker = props => {
-  let sp10PercentChange = "";
-  let sp500PercentChange = "";
-  let displayDeltaPercentage = "";
-  if (props.sp10["change_percent"]) {
+export const Ticker = props => {
+  let sp10PercentChange = "No Data";
+  let sp500PercentChange = "No Data";
+  let displayDeltaPercentage = "No Data";
+  if (props.sp10 && props.sp10["change_percent"]) {
     sp10PercentChange =
       props.sp10["change_percent"] >= 0 ? (
         <span className="green">
@@ -29,10 +29,6 @@ const Ticker = props => {
       ) : (
         <span className="red">{props.delta.toFixed(2)}%</span>
       );
-  } else {
-    sp10PercentChange = "No Data";
-    sp500PercentChange = "No Data";
-    displayDeltaPercentage = "No Data";
   }
 
   return (
@@ -55,5 +51,3 @@ const Ticker = props => {
     </div>
   );
 };
-
-export default Ticker;
