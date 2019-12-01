@@ -1,6 +1,6 @@
 import React from "react";
 
-const StockRow = props => {
+export const StockRow = props => {
   const name = props.stockData["name"];
 
   const price = `$${props.stockData["price"].toFixed(2)}`;
@@ -24,5 +24,3 @@ const StockRow = props => {
     </div>
   );
 };
-
-export default StockRow;
