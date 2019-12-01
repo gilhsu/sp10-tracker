@@ -8,7 +8,27 @@ export const Pagination = ({
 }) => {
   const pageNumbers = [];
   const totalPages = Math.ceil(totalRecords / recordsPerPage);
-  for (let i = 1; i <= totalPages; i++) {
+  const showTotalNumberOfPages = 7;
+  const firstPageIndexOffset =
+    totalPages - 6 > showTotalNumberOfPages
+      ? totalPages - 6
+      : showTotalNumberOfPages;
+
+  let firstPageIndex = currentPage - 3;
+  if (currentPage < 4) {
+    firstPageIndex = 1;
+  } else if (currentPage > 10) {
+    firstPageIndex = 7;
+  }
+
+  let lastPageIndex = currentPage + 3;
+  if (currentPage < 4) {
+    lastPageIndex = 7;
+  } else if (currentPage > 10) {
+    lastPageIndex = 13;
+  }
+
+  for (let i = firstPageIndex; i <= lastPageIndex; i++) {
     pageNumbers.push(i);
   }
 
