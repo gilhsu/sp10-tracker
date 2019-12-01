@@ -42,12 +42,12 @@ const Ticker = props => {
         <br />
         SP10
       </div>
-      <div className="small-4 columns">
+      <div className="small-4 columns center">
         {sp500PercentChange}
         <br />
         S&P 500
       </div>
-      <div className="small-4 columns">
+      <div className="small-4 columns right">
         {displayDeltaPercentage}
         <br />
         Delta
