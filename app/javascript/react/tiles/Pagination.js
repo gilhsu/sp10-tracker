@@ -8,23 +8,19 @@ export const Pagination = ({
 }) => {
   const pageNumbers = [];
   const totalPages = Math.ceil(totalRecords / recordsPerPage);
-  const showTotalNumberOfPages = 7;
-  const firstPageIndexOffset =
-    totalPages - 6 > showTotalNumberOfPages
-      ? totalPages - 6
-      : showTotalNumberOfPages;
 
-  let firstPageIndex = currentPage - 3;
+  // logic to get pageNumber index. Always displays 5 pages.
+  let firstPageIndex = currentPage - 2;
   if (currentPage < 4) {
     firstPageIndex = 1;
-  } else if (currentPage > 10) {
-    firstPageIndex = 7;
+  } else if (currentPage > 11) {
+    firstPageIndex = 9;
   }
 
-  let lastPageIndex = currentPage + 3;
+  let lastPageIndex = currentPage + 2;
   if (currentPage < 4) {
-    lastPageIndex = 7;
-  } else if (currentPage > 10) {
+    lastPageIndex = 5;
+  } else if (currentPage > 11) {
     lastPageIndex = 13;
   }
 
