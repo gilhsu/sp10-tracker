@@ -28,6 +28,11 @@ class Api::V1::FetchController < ApplicationController
     last_sp10_record_date = last_sp10_record.created_at.to_datetime.in_time_zone('Eastern Time (US & Canada)')
     last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
 
+    chart_data_30 = get_10k_data(30)
+    chart_data_90 = get_10k_data(90)
+    chart_data_180 = get_10k_data(180)
+    chart_data_253 = get_10k_data(253)
+
     render json: {
       sp10: sp10_last_data,
       sp10_year: sp10_year,
@@ -37,7 +42,48 @@ class Api::V1::FetchController < ApplicationController
       delta_year: delta_year,
       indivStockData: stocks_data,
       sp10_daily_history: sp10_daily_history,
-      last_update: last_sp10_record_date_string
+      last_update: last_sp10_record_date_string,
+      chartData30: chart_data_30,
+      chartData90: chart_data_90,
+      chartData180: chart_data_180,
+      chartData253: chart_data_253
     }
+  end
+
+  def get_10k_data(number_of_days)
+    sp10 = Stock.find_by(name: "SP10")
+    sp10_records = Record.where(stock: sp10)
+    sp10_records_range = sp10_records[sp10_records.length - number_of_days, sp10_records.length]
+
+    sp500 = Stock.find_by(name: "SPX")
+    sp500_records = Record.where(stock: sp500)
+    sp500_records_range = sp500_records[sp500_records.length - number_of_days, sp500_records.length]
+
+    combined_10k_data = []
+    sp10_10k_value = 10000
+    sp500_10k_value = 10000
+
+    n = 0
+    sp10_records_range.length.times do
+      if n === 0
+        indiv_data = []
+        indiv_data.push(sp10_records_range[n].date)
+        indiv_data.push(sp10_10k_value)
+        indiv_data.push(sp500_10k_value)
+        combined_10k_data << indiv_data
+        n = n + 1
+      else
+        indiv_data = []
+        indiv_data.push(sp10_records_range[n].date)
+        sp10_10k_value = (sp10_10k_value * ((sp10_records_range[n].change_percent / 100) + 1)).round(2)
+        indiv_data.push(sp10_10k_value)
+        sp500_10k_value = (sp500_10k_value * ((sp500_records_range[n].change_percent / 100) + 1)).round(2)
+        indiv_data.push(sp500_10k_value)
+        combined_10k_data << indiv_data
+        n = n + 1
+      end
+    end
+
+    combined_10k_data
   end
 end
