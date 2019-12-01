@@ -19,8 +19,8 @@ export const StockRow = props => {
   return (
     <div className="row">
       <div className="small-4 columns">{name}</div>
-      <div className="small-4 columns center">{price}</div>
-      <div className="small-4 columns right">{percentChange}</div>
+      <div className="small-4 columns text-right">{price}</div>
+      <div className="small-4 columns text-right">{percentChange}</div>
     </div>
   );
 };

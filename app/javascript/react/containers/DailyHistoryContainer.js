@@ -15,9 +15,9 @@ export const DailyHistoryContainer = props => {
       SP10 Daily Records
       <div className="row">
         <div className="small-3 columns">Date</div>
-        <div className="small-3 columns right">Delta</div>
-        <div className="small-3 columns right">S&P 500 % Change</div>
-        <div className="small-3 columns right">SP10 % Change</div>
+        <div className="small-3 columns text-right">S&P 500 % Change</div>
+        <div className="small-3 columns text-right">SP10 % Change</div>
+        <div className="small-3 columns text-right">Delta</div>
       </div>
       {dailyHistoryRows}
     </div>

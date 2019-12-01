@@ -59,7 +59,7 @@ export const HomeContainer = () => {
         <div className="small-6 columns" id="sp10-title">
           SP10
         </div>
-        <div className="small-6 columns right" id="sp10-updated">
+        <div className="small-6 columns text-right" id="sp10-updated">
           Last Updated
           <br />
           {data.last_update}

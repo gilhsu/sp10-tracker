@@ -40,9 +40,8 @@ export const Pagination = ({
     <div className="pagination-centered">
       <ul className="pagination">
         <li className={enableLeftArrow}>
-          <a onClick={() => setCurrentPage(currentPage - 1)}>&laquo;</a>
+          <a onClick={() => setCurrentPage(currentPage - 1)}>&laquo; PREV</a>
         </li>
-
         {pageNumbers.map(number => {
           const current = number === currentPage ? "current" : "";
           return (
@@ -51,9 +50,8 @@ export const Pagination = ({
             </li>
           );
         })}
-
         <li className={enableRightArrow}>
-          <a onClick={() => setCurrentPage(currentPage + 1)}>&raquo;</a>
+          <a onClick={() => setCurrentPage(currentPage + 1)}>NEXT &raquo;</a>
         </li>
       </ul>
     </div>
