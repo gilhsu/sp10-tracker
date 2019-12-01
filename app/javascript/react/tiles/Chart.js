@@ -1,39 +1,45 @@
 import React from "react";
 import { Chart as GoogleChart } from "react-google-charts";
 
-export const Chart = props => {
-  const records = [
-    ["12/1/2019", 0, 14],
-    ["12/2/2019", 10, 20],
-    ["12/1/2019", 23, 20],
-    ["12/1/2019", 17, 23],
-    ["12/1/2019", 18, 20],
-    ["12/1/2019", 9, 20],
-    ["12/1/2019", 11, 56],
-    ["12/1/2019", 27, 20],
-    ["12/1/2019", 33, 32],
-    ["12/1/2019", 40, 20],
-    ["12/1/2019", 32, 20],
-    ["12/1/2019", 35, 20]
-  ];
+export const Chart = ({ data, changeChartData }) => {
+  const chartRangeArray = [30, 90, 180, 253];
+  const chartOptions = chartRangeArray.map(range => {
+    const current = range === data.length ? "current" : "";
+    return (
+      <li key={range} className={current}>
+        <a onClick={() => changeChartData(range)}>{range}</a>
+      </li>
+    );
+  });
+
+  const sp10Delta =
+    data.length > 0
+      ? (data[data.length - 1][1] - data[data.length - 1][2]).toFixed(2)
+      : 0;
+
   return (
     <div>
-      <div>Growth of 10,000</div>
+      <div className="row">
+        <div className="small-6 columns">
+          Growth of 10,000
+          <br />
+          Gain/Loss vs. S&P 500: ${sp10Delta}
+        </div>
+        <div className="small-6 columns pagination-centered">
+          <ul className="pagination">
+            <li>Range:</li>
+            {chartOptions}
+          </ul>
+        </div>
+      </div>
       <GoogleChart
-        width="100%"
-        height={400}
-        chartType="Line"
+        width={"100%"}
+        height={"400px"}
+        chartType="LineChart"
         loader={<div>Loading Chart</div>}
-        data={[["x", "SP10", "SP500"], ...records]}
+        data={[["x", "SP10", "SP500"], ...data]}
         options={{
-          chartArea: { width: "100%" },
-          hAxis: {
-            title: "Dates",
-            minValue: 0
-          },
-          vAxis: {
-            title: "City"
-          },
+          chartArea: { width: "70%" },
           animation: {
             startup: true,
             easing: "linear",

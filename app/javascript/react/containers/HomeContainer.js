@@ -10,6 +10,7 @@ export const HomeContainer = () => {
   const [data, setData] = useState({});
   const [records, setRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [chartData, setChartData] = useState([]);
   const recordsPerPage = 20;
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export const HomeContainer = () => {
         setData(body);
         isLoading(false);
         setRecords(body.sp10_daily_history);
+        setChartData(body.chartData30);
       });
   };
 
@@ -48,6 +50,20 @@ export const HomeContainer = () => {
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
   const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  // trigger to change chart data
+  const changeChartData = range => {
+    console.log(range);
+    if (range === 30) {
+      setChartData(data.chartData30);
+    } else if (range === 90) {
+      setChartData(data.chartData90);
+    } else if (range === 180) {
+      setChartData(data.chartData180);
+    } else if (range === 253) {
+      setChartData(data.chartData253);
+    }
+  };
 
   if (loading) {
     return <h1>Page Loading...</h1>;
@@ -90,7 +106,7 @@ export const HomeContainer = () => {
           </div>
         </div>
         <div className="outline small-12 medium-8 columns">
-          <Chart />
+          <Chart data={chartData} changeChartData={changeChartData} />
         </div>
         <div className="small-12 columns">
           <div className="outline">
