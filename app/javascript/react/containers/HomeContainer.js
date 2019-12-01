@@ -89,9 +89,9 @@ class HomeContainer extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="outline small-12 medium-8 columns">
+          <div className="outline small-12 medium-4 columns">
             <div className="row">
-              <div className="outline small-12 medium-6 columns">
+              <div className="outline small-12 columns">
                 Today
                 <Ticker
                   sp10={this.state.sp10}
@@ -99,7 +99,9 @@ class HomeContainer extends Component {
                   delta={this.state.delta}
                 />
               </div>
-              <div className="outline small-12 medium-6 columns">
+            </div>
+            <div className="row">
+              <div className="outline small-12 columns">
                 Last Year (253 Trading Days)
                 <Ticker
                   sp10={this.state.sp10_year}
@@ -108,17 +110,21 @@ class HomeContainer extends Component {
                 />
               </div>
             </div>
-            <div className="outline row">
-              <Chart />
+            <div className="row">
+              <div className="outline small-12 columns">
+                <StocksContainer stockData={this.state.indivStockData} />
+              </div>
             </div>
           </div>
-          <div className="outline small-12 medium-4 columns">
-            <StocksContainer stockData={this.state.indivStockData} />
+          <div className="outline small-12 medium-8 columns">
+            <Chart />
           </div>
-          <div className="outline">
-            <DailyHistoryContainer
-              sp10_daily_history={this.state.sp10_daily_history}
-            />
+          <div className="small-12 columns">
+            <div className="outline">
+              <DailyHistoryContainer
+                sp10_daily_history={this.state.sp10_daily_history}
+              />
+            </div>
           </div>
         </div>
       </div>
