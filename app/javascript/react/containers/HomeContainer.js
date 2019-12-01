@@ -3,17 +3,21 @@ import { StocksContainer } from "./StocksContainer";
 import { Chart } from "../tiles/Chart";
 import { Ticker } from "../tiles/Ticker";
 import { DailyHistoryContainer } from "./DailyHistoryContainer";
+import { Pagination } from "../tiles/Pagination";
 
 export const HomeContainer = () => {
+  const [loading, isLoading] = useState(true);
   const [data, setData] = useState({});
-  const [loading, isLoading] = useState(false);
+  const [records, setRecords] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 20;
 
   useEffect(() => {
-    isLoading(true);
     fetchData();
   }, []);
 
   const fetchData = () => {
+    isLoading(true);
     fetch(`/api/v1/fetch/`, {
       method: "POST",
       body: JSON.stringify(),
@@ -36,8 +40,18 @@ export const HomeContainer = () => {
       .then(body => {
         setData(body);
         isLoading(false);
+        setRecords(body.sp10_daily_history);
       });
   };
+
+  // get current Daily History Records for pagination
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  if (loading) {
+    return <h1>Page Loading...</h1>;
+  }
 
   return (
     <div>
@@ -80,8 +94,16 @@ export const HomeContainer = () => {
         </div>
         <div className="small-12 columns">
           <div className="outline">
-            <DailyHistoryContainer
-              sp10_daily_history={data.sp10_daily_history}
+            <DailyHistoryContainer records={currentRecords} />
+          </div>
+        </div>
+        <div className="small-12 columns">
+          <div className="outline">
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              recordsPerPage={recordsPerPage}
+              totalRecords={records.length}
             />
           </div>
         </div>

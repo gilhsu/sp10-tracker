@@ -4,8 +4,8 @@ import { DailyHistoryRow } from "../tiles/DailyHistoryRow";
 export const DailyHistoryContainer = props => {
   let n = 0;
   const dailyHistoryRows =
-    props.sp10_daily_history &&
-    props.sp10_daily_history.map(dataRow => {
+    props.records &&
+    props.records.map(dataRow => {
       n = n + 1;
       return <DailyHistoryRow key={n} data={dataRow} />;
     });
