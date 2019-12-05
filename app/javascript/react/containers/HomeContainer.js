@@ -56,8 +56,8 @@ export const HomeContainer = () => {
     console.log(range);
     if (range === 20) {
       setChartData(data.chartData20);
-    } else if (range === 60) {
-      setChartData(data.chartData60);
+    } else if (range === 62) {
+      setChartData(data.chartData62);
     } else if (range === 125) {
       setChartData(data.chartData125);
     } else if (range === 253) {

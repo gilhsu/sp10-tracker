@@ -29,7 +29,7 @@ class Api::V1::FetchController < ApplicationController
     last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
 
     chart_data_20 = get_10k_data(20)
-    chart_data_60 = get_10k_data(60)
+    chart_data_62 = get_10k_data(62)
     chart_data_125 = get_10k_data(125)
     chart_data_253 = get_10k_data(253)
 
@@ -44,7 +44,7 @@ class Api::V1::FetchController < ApplicationController
       sp10_daily_history: sp10_daily_history,
       last_update: last_sp10_record_date_string,
       chartData20: chart_data_20,
-      chartData60: chart_data_60,
+      chartData62: chart_data_62,
       chartData125: chart_data_125,
       chartData253: chart_data_253
     }
