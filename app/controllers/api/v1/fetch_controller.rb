@@ -28,9 +28,9 @@ class Api::V1::FetchController < ApplicationController
     last_sp10_record_date = last_sp10_record.created_at.to_datetime.in_time_zone('Eastern Time (US & Canada)')
     last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
 
-    chart_data_30 = get_10k_data(30)
-    chart_data_90 = get_10k_data(90)
-    chart_data_180 = get_10k_data(180)
+    chart_data_20 = get_10k_data(20)
+    chart_data_60 = get_10k_data(60)
+    chart_data_125 = get_10k_data(125)
     chart_data_253 = get_10k_data(253)
 
     render json: {
@@ -43,9 +43,9 @@ class Api::V1::FetchController < ApplicationController
       indivStockData: stocks_data,
       sp10_daily_history: sp10_daily_history,
       last_update: last_sp10_record_date_string,
-      chartData30: chart_data_30,
-      chartData90: chart_data_90,
-      chartData180: chart_data_180,
+      chartData20: chart_data_20,
+      chartData60: chart_data_60,
+      chartData125: chart_data_125,
       chartData253: chart_data_253
     }
   end
