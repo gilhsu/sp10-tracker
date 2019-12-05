@@ -35,11 +35,11 @@ export const Chart = ({ data, changeChartData }) => {
       <GoogleChart
         width={"100%"}
         height={"400px"}
-        chartType="LineChart"
+        chartType="AreaChart"
         loader={<div>Loading Chart</div>}
         data={[["x", "SP10", "SP500"], ...data]}
         options={{
-          chartArea: { width: "70%" },
+          chartArea: { width: "60%" },
           animation: {
             startup: true,
             easing: "linear",
