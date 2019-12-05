@@ -18,9 +18,11 @@ export const Chart = ({ data, changeChartData }) => {
     );
   });
 
+  console.log(data);
+
   const sp10Delta =
     data.length > 0
-      ? (data[data.length - 1][1] - data[data.length - 1][2]).toFixed(2)
+      ? (data[data.length - 1][1] - data[data.length - 1][3]).toFixed(2)
       : 0;
 
   return (
@@ -43,14 +45,24 @@ export const Chart = ({ data, changeChartData }) => {
         height={"400px"}
         chartType="AreaChart"
         loader={<div>Loading Chart</div>}
-        data={[["x", "SP10", "SP500"], ...data]}
+        data={[
+          [
+            "x",
+            "SP10",
+            { role: "tooltip", type: "string", p: { html: true } },
+            "SP500",
+            { role: "tooltip", type: "string", p: { html: true } }
+          ],
+          ...data
+        ]}
         options={{
           chartArea: { width: "60%" },
           animation: {
             startup: true,
             easing: "linear",
             duration: 1000
-          }
+          },
+          tooltip: { isHtml: true }
         }}
         chartEvents={[
           {

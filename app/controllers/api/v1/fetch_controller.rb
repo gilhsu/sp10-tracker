@@ -69,16 +69,22 @@ class Api::V1::FetchController < ApplicationController
         indiv_data = []
         indiv_data.push(sp10_records_range[n].date)
         indiv_data.push(sp10_10k_value)
+        indiv_data.push("<h2>SP10:&nbsp$#{sp10_10k_value}.00</h2>")
         indiv_data.push(sp500_10k_value)
+        indiv_data.push("SP500: $#{sp10_10k_value}.00")
         combined_10k_data << indiv_data
         n = n + 1
       else
         indiv_data = []
         indiv_data.push(sp10_records_range[n].date)
-        sp10_10k_value = (sp10_10k_value * ((sp10_records_range[n].change_percent / 100) + 1)).round(2)
-        indiv_data.push(sp10_10k_value)
-        sp500_10k_value = (sp500_10k_value * ((sp500_records_range[n].change_percent / 100) + 1)).round(2)
-        indiv_data.push(sp500_10k_value)
+        sp10_10k_value = sp10_10k_value * ((sp10_records_range[n].change_percent / 100) + 1)
+        sp10_10k_rounded_value = sp10_10k_value.round(2)
+        indiv_data.push(sp10_10k_rounded_value)
+        indiv_data.push("<b>SP500:</b>&nbsp$#{sp10_10k_rounded_value}")
+        sp500_10k_value = sp500_10k_value * ((sp500_records_range[n].change_percent / 100) + 1)
+        sp500_10k_rounded_value = sp500_10k_value.round(2)
+        indiv_data.push(sp500_10k_rounded_value)
+        indiv_data.push("SP500: $#{sp500_10k_rounded_value}")
         combined_10k_data << indiv_data
         n = n + 1
       end
