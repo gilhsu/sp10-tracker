@@ -2,12 +2,18 @@ import React from "react";
 import { Chart as GoogleChart } from "react-google-charts";
 
 export const Chart = ({ data, changeChartData }) => {
-  const chartRangeArray = [30, 90, 180, 253];
+  const chartRangeArray = [
+    { name: "1M", length: 20 },
+    { name: "3M", length: 60 },
+    { name: "6M", length: 125 },
+    { name: "1Y", length: 253 }
+  ];
+  const n = 0;
   const chartOptions = chartRangeArray.map(range => {
-    const current = range === data.length ? "current" : "";
+    const current = range["length"] === data.length ? "current" : "";
     return (
-      <li key={range} className={current}>
-        <a onClick={() => changeChartData(range)}>{range}</a>
+      <li key={range["length"]} className={current}>
+        <a onClick={() => changeChartData(range["length"])}>{range["name"]}</a>
       </li>
     );
   });
