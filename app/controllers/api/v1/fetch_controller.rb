@@ -80,7 +80,7 @@ class Api::V1::FetchController < ApplicationController
         sp10_10k_value = sp10_10k_value * ((sp10_records_range[n].change_percent / 100) + 1)
         sp10_10k_rounded_value = sp10_10k_value.round(2)
         indiv_data.push(sp10_10k_rounded_value)
-        indiv_data.push("<b>SP500:</b>&nbsp$#{sp10_10k_rounded_value}")
+        indiv_data.push("<div><h4>SP500</h4><br/>#{sp10_records_range[n].date}<br/>$#{sp10_10k_rounded_value}<br/>#{sp10_records_range[n].change_percent.round(2)}</div>")
         sp500_10k_value = sp500_10k_value * ((sp500_records_range[n].change_percent / 100) + 1)
         sp500_10k_rounded_value = sp500_10k_value.round(2)
         indiv_data.push(sp500_10k_rounded_value)
