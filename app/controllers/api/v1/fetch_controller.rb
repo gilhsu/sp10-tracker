@@ -28,8 +28,8 @@ class Api::V1::FetchController < ApplicationController
     last_sp10_record_date = last_sp10_record.created_at.to_datetime.in_time_zone('Eastern Time (US & Canada)')
     last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
 
-    chart_data_21 = get_10k_data(21)
-    chart_data_63 = get_10k_data(63)
+    chart_data_20 = get_10k_data(20)
+    chart_data_62 = get_10k_data(62)
     chart_data_125 = get_10k_data(125)
     chart_data_253 = get_10k_data(253)
 
@@ -43,8 +43,8 @@ class Api::V1::FetchController < ApplicationController
       indivStockData: stocks_data,
       sp10_daily_history: sp10_daily_history,
       last_update: last_sp10_record_date_string,
-      chartData21: chart_data_21,
-      chartData63: chart_data_63,
+      chartData20: chart_data_20,
+      chartData62: chart_data_62,
       chartData125: chart_data_125,
       chartData253: chart_data_253
     }

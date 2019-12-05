@@ -3,8 +3,8 @@ import { Chart as GoogleChart } from "react-google-charts";
 
 export const Chart = ({ data, changeChartData }) => {
   const chartRangeArray = [
-    { name: "1M", length: 21 },
-    { name: "3M", length: 63 },
+    { name: "1M", length: 20 },
+    { name: "3M", length: 62 },
     { name: "6M", length: 125 },
     { name: "1Y", length: 253 }
   ];

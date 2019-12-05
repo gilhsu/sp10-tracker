@@ -42,7 +42,7 @@ export const HomeContainer = () => {
         setData(body);
         isLoading(false);
         setRecords(body.sp10_daily_history);
-        setChartData(body.chartData21);
+        setChartData(body.chartData20);
       });
   };
 
@@ -54,10 +54,10 @@ export const HomeContainer = () => {
   // trigger to change chart data
   const changeChartData = range => {
     console.log(range);
-    if (range === 21) {
-      setChartData(data.chartData21);
-    } else if (range === 63) {
-      setChartData(data.chartData63);
+    if (range === 20) {
+      setChartData(data.chartData20);
+    } else if (range === 62) {
+      setChartData(data.chartData62);
     } else if (range === 125) {
       setChartData(data.chartData125);
     } else if (range === 253) {
