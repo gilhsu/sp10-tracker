@@ -150,7 +150,7 @@ export const Chart = ({ data, changeChartData }) => {
           ...parseData
         ]}
         options={{
-          chartArea: { width: "60%" },
+          chartArea: { width: "70%" },
           animation: {
             startup: true,
             easing: "linear",
