@@ -18,9 +18,105 @@ export const Chart = ({ data, changeChartData }) => {
     );
   });
 
+  const parseData = data.map(data => {
+    const formatTooltip = (
+      stockName,
+      value,
+      changePercent,
+      deltaPercent = null
+    ) => {
+      const displayValue = value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+      const titleColor = stockName === "SP10" ? "#5b85d6" : "#c1300f";
+      const titleStyle = `background-color: ${titleColor}; color: white; font-size: 14px; padding-top: 5px; padding-bottom: 5px; padding-left: 10px; padding-right: 10px; width: 180px;`;
+      const tooltipContainer = "width: 180px; padding: 10px;";
+      const textStyle = "font-size: 14px";
+      const valueColor = value > 10000 ? "green" : "red";
+      const valueStyle = `font-size: 24px; font-weight: bold; color: ${valueColor}`;
+      const changePercentPlusMinus = changePercent > 0 ? "+" : "";
+      const changePercentColor =
+        changePercent > 0
+          ? "font-weight: bold; color: green"
+          : "font-weight: bold; color: red";
+      let deltaPercentColor = "";
+      let displayDeltaPercent = "";
+      if (deltaPercent) {
+        if (deltaPercent > 0) {
+          deltaPercentColor = "font-weight: bold; color: green";
+          displayDeltaPercent = `
+            <span style="${textStyle}">
+              Day vs. SP500: 
+                <span style="${deltaPercentColor}">
+                  +${deltaPercent.toFixed(2)}%
+                </span>
+            </span>
+        `;
+        } else {
+          deltaPercentColor = "font-weight: bold; color: red";
+          displayDeltaPercent = `
+          <span style="${textStyle}">
+            Day vs. SP500: 
+              <span style="${deltaPercentColor}">
+                ${deltaPercent.toFixed(2)}%
+              </span>
+          </span>
+        `;
+        }
+      }
+
+      return `
+      <div style="${titleStyle}">
+        ${stockName}
+      </div>
+      <div style="${tooltipContainer}">
+        <span style="${textStyle}">
+          ${data["date_format"]}
+        </span>
+        <br/>
+        <span style="${valueStyle}">
+          $${displayValue}
+        </span>
+        <br/>
+        <span style="${textStyle}">
+          Day Gain/Loss: 
+            <span style="${changePercentColor}">
+              ${changePercentPlusMinus}${changePercent.toFixed(2)}%
+            </span>
+        </span>
+        <br/>
+        ${displayDeltaPercent}
+      </div>`;
+    };
+
+    let dataRow = [];
+    dataRow.push(data["date"]);
+    dataRow.push(data["sp10_value_rounded"]);
+
+    const sp10Tooltip = formatTooltip(
+      "SP10",
+      data["sp10_value"],
+      data["sp10_change_percent"],
+      data["sp10_delta"]
+    );
+    dataRow.push(sp10Tooltip);
+
+    dataRow.push(data["sp500_value_rounded"]);
+
+    const sp500Tooltip = formatTooltip(
+      "S&P 500",
+      data["sp500_value"],
+      data["sp500_change_percent"]
+    );
+    dataRow.push(sp500Tooltip);
+
+    return dataRow;
+  });
+
   const sp10Delta =
     data.length > 0
-      ? (data[data.length - 1][1] - data[data.length - 1][2]).toFixed(2)
+      ? (
+          data[data.length - 1]["sp10_value"] -
+          data[data.length - 1]["sp500_value"]
+        ).toFixed(2)
       : 0;
 
   return (
@@ -43,14 +139,24 @@ export const Chart = ({ data, changeChartData }) => {
         height={"400px"}
         chartType="AreaChart"
         loader={<div>Loading Chart</div>}
-        data={[["x", "SP10", "SP500"], ...data]}
+        data={[
+          [
+            "x",
+            "SP10",
+            { role: "tooltip", type: "string", p: { html: true } },
+            "SP500",
+            { role: "tooltip", type: "string", p: { html: true } }
+          ],
+          ...parseData
+        ]}
         options={{
           chartArea: { width: "60%" },
           animation: {
             startup: true,
             easing: "linear",
             duration: 1000
-          }
+          },
+          tooltip: { isHtml: true }
         }}
         chartEvents={[
           {
