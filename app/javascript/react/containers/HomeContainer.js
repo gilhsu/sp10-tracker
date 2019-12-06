@@ -71,10 +71,12 @@ export const HomeContainer = () => {
   return (
     <div>
       <div className="row">
-        <div className="small-12 columns" id="sp10-title">
-          SP10{" "}
-          <span id="sp10-subtitle">Tracking the top 10 S&P 500 stocks</span>
-        </div>
+        <span className="small-12 columns" id="sp10-title">
+          SP10
+        </span>
+        <span className="small-12 columns" id="sp10-subtitle">
+          Tracking the top 10 S&P 500 stocks
+        </span>
       </div>
       <div className="row">
         <div className="outline small-12 medium-3 columns">
