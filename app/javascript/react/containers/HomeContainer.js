@@ -68,14 +68,6 @@ export const HomeContainer = () => {
     return <h1>Page Loading...</h1>;
   }
 
-  let chartAlign = "outline small-12 medium-9 column";
-  $(window).resize(function() {
-    console.log(window.innerWidth);
-    if (window.innerWidth < 600) {
-      chartAlign = "outline small-12 medium-9 columns right";
-    }
-  });
-
   return (
     <div>
       <div className="row">
