@@ -19,10 +19,6 @@ export const Chart = ({ data, changeChartData }) => {
   });
 
   const parseData = data.map(data => {
-    let dataRow = [];
-    dataRow.push(data["date"]);
-    dataRow.push(data["sp10_value_rounded"]);
-
     const formatTooltip = (
       stockName,
       value,
@@ -73,7 +69,7 @@ export const Chart = ({ data, changeChartData }) => {
       </div>
       <div style="${tooltipContainer}">
         <span style="${textStyle}">
-          ${data["date"]}
+          ${data["date_format"]}
         </span>
         <br/>
         <span style="${valueStyle}">
@@ -91,51 +87,9 @@ export const Chart = ({ data, changeChartData }) => {
       </div>`;
     };
 
-    // sp10 tooltip formatting
-    // const titleStyle =
-    //   "background-color: #5b85d6; color: white; font-size: 14px; padding-top: 5px; padding-bottom: 5px; padding-left: 10px; padding-right: 10px; width: 180px;";
-    // const tooltipContainer = "width: 180px; padding: 10px;";
-    // const textStyle = "font-size: 14px";
-    // const valueColor = data["sp10_value_rounded"] > 10000 ? "green" : "red";
-    // const valueStyle = `font-size: 24px; font-weight: bold; color: ${valueColor}`;
-    // const changePercentColor =
-    //   data["sp10_change_percent"] > 0
-    //     ? "font-weight: bold; color: green"
-    //     : "font-weight: bold; color: red";
-    // const deltaPercentColor =
-    //   data["sp10_delta"] > 0
-    //     ? "font-weight: bold; color: green"
-    //     : "font-weight: bold; color: red";
-
-    // const formatSP10Tooltip = `
-    //   <div style="${titleStyle}">
-    //     SP10
-    //   </div>
-    //   <div style="${tooltipContainer}">
-    //     <span style="${textStyle}">
-    //       ${data["date"]}
-    //     </span>
-    //     <br/>
-    //     <span style="${valueStyle}">
-    //       $${data["sp10_value_rounded"]
-    //         .toFixed(2)
-    //         .replace(/\d(?=(\d{3})+\.)/g, "$&,")}</span>
-    //     <br/>
-    //     <span style="${textStyle}">
-    //       Day Gain/Loss:
-    //         <span style="${changePercentColor}">
-    //           ${data["sp10_change_percent"].toFixed(2)}%
-    //         </span>
-    //     </span>
-    //     <br/>
-    //     <span style="${textStyle}">
-    //       Day vs. SP500:
-    //         <span style="${deltaPercentColor}">
-    //           ${data["sp10_delta"].toFixed(2)}%
-    //         </span>
-    //     </span>
-    //   </div>
-    // `;
+    let dataRow = [];
+    dataRow.push(data["date"]);
+    dataRow.push(data["sp10_value_rounded"]);
 
     const sp10Tooltip = formatTooltip(
       "SP10",
@@ -147,7 +101,6 @@ export const Chart = ({ data, changeChartData }) => {
 
     dataRow.push(data["sp500_value_rounded"]);
 
-    // sp500 tooltip formatting
     const sp500Tooltip = formatTooltip(
       "S&P 500",
       data["sp500_value"],
@@ -158,11 +111,12 @@ export const Chart = ({ data, changeChartData }) => {
     return dataRow;
   });
 
-  console.log(data);
-
   const sp10Delta =
     data.length > 0
-      ? (data[data.length - 1][1] - data[data.length - 1][3]).toFixed(2)
+      ? (
+          data[data.length - 1]["sp10_value"] -
+          data[data.length - 1]["sp500_value"]
+        ).toFixed(2)
       : 0;
 
   return (

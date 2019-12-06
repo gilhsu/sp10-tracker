@@ -67,7 +67,8 @@ class Api::V1::FetchController < ApplicationController
     sp10_records_range.length.times do
       if n === 0
         data = {}
-        data["date"] = sp10_records_range[n].date.strftime("%a, %b %e, %Y")
+        data["date"] = sp10_records_range[n].date.strftime("%m/%d/%y")
+        data["date_format"] = sp10_records_range[n].date.strftime("%a %b %e, %Y")
 
         data["sp10_value"] = sp10_10k_value
         data["sp10_value_rounded"] = sp10_10k_value
@@ -82,7 +83,8 @@ class Api::V1::FetchController < ApplicationController
         n = n + 1
       else
         data = {}
-        data["date"] = sp10_records_range[n].date.strftime("%a %b %e, %Y")
+        data["date"] = sp10_records_range[n].date.strftime("%m/%d/%y")
+        data["date_format"] = sp10_records_range[n].date.strftime("%a %b %e, %Y")
         sp10_change_percent = sp10_records_range[n].change_percent
         sp500_change_percent = sp500_records_range[n].change_percent
 
