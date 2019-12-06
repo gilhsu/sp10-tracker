@@ -53,7 +53,6 @@ export const HomeContainer = () => {
 
   // trigger to change chart data
   const changeChartData = range => {
-    console.log(range);
     if (range === 20) {
       setChartData(data.chartData20);
     } else if (range === 62) {

@@ -66,26 +66,38 @@ class Api::V1::FetchController < ApplicationController
     n = 0
     sp10_records_range.length.times do
       if n === 0
-        indiv_data = []
-        indiv_data.push(sp10_records_range[n].date)
-        indiv_data.push(sp10_10k_value)
-        indiv_data.push("<h2>SP10:&nbsp$#{sp10_10k_value}.00</h2>")
-        indiv_data.push(sp500_10k_value)
-        indiv_data.push("SP500: $#{sp10_10k_value}.00")
-        combined_10k_data << indiv_data
+        data = {}
+        data["date"] = sp10_records_range[n].date.strftime("%a, %b %e, %Y")
+
+        data["sp10_value"] = sp10_10k_value
+        data["sp10_value_rounded"] = sp10_10k_value
+        data["sp10_change_percent"] = 0
+        data["sp10_delta"] = 0
+
+        data["sp500_value"] = sp500_10k_value
+        data["sp500_value_rounded"] = sp500_10k_value
+        data["sp500_change_percent"] = 0
+
+        combined_10k_data << data
         n = n + 1
       else
-        indiv_data = []
-        indiv_data.push(sp10_records_range[n].date)
-        sp10_10k_value = sp10_10k_value * ((sp10_records_range[n].change_percent / 100) + 1)
-        sp10_10k_rounded_value = sp10_10k_value.round(2)
-        indiv_data.push(sp10_10k_rounded_value)
-        indiv_data.push("<div><h4>SP500</h4><br/>#{sp10_records_range[n].date}<br/>$#{sp10_10k_rounded_value}<br/>#{sp10_records_range[n].change_percent.round(2)}</div>")
-        sp500_10k_value = sp500_10k_value * ((sp500_records_range[n].change_percent / 100) + 1)
-        sp500_10k_rounded_value = sp500_10k_value.round(2)
-        indiv_data.push(sp500_10k_rounded_value)
-        indiv_data.push("SP500: $#{sp500_10k_rounded_value}")
-        combined_10k_data << indiv_data
+        data = {}
+        data["date"] = sp10_records_range[n].date.strftime("%a %b %e, %Y")
+        sp10_change_percent = sp10_records_range[n].change_percent
+        sp500_change_percent = sp500_records_range[n].change_percent
+
+        sp10_10k_value = sp10_10k_value * ((sp10_change_percent / 100) + 1)
+        data["sp10_value"] = sp10_10k_value
+        data["sp10_value_rounded"] = sp10_10k_value.round(2)
+        data["sp10_change_percent"] = sp10_change_percent.round(2)
+        data["sp10_delta"] = sp10_change_percent.round(2) - sp500_change_percent.round(2)
+
+        sp500_10k_value = sp500_10k_value * ((sp500_change_percent / 100) + 1)
+        data["sp500_value"] = sp500_10k_value
+        data["sp500_value_rounded"] = sp500_10k_value.round(2)
+        data["sp500_change_percent"] = sp500_change_percent.round(2)
+
+        combined_10k_data << data
         n = n + 1
       end
     end
