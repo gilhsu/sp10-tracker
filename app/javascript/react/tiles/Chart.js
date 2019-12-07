@@ -125,7 +125,7 @@ export const Chart = ({ data, changeChartData }) => {
       <div className="row padding-10">
         <div className="small-6 columns">
           <div className="row">
-            <h4 className="small-12 columns">Growth of 10,000</h4>
+            <div className="small-12 columns">Growth of 10,000</div>
             <div className="small-12 columns">
               <ul className="pagination">{chartOptions}</ul>
             </div>
