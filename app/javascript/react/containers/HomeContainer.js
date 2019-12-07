@@ -70,7 +70,7 @@ export const HomeContainer = () => {
 
   return (
     <div>
-      <div className="row">
+      <div className="row padding-10">
         <div className="small-12 columns" id="sp10-title">
           SP10
         </div>
@@ -79,14 +79,14 @@ export const HomeContainer = () => {
         </div>
       </div>
       <div className="row">
-        <div className="outline small-12 medium-8 columns">
+        <div className="outline small-12 medium-8 columns padding-right-30">
           <div className="row">
-            <div className="outline small-12 medium-6 columns">
-              {data.last_update}
+            <div className="outline small-12 medium-6 columns padding-10 ">
+              <div>{data.last_update}</div>
               <Ticker sp10={data.sp10} sp500={data.sp500} delta={data.delta} />
             </div>
-            <div className="outline small-12 medium-6 columns">
-              Last Year (253 Trading Days)
+            <div className="outline small-12 medium-6 columns padding-10 ">
+              <div>Last Year (253 Trading Days)</div>
               <Ticker
                 sp10={data.sp10_year}
                 sp500={data.sp500_year}
@@ -98,7 +98,7 @@ export const HomeContainer = () => {
             </div>
           </div>
         </div>
-        <div className="outline small-4 columns">
+        <div className="outline small-4 columns padding-10">
           <StocksContainer stockData={data.indivStockData} />
         </div>
         <div className="small-12 columns">

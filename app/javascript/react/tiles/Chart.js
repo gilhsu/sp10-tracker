@@ -111,27 +111,41 @@ export const Chart = ({ data, changeChartData }) => {
     return dataRow;
   });
 
-  const sp10Delta =
-    data.length > 0
-      ? (
-          data[data.length - 1]["sp10_value"] -
-          data[data.length - 1]["sp500_value"]
-        ).toFixed(2)
-      : 0;
+  let sp10Value = 0;
+  let sp500Value = 0;
+  let sp10Delta = 0;
+  if (data.length > 0) {
+    sp10Value = data[data.length - 1]["sp10_value"];
+    sp500Value = data[data.length - 1]["sp500_value"];
+    sp10Delta = sp10Value - sp500Value;
+  }
 
   return (
     <div>
-      <div className="row">
+      <div className="row padding-10">
         <div className="small-6 columns">
-          Growth of 10,000
-          <br />
-          Gain/Loss vs. S&P 500: ${sp10Delta}
+          <div className="row">
+            <div className="small-12 columns">Growth of 10,000</div>
+            <div className="small-12 columns">
+              <ul className="pagination">{chartOptions}</ul>
+            </div>
+          </div>
         </div>
-        <div className="small-6 columns pagination-centered">
-          <ul className="pagination">
-            <li>Range:</li>
-            {chartOptions}
-          </ul>
+        <div className="small-6 columns text-right">
+          <div className="row">
+            <div className="small-12 medium-9 columns text-right">SP10:</div>
+            <div className="small-12 medium-3 columns">
+              ${sp10Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+            </div>
+            <div className="small-12 medium-9 columns text-right">S&P 500:</div>
+            <div className="small-12 medium-3 columns">
+              ${sp500Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+            </div>
+            <div className="small-12 medium-9 columns text-right">Delta:</div>
+            <div className="small-12 medium-3 columns">
+              ${sp10Delta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+            </div>
+          </div>
         </div>
       </div>
       <GoogleChart
@@ -152,7 +166,7 @@ export const Chart = ({ data, changeChartData }) => {
         options={{
           legend: "top",
           colors: ["green", "#016d8e"],
-          chartArea: { width: "80%", height: "75%" },
+          chartArea: { width: "85%", height: "75%" },
           animation: {
             startup: true,
             easing: "linear",
