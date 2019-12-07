@@ -13,7 +13,7 @@ export const StocksContainer = props => {
 
   return (
     <div>
-      Individual Stocks
+      <h4>Individual Stocks</h4>
       <div>{displayStocks}</div>
     </div>
   );
