@@ -13,7 +13,7 @@ export const StocksContainer = props => {
 
   return (
     <div>
-      <div>Individual Stocks</div>
+      <div className="w7">Individual Stocks</div>
       <div>{displayStocks}</div>
     </div>
   );

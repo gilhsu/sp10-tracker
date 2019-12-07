@@ -1,3 +1,27 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.w3 {
+  font-weight: 300;
+}
+
+.w4 {
+  font-weight: 400;
+}
+
+.w5 {
+  font-weight: 500;
+}
+
+.w7 {
+  font-weight: 700;
+}
+
+.w9 {
+  font-weight: 900;
+}
+
 #sp10-title {
   margin-top: 0.25rem;
   font-size: 4rem;
@@ -5,6 +29,7 @@
 
 #sp10-subtitle {
   margin-top: -1rem;
+  margin-bottom: 1rem;
   color: gray;
 }
 
