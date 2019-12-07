@@ -26,7 +26,7 @@ export const Chart = ({ data, changeChartData }) => {
       deltaPercent = null
     ) => {
       const displayValue = value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-      const titleColor = stockName === "SP10" ? "#5b85d6" : "#c1300f";
+      const titleColor = stockName === "SP10" ? "#2a702a" : "#016d8e";
       const titleStyle = `background-color: ${titleColor}; color: white; font-size: 14px; padding-top: 5px; padding-bottom: 5px; padding-left: 10px; padding-right: 10px; width: 180px;`;
       const tooltipContainer = "width: 180px; padding: 10px;";
       const textStyle = "font-size: 14px";
@@ -150,7 +150,9 @@ export const Chart = ({ data, changeChartData }) => {
           ...parseData
         ]}
         options={{
-          chartArea: { width: "60%" },
+          legend: "top",
+          colors: ["green", "#016d8e"],
+          chartArea: { width: "80%", height: "75%" },
           animation: {
             startup: true,
             easing: "linear",
