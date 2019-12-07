@@ -123,15 +123,15 @@ export const Chart = ({ data, changeChartData }) => {
   return (
     <div>
       <div className="row padding-10">
-        <div className="small-6 columns">
+        <div className="small-12 medium-6 columns">
           <div className="row">
-            <div className="small-12 columns">Growth of 10,000</div>
+            <div className="small-12 columns w7">Growth of 10,000</div>
             <div className="small-12 columns">
               <ul className="pagination">{chartOptions}</ul>
             </div>
           </div>
         </div>
-        <div className="small-6 columns text-right">
+        <div className="small-12 medium-6 columns text-right">
           <div className="row">
             <div className="small-12 medium-9 columns text-right">SP10:</div>
             <div className="small-12 medium-3 columns">
@@ -166,7 +166,7 @@ export const Chart = ({ data, changeChartData }) => {
         options={{
           legend: "top",
           colors: ["green", "#016d8e"],
-          chartArea: { width: "85%", height: "75%" },
+          chartArea: { width: "75%", height: "75%" },
           animation: {
             startup: true,
             easing: "linear",
