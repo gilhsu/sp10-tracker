@@ -71,25 +71,21 @@ export const HomeContainer = () => {
   return (
     <div>
       <div className="row">
-        <div className="small-6 columns" id="sp10-title">
+        <div className="small-12 columns" id="sp10-title">
           SP10
         </div>
-        <div className="small-6 columns text-right" id="sp10-updated">
-          Last Updated
-          <br />
-          {data.last_update}
+        <div className="small-12 columns" id="sp10-subtitle">
+          Top 10 S&P 500 Stock Tracker
         </div>
       </div>
       <div className="row">
-        <div className="outline small-12 medium-4 columns">
+        <div className="outline small-12 medium-8 columns">
           <div className="row">
-            <div className="outline small-12 columns">
-              Today
+            <div className="outline small-12 medium-6 columns">
+              {data.last_update}
               <Ticker sp10={data.sp10} sp500={data.sp500} delta={data.delta} />
             </div>
-          </div>
-          <div className="row">
-            <div className="outline small-12 columns">
+            <div className="outline small-12 medium-6 columns">
               Last Year (253 Trading Days)
               <Ticker
                 sp10={data.sp10_year}
@@ -97,15 +93,13 @@ export const HomeContainer = () => {
                 delta={data.delta_year}
               />
             </div>
-          </div>
-          <div className="row">
             <div className="outline small-12 columns">
-              <StocksContainer stockData={data.indivStockData} />
+              <Chart data={chartData} changeChartData={changeChartData} />
             </div>
           </div>
         </div>
-        <div className="outline small-12 medium-8 columns">
-          <Chart data={chartData} changeChartData={changeChartData} />
+        <div className="outline small-4 columns">
+          <StocksContainer stockData={data.indivStockData} />
         </div>
         <div className="small-12 columns">
           <div className="outline">
