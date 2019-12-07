@@ -149,6 +149,20 @@ class Stock < ApplicationRecord
     format_data
   end
 
+  def fetch_year_data
+    year_data = Record.where(stock: self).reverse[0...253]
+    year_data_reverse = year_data.reverse
+    change_percent_total = 1
+    year_data_reverse.each do |record|
+      change_percent_total = change_percent_total * (1 + (record.change_percent / 100))
+    end
+
+    year_data = {}
+    year_data["change_percent"] = ((change_percent_total - 1) * 100).round(2)
+
+    year_data
+  end
+
   def fetch_daily_history
     daily_history_array = []
     year_data = Record.where(stock: self)
