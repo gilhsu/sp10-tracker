@@ -41,32 +41,41 @@ export const Heatmap = ({ records }) => {
     return dataRow;
   });
 
-  console.log(chartValues);
+  const windowSize = window.addEventListener("resize", function() {
+    return window.innerWidth;
+  });
+
+  console.log(window.innerWidth);
 
   const startDate = new Date(chartValues[0].date);
   const endDate = new Date(chartValues[chartValues.length - 1].date);
 
+  const mobileScroll =
+    window.innerWidth < 1024 ? "scrolling-wrapper-mobile" : "";
+
   return (
     <div>
       <div className="w7">SP10 / S&P 500 Delta Heatmap </div>
-      <CalendarHeatmap
-        startDate={startDate}
-        endDate={endDate}
-        showWeekdayLabels={true}
-        classForValue={value => {
-          if (!value) {
-            return "color-empty";
-          }
-          return `color-sp10-${value.color}`;
-        }}
-        values={chartValues}
-        tooltipDataAttrs={value => {
-          return {
-            "data-tip": `${value.date_string} has count: ${value.delta}`
-          };
-        }}
-      />
-      <ReactTooltip />
+      <div className={mobileScroll}>
+        <CalendarHeatmap
+          startDate={startDate}
+          endDate={endDate}
+          showWeekdayLabels={true}
+          classForValue={value => {
+            if (!value) {
+              return "color-empty";
+            }
+            return `color-sp10-${value.color}`;
+          }}
+          values={chartValues}
+          tooltipDataAttrs={value => {
+            return {
+              "data-tip": `${value.date_string} has count: ${value.delta}`
+            };
+          }}
+        />
+        <ReactTooltip />
+      </div>
     </div>
   );
 };
