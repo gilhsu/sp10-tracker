@@ -13,32 +13,8 @@ export const Heatmap = ({ records }) => {
     const formatDelta =
       record["delta"] > 0 ? `+${record["delta"]}%` : `${record["delta"]}%`;
     dataRow["delta"] = formatDelta;
-    let color = 8;
+    dataRow["color"] = pickColor(record["delta"]);
 
-    if (record["delta"] < 0) {
-      if (record["delta"] > -0.1) {
-        color = 10;
-      }
-      if (record["delta"] <= -0.1 && record["delta"] > -0.5) {
-        color = 11;
-      }
-      if (record["delta"] <= -0.5) {
-        color = 12;
-      }
-    } else if (record["delta"] === 0) {
-      color = 0;
-    } else if (record["delta"] > 0) {
-      if (record["delta"] < 0.1) {
-        color = 1;
-      }
-      if (record["delta"] >= 0.1 && record["delta"] < 0.5) {
-        color = 2;
-      }
-      if (record["delta"] >= 0.5) {
-        color = 3;
-      }
-    }
-    dataRow["color"] = color;
     return dataRow;
   });
 
@@ -82,4 +58,32 @@ export const Heatmap = ({ records }) => {
 const offsetDate = (date, offset) => {
   let tempDate = new Date(date);
   return tempDate.setDate(tempDate.getDate() + offset);
+};
+
+const pickColor = data => {
+  let color = 0;
+  if (data < 0) {
+    if (data > -0.1) {
+      color = 10;
+    }
+    if (data <= -0.1 && data > -0.5) {
+      color = 11;
+    }
+    if (data <= -0.5) {
+      color = 12;
+    }
+  } else if (data === 0) {
+    color = 0;
+  } else if (data > 0) {
+    if (data < 0.1) {
+      color = 1;
+    }
+    if (data >= 0.1 && data < 0.5) {
+      color = 2;
+    }
+    if (data >= 0.5) {
+      color = 3;
+    }
+  }
+  return color;
 };
