@@ -8,9 +8,11 @@
     "babel-preset-react": "~6.24.1",
     "prop-types": "~15.6.0",
     "react": "16.8.0",
+    "react-calendar-heatmap": "^1.8.1",
     "react-dom": "16.8.0",
     "react-google-charts": "^3.0.15",
     "react-router": "~3.2.0",
+    "react-tooltip": "^3.11.1",
     "redbox-react": "1.6.0"
   },
   "devDependencies": {

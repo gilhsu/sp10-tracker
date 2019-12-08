@@ -4,6 +4,7 @@ import { Chart } from "../tiles/Chart";
 import { Ticker } from "../tiles/Ticker";
 import { DailyHistoryContainer } from "./DailyHistoryContainer";
 import { Pagination } from "../tiles/Pagination";
+import { Heatmap } from "../tiles/Heatmap";
 
 export const HomeContainer = () => {
   const [loading, isLoading] = useState(true);
@@ -40,9 +41,9 @@ export const HomeContainer = () => {
       .then(response => response.json())
       .then(body => {
         setData(body);
-        isLoading(false);
         setRecords(body.sp10_daily_history);
         setChartData(body.chartData20);
+        isLoading(false);
       });
   };
 
@@ -100,6 +101,9 @@ export const HomeContainer = () => {
         </div>
         <div className="outline small-12 medium-4 columns padding-10">
           <StocksContainer stockData={data.indivStockData} />
+        </div>
+        <div className="small-12 columns outline padding-10">
+          <Heatmap records={records} />
         </div>
         <div className="small-12 columns">
           <div className="outline">
