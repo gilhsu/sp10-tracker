@@ -21,8 +21,8 @@ export const Heatmap = ({ records }) => {
   const mobileScroll =
     window.innerWidth < 1024 ? "scrolling-wrapper-mobile" : "";
 
-  const startDate = new Date(chartValues[0].date);
-  const endDate = new Date(chartValues[chartValues.length - 1].date);
+  const endDate = new Date();
+  const startDate = new Date(offsetDate(endDate, -365));
 
   return (
     <div>
