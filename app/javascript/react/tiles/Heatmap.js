@@ -42,7 +42,7 @@ export const Heatmap = ({ records }) => {
           tooltipDataAttrs={value => {
             if (value.date_string) {
               return {
-                "data-tip": `${value.date_string} - SP10 / S&P 500 Delta: ${value.delta}`
+                "data-tip": `${value.date_string} - Delta: ${value.delta}`
               };
             } else {
               return { "data-tip": "No data available for this day." };
