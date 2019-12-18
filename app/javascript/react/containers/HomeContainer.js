@@ -47,10 +47,21 @@ export const HomeContainer = () => {
       });
   };
 
+  // resolves record reversing issue
+  const recordsArray =
+    records &&
+    records[0] &&
+    new Date(records[0].date) > new Date(records[records.length - 1].date)
+      ? records
+      : records.reverse();
+
   // get current Daily History Records for pagination
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
-  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+  const currentRecords = recordsArray.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
 
   // trigger to change chart data
   const changeChartData = range => {
@@ -116,7 +127,7 @@ export const HomeContainer = () => {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               recordsPerPage={recordsPerPage}
-              totalRecords={records.length}
+              totalRecords={recordsArray.length}
             />
           </div>
         </div>

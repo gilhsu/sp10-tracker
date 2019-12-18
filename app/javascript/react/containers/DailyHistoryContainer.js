@@ -1,14 +1,12 @@
 import React from "react";
 import { DailyHistoryRow } from "../tiles/DailyHistoryRow";
 
-export const DailyHistoryContainer = props => {
+export const DailyHistoryContainer = ({ records }) => {
   let n = 0;
-  const dailyHistoryRows =
-    props.records &&
-    props.records.map(dataRow => {
-      n = n + 1;
-      return <DailyHistoryRow key={n} data={dataRow} />;
-    });
+  const dailyHistoryRows = records.map(dataRow => {
+    n = n + 1;
+    return <DailyHistoryRow key={n} data={dataRow} />;
+  });
 
   return (
     <div className="padding-10">
