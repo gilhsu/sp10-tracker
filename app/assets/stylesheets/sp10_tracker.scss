@@ -68,6 +68,25 @@
   height: 500px;
 }
 
+.section-title {
+  font-weight: 700;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgb(185, 185, 185);
+}
+
+.ticker-number {
+  font-size: 1.3rem;
+}
+
+.ticker-section {
+  margin-bottom: 20px;
+}
+
+.ticker-name {
+  font-size: 0.8rem;
+}
+
 @media (max-width: 600px) {
   #sp10-title {
     text-align: center;
@@ -79,5 +98,9 @@
 
   .padding-right-30 {
     padding-right: 0px;
+  }
+
+  .section-title {
+    text-align: center;
   }
 }

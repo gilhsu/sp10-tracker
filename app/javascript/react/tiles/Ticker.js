@@ -34,19 +34,19 @@ export const Ticker = props => {
   return (
     <div className="row">
       <div className="small-4 columns">
-        {sp10PercentChange}
+        <span className="ticker-number">{sp10PercentChange}</span>
         <br />
-        SP10
+        <span className="ticker-name">SP10</span>
       </div>
-      <div className="small-4 columns text-right">
-        {sp500PercentChange}
+      <div className="small-4 columns">
+        <span className="ticker-number">{sp500PercentChange}</span>
         <br />
-        S&P 500
+        <span className="ticker-name">S&P 500</span>
       </div>
-      <div className="small-4 columns text-right">
-        {displayDeltaPercentage}
+      <div className="small-4 columns">
+        <span className="ticker-number">{displayDeltaPercentage}</span>
         <br />
-        Delta
+        <span className="ticker-name">Delta</span>
       </div>
     </div>
   );

@@ -93,12 +93,12 @@ export const HomeContainer = () => {
       <div className="row">
         <div className="outline small-12 medium-8 columns padding-right-30">
           <div className="row">
-            <div className="outline small-12 medium-6 columns padding-10 ">
-              <div className="w7">{data.last_update}</div>
+            <div className="outline small-12 medium-6 columns padding-10 ticker-section">
+              <div className="section-title">{data.last_update}</div>
               <Ticker sp10={data.sp10} sp500={data.sp500} delta={data.delta} />
             </div>
-            <div className="outline small-12 medium-6 columns padding-10">
-              <div className="w7">Last Year (253 Trading Days)</div>
+            <div className="outline small-12 medium-6 columns padding-10 ticker-section">
+              <div className="section-title">Last Year</div>
               <Ticker
                 sp10={data.sp10_year}
                 sp500={data.sp500_year}

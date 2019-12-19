@@ -26,7 +26,7 @@ class Api::V1::FetchController < ApplicationController
 
     last_sp10_record = Record.where(stock: sp10).last
     last_sp10_record_date = last_sp10_record.created_at.to_datetime.in_time_zone('Eastern Time (US & Canada)')
-    last_sp10_record_date_string =  last_sp10_record_date.strftime('%a - %m/%e/%y -%l:%M%p')
+    last_sp10_record_date_string =  last_sp10_record_date.strftime('%A, %b %e, %Y')
 
     chart_data_20 = get_10k_data(20)
     chart_data_62 = get_10k_data(62)
