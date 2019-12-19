@@ -67,3 +67,17 @@
   width: 500px;
   height: 500px;
 }
+
+@media (max-width: 600px) {
+  #sp10-title {
+    text-align: center;
+  }
+
+  #sp10-subtitle {
+    text-align: center;
+  }
+
+  .padding-right-30 {
+    padding-right: 0px;
+  }
+}
