@@ -79,6 +79,10 @@
   justify-content: space-between;
 }
 
+.section-title-stocks {
+  margin-bottom: 0px !important;
+}
+
 .ticker-number {
   font-size: 1.4rem;
 }
@@ -88,7 +92,7 @@
 }
 
 .horizontal-spacer {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .ticker-name {
@@ -107,6 +111,16 @@
 
 .selected {
   font-weight: 700;
+}
+
+.stock-row {
+  padding: 17px 0;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.stock-row-first {
+  padding: 0 0 17px 0;
+  border-bottom: 1px solid rgb(231, 231, 231);
 }
 
 @media (max-width: 600px) {
