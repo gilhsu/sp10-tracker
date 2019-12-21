@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StocksContainer } from "./StocksContainer";
-import { Chart } from "../tiles/Chart";
+import { ChartFlex } from "../tiles/ChartFlex";
 import { TickerFlex } from "../tiles/TickerFlex";
 import { DailyHistoryContainer } from "./DailyHistoryContainer";
 import { Pagination } from "../tiles/Pagination";
@@ -93,7 +93,7 @@ export const HomeContainer = () => {
       <div className="row">
         <div className="outline small-12 medium-8 columns">
           <div className="row">
-            <div className="outline small-12 medium-6 columns ticker-section">
+            <div className="outline small-12 medium-6 columns">
               <TickerFlex
                 title={data.last_update}
                 sp10={data.sp10}
@@ -101,7 +101,7 @@ export const HomeContainer = () => {
                 delta={data.delta}
               />
             </div>
-            <div className="outline small-12 medium-6 columns ticker-section">
+            <div className="outline small-12 medium-6 columns">
               <TickerFlex
                 title="Last Year"
                 sp10={data.sp10_year}
@@ -110,7 +110,7 @@ export const HomeContainer = () => {
               />
             </div>
             <div className="outline small-12 columns">
-              <Chart data={chartData} changeChartData={changeChartData} />
+              <ChartFlex data={chartData} changeChartData={changeChartData} />
             </div>
           </div>
         </div>

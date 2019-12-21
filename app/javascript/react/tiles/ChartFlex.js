@@ -1,21 +1,44 @@
 import React from "react";
 import { Chart as GoogleChart } from "react-google-charts";
 
-export const Chart = ({ data, changeChartData }) => {
+export const ChartFlex = ({ data, changeChartData }) => {
   const chartRangeArray = [
     { name: "1M", length: 20 },
     { name: "3M", length: 62 },
     { name: "6M", length: 125 },
     { name: "1Y", length: 253 }
   ];
-  const n = 0;
+
+  let n = 0;
   const chartOptions = chartRangeArray.map(range => {
-    const current = range["length"] === data.length ? "current" : "";
-    return (
-      <li key={range["length"]} className={current}>
-        <a onClick={() => changeChartData(range["length"])}>{range["name"]}</a>
-      </li>
-    );
+    const selected =
+      range["length"] === data.length
+        ? "selected click-pointer"
+        : "click-pointer";
+
+    if (n === 0) {
+      n = n + 1;
+      return (
+        <span
+          className={selected}
+          onClick={() => changeChartData(range["length"])}
+        >
+          {range["name"]}
+        </span>
+      );
+    } else {
+      return (
+        <span>
+          <span>&nbsp; | &nbsp;</span>
+          <span
+            className={selected}
+            onClick={() => changeChartData(range["length"])}
+          >
+            {range["name"]}
+          </span>
+        </span>
+      );
+    }
   });
 
   const parseData = data.map(data => {
@@ -120,34 +143,42 @@ export const Chart = ({ data, changeChartData }) => {
     sp10Delta = sp10Value - sp500Value;
   }
 
+  const deltaValue =
+    sp10Delta >= 0 ? (
+      <span className="chart-number green">
+        +${sp10Delta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+      </span>
+    ) : (
+      <span className="chart-number red">
+        -${sp10Delta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+      </span>
+    );
+
   return (
     <div className="container">
-      <div className="row">
-        <div className="small-12 medium-6 columns">
-          <div className="row">
-            <div className="small-12 columns section-title">
-              Growth of 10,000
-            </div>
-            <div className="small-12 columns">
-              <ul className="pagination">{chartOptions}</ul>
-            </div>
-          </div>
+      <div className="section-title">
+        <span className="w7">Growth of 10,000</span>
+        <span>{chartOptions}</span>
+      </div>
+      <div className="data-equal horizontal-spacer">
+        <div className="text-center">
+          <span className="chart-number">
+            ${sp10Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+          </span>
+          <br />
+          <span className="ticker-name">SP10</span>
         </div>
-        <div className="small-12 medium-6 columns text-right">
-          <div className="row">
-            <div className="small-12 medium-9 columns text-right">SP10:</div>
-            <div className="small-12 medium-3 columns">
-              ${sp10Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
-            </div>
-            <div className="small-12 medium-9 columns text-right">S&P 500:</div>
-            <div className="small-12 medium-3 columns">
-              ${sp500Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
-            </div>
-            <div className="small-12 medium-9 columns text-right">Delta:</div>
-            <div className="small-12 medium-3 columns">
-              ${sp10Delta.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
-            </div>
-          </div>
+        <div className="text-center">
+          <span className="chart-number">
+            ${sp500Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+          </span>
+          <br />
+          <span className="ticker-name">S&P 500</span>
+        </div>
+        <div className="text-center">
+          {deltaValue}
+          <br />
+          <span className="ticker-name">Delta</span>
         </div>
       </div>
       <GoogleChart
@@ -168,13 +199,18 @@ export const Chart = ({ data, changeChartData }) => {
         options={{
           legend: "top",
           colors: ["green", "#016d8e"],
-          chartArea: { width: "75%", height: "75%" },
+          chartArea: { width: "100%", height: "75%" },
           animation: {
             startup: true,
             easing: "linear",
             duration: 1000
           },
-          tooltip: { isHtml: true }
+          tooltip: { isHtml: true },
+          hAxis: {
+            baselineColor: "#fff",
+            gridlineColor: "#fff",
+            textPosition: "none"
+          }
         }}
         chartEvents={[
           {
