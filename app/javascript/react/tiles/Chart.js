@@ -121,8 +121,8 @@ export const Chart = ({ data, changeChartData }) => {
   }
 
   return (
-    <div>
-      <div className="row padding-10">
+    <div className="container">
+      <div className="row">
         <div className="small-12 medium-6 columns">
           <div className="row">
             <div className="small-12 columns section-title">
