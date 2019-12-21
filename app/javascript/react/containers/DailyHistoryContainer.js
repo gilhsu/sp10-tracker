@@ -10,7 +10,7 @@ export const DailyHistoryContainer = ({ records }) => {
 
   return (
     <div className="padding-10">
-      <div className="w7">SP10 Daily Records</div>
+      <div className="section-title">SP10 Daily Records</div>
       <div className="row">
         <div className="small-3 columns">Date</div>
         <div className="small-3 columns text-right">S&P 500 % Change</div>

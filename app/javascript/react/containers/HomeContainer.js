@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StocksContainer } from "./StocksContainer";
 import { Chart } from "../tiles/Chart";
-import { Ticker } from "../tiles/Ticker";
+import { TickerFlex } from "../tiles/TickerFlex";
 import { DailyHistoryContainer } from "./DailyHistoryContainer";
 import { Pagination } from "../tiles/Pagination";
 import { Heatmap } from "../tiles/Heatmap";
@@ -82,7 +82,7 @@ export const HomeContainer = () => {
 
   return (
     <div>
-      <div className="row padding-10">
+      <div className="row container">
         <div className="small-12 columns w7" id="sp10-title">
           SP10
         </div>
@@ -91,15 +91,19 @@ export const HomeContainer = () => {
         </div>
       </div>
       <div className="row">
-        <div className="outline small-12 medium-8 columns padding-right-30">
+        <div className="outline small-12 medium-8 columns">
           <div className="row">
-            <div className="outline small-12 medium-6 columns padding-10 ">
-              <div className="w7">{data.last_update}</div>
-              <Ticker sp10={data.sp10} sp500={data.sp500} delta={data.delta} />
+            <div className="outline small-12 medium-6 columns ticker-section">
+              <TickerFlex
+                title={data.last_update}
+                sp10={data.sp10}
+                sp500={data.sp500}
+                delta={data.delta}
+              />
             </div>
-            <div className="outline small-12 medium-6 columns padding-10">
-              <div className="w7">Last Year (253 Trading Days)</div>
-              <Ticker
+            <div className="outline small-12 medium-6 columns ticker-section">
+              <TickerFlex
+                title="Last Year"
                 sp10={data.sp10_year}
                 sp500={data.sp500_year}
                 delta={data.delta_year}
@@ -110,10 +114,10 @@ export const HomeContainer = () => {
             </div>
           </div>
         </div>
-        <div className="outline small-12 medium-4 columns padding-10">
+        <div className="outline small-12 medium-4 columns container">
           <StocksContainer stockData={data.indivStockData} />
         </div>
-        <div className="small-12 columns outline padding-10">
+        <div className="small-12 columns outline container">
           <Heatmap records={records} />
         </div>
         <div className="small-12 columns">

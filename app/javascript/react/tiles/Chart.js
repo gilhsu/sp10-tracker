@@ -121,11 +121,13 @@ export const Chart = ({ data, changeChartData }) => {
   }
 
   return (
-    <div>
-      <div className="row padding-10">
+    <div className="container">
+      <div className="row">
         <div className="small-12 medium-6 columns">
           <div className="row">
-            <div className="small-12 columns w7">Growth of 10,000</div>
+            <div className="small-12 columns section-title">
+              Growth of 10,000
+            </div>
             <div className="small-12 columns">
               <ul className="pagination">{chartOptions}</ul>
             </div>

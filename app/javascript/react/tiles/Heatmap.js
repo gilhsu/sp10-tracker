@@ -26,7 +26,7 @@ export const Heatmap = ({ records }) => {
 
   return (
     <div>
-      <div className="w7">SP10 / S&P 500 Delta Heatmap </div>
+      <div className="section-title">SP10 / S&P 500 Delta Heatmap </div>
       <div className={mobileScroll}>
         <CalendarHeatmap
           startDate={startDate}
