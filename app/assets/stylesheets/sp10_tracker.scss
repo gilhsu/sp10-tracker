@@ -3,6 +3,10 @@
   font-weight: 300;
 }
 
+.click-pointer {
+  cursor: pointer;
+}
+
 .w3 {
   font-weight: 300;
 }
@@ -29,12 +33,11 @@
 
 #sp10-subtitle {
   margin-top: -1rem;
-  margin-bottom: 1rem;
   color: gray;
 }
 
 .container {
-  padding: 20px;
+  padding: 20px 20px 30px 20px;
 }
 
 .text-right {
@@ -63,18 +66,28 @@
   height: 500px;
 }
 
+.padding-right {
+  padding-right: 30px;
+}
+
 .section-title {
   font-weight: 700;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid rgb(185, 185, 185);
+  display: flex;
+  justify-content: space-between;
 }
 
 .ticker-number {
   font-size: 1.4rem;
 }
 
-.ticker-section {
+.chart-number {
+  font-size: 1.4rem;
+}
+
+.horizontal-spacer {
   margin-bottom: 20px;
 }
 
@@ -82,9 +95,18 @@
   font-size: 0.8rem;
 }
 
-.ticker-container-flex {
+.data-equal {
   display: flex;
   justify-content: space-between;
+}
+
+.data-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.selected {
+  font-weight: 700;
 }
 
 @media (max-width: 600px) {
@@ -102,5 +124,9 @@
 
   .section-title {
     text-align: center;
+  }
+
+  .chart-number {
+    font-size: 1.1rem;
   }
 }
