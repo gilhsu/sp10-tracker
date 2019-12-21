@@ -12,11 +12,20 @@ export const StockRow = ({ stockData }) => {
       <span className="red">{stockData["change_percent"].toFixed(2)}%</span>
     );
 
+  const stockLink = () => {
+    window.open(
+      `https://finance.yahoo.com/quote/${name}?p=${name}&.tsrc=fin-srch`,
+      "_blank"
+    );
+  };
+
   return (
-    <div className="row stock-row">
-      <div className="small-4 columns">{name}</div>
-      <div className="small-4 columns text-right">{price}</div>
-      <div className="small-4 columns text-right">{percentChange}</div>
+    <div className="stock-row-container" onClick={stockLink}>
+      <div className="row stock-row">
+        <div className="small-4 columns">{name}</div>
+        <div className="small-4 columns text-right">{price}</div>
+        <div className="small-4 columns text-right">{percentChange}</div>
+      </div>
     </div>
   );
 };
