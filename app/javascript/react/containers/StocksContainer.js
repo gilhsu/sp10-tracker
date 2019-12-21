@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import { StockRow } from "../tiles/StockRow";
 
-export const StocksContainer = props => {
+export const StocksContainer = ({ stockData }) => {
   let n = 0;
-  const displayStocks =
-    props.stockData && props.stockData.length > 0
-      ? props.stockData.map(stockData => {
-          n = n + 1;
-          return <StockRow key={n} stockData={stockData} />;
-        })
-      : "no stock data yet";
+  const displayStocks = stockData.map(stockDatum => {
+    n = n + 1;
+    return <StockRow key={n} stockData={stockDatum} />;
+  });
 
   return (
     <div>
-      <div className="section-title">Individual Stocks</div>
+      <div className="section-title section-title-stocks">
+        Individual Stocks
+      </div>
       <div>{displayStocks}</div>
     </div>
   );
