@@ -92,7 +92,7 @@
 }
 
 .horizontal-spacer {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 .ticker-name {
@@ -121,8 +121,31 @@
 }
 
 .stock-row {
-  padding: 17px 0;
+  font-size: 0.8rem;
+  padding: 19px 0;
   border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.stock-row-symbol {
+  color: rgb(173, 173, 173);
+}
+
+.stock-row-percent-green {
+  font-weight: 400;
+  width: 100px;
+  color: white;
+  background-color: #3fb853 !important;
+  border-radius: 3px;
+  padding: 2px 11px;
+}
+
+.stock-row-percent-red {
+  font-weight: 400;
+  width: 100px;
+  color: white;
+  background-color: #ec3d34 !important;
+  border-radius: 3px;
+  padding: 2px 13px;
 }
 
 @media (max-width: 600px) {

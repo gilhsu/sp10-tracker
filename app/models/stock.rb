@@ -140,6 +140,7 @@ class Stock < ApplicationRecord
     record  = Record.where(stock: self).last
     format_data["date"] = record.date
     format_data["name"] = self.name
+    format_data["full_name"] = self.full_name
     if record.price
       format_data["price"] = record.price.round(2)
       format_data["change_price"] = record.change_price.round(2)
@@ -179,6 +180,22 @@ class Stock < ApplicationRecord
       daily_history_array << history_record
     end
     daily_history_array.reverse
+  end
+
+
+  def add_full_name
+    if self.full_name === nil 
+      endpoint = "https://www.alphavantage.co/"
+  
+      request_url = "#{endpoint}query?function=SYMBOL_SEARCH&keywords=#{self.name}&apikey=#{ENV["API_KEY1"]}"
+      response_raw = HTTParty.get(request_url)
+      full_name = response_raw["bestMatches"][0]["2. name"]
+    
+      self.update(full_name: full_name)
+      puts "#{full_name} added to record!"
+    else
+      puts "Full name already exists"
+    end
   end
 
 end
