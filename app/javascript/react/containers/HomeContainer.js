@@ -91,9 +91,9 @@ export const HomeContainer = () => {
         </div>
       </div>
       <div className="row">
-        <div className="outline small-12 medium-8 columns">
+        <div className="outline small-12 large-8 columns">
           <div className="row">
-            <div className="outline small-12 medium-6 columns">
+            <div className="outline small-12 large-6 columns">
               <TickerFlex
                 title={data.last_update}
                 sp10={data.sp10}
@@ -101,7 +101,7 @@ export const HomeContainer = () => {
                 delta={data.delta}
               />
             </div>
-            <div className="outline small-12 medium-6 columns">
+            <div className="outline small-12 large-6 columns">
               <TickerFlex
                 title="Last Year"
                 sp10={data.sp10_year}
@@ -114,7 +114,7 @@ export const HomeContainer = () => {
             </div>
           </div>
         </div>
-        <div className="outline small-12 medium-4 columns container">
+        <div className="outline small-12 large-4 columns container">
           <StocksContainer stockData={data.indivStockData} />
         </div>
         <div className="small-12 columns outline container">
