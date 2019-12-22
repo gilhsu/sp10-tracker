@@ -22,6 +22,11 @@
   justify-content: flex-end;
 }
 
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
 .w3 {
   font-weight: 300;
 }
@@ -242,6 +247,35 @@
   background-color: #4c9949;
 }
 
+.history-row-flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.history-page-number {
+  padding: 2px;
+}
+
+.history-page-button {
+  font-size: 0.8rem;
+  padding: 4px 14px 2px 14px;
+  margin: 0 3px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.history-page-button:hover {
+  background-color: rgb(231, 231, 231);
+}
+
+.history-page-button-disabled {
+  font-size: 0.8rem;
+  padding: 4px 14px 2px 14px;
+  margin: 0 3px;
+
+  color: rgb(231, 231, 231);
+}
+
 @media (max-width: 600px) {
   #sp10-title {
     text-align: center;
@@ -265,6 +299,10 @@
 
   .history-row {
     font-size: 0.8rem;
+  }
+
+  .history-row-flex {
+    justify-content: space-around;
   }
 
   .heatmap {

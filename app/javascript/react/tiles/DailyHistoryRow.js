@@ -34,8 +34,8 @@ export const DailyHistoryRow = props => {
   }
   return (
     <div className="row history-row">
-      <div className="small-5 columns">{date}</div>
-      <div className="small-7 space-around">
+      <div className="small-6 columns">{date}</div>
+      <div className="small-6 history-row-flex">
         <div>{percentChange}</div>
         <div>{sp500PercentChange}</div>
         <div>{delta}</div>
