@@ -29,7 +29,7 @@ export const StockRow = ({ stockData }) => {
       <div className="row stock-row">
         <div className="small-7 columns">{fullName}</div>
         <div className="small-5 columns">
-          <div className="data-equal">
+          <div className="space-between">
             <span className="stock-row-symbol text-center">{name}</span>
             <span className="text-center">{percentChange}</span>
           </div>

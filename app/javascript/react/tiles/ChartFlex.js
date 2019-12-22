@@ -160,7 +160,7 @@ export const ChartFlex = ({ data, changeChartData }) => {
         <span className="w7">Growth of 10,000</span>
         <span>{chartOptions}</span>
       </div>
-      <div className="data-equal horizontal-spacer">
+      <div className="space-between horizontal-spacer">
         <div className="text-center">
           <span className="chart-number">
             ${sp10Value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")}

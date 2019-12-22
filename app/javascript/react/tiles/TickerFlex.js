@@ -30,7 +30,7 @@ export const TickerFlex = ({ title, sp10, sp500, delta }) => {
   return (
     <div className="container">
       <div className="section-title">{title}</div>
-      <div className="data-equal">
+      <div className="space-between">
         <div className="text-center">
           <span className="ticker-number">{sp10PercentChange}</span>
           <br />

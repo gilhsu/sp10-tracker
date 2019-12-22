@@ -120,7 +120,7 @@ export const HomeContainer = () => {
         <div className="small-12 columns outline container">
           <Heatmap records={records} />
         </div>
-        <div className="small-12 columns">
+        <div className="small-12 columns container">
           <div className="outline">
             <DailyHistoryContainer records={currentRecords} />
           </div>
