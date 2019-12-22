@@ -10,7 +10,7 @@ export const StocksContainer = ({ stockData }) => {
 
   return (
     <div>
-      <div className="section-title section-title-stocks">
+      <div className="section-title section-title-no-bottom">
         Individual Stocks
       </div>
       <div>{displayStocks}</div>

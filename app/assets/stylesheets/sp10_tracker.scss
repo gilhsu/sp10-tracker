@@ -79,7 +79,7 @@
   justify-content: space-between;
 }
 
-.section-title-stocks {
+.section-title-no-bottom {
   margin-bottom: 0px !important;
 }
 
@@ -99,9 +99,14 @@
   font-size: 0.8rem;
 }
 
-.data-equal {
+.space-between {
   display: flex;
   justify-content: space-between;
+}
+
+.space-around {
+  display: flex;
+  justify-content: space-around;
 }
 
 .data-left {
@@ -139,6 +144,11 @@
   padding: 2px 11px;
 }
 
+.history-row {
+  padding: 19px 0;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
 .stock-row-percent-red {
   font-weight: 400;
   width: 100px;
@@ -167,5 +177,9 @@
 
   .chart-number {
     font-size: 1.1rem;
+  }
+
+  .history-row {
+    font-size: 0.8rem;
   }
 }

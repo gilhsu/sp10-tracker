@@ -33,11 +33,13 @@ export const DailyHistoryRow = props => {
       );
   }
   return (
-    <div className="row">
-      <div className="small-3 columns">{date}</div>
-      <div className="small-3 columns text-right">{percentChange}</div>
-      <div className="small-3 columns text-right">{sp500PercentChange}</div>
-      <div className="small-3 columns text-right">{delta}</div>
+    <div className="row history-row">
+      <div className="small-5 columns">{date}</div>
+      <div className="small-7 space-around">
+        <div>{percentChange}</div>
+        <div>{sp500PercentChange}</div>
+        <div>{delta}</div>
+      </div>
     </div>
   );
 };
