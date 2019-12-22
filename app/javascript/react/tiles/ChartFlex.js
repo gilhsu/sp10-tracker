@@ -20,6 +20,7 @@ export const ChartFlex = ({ data, changeChartData }) => {
       n = n + 1;
       return (
         <span
+          key={n}
           className={selected}
           onClick={() => changeChartData(range["length"])}
         >
@@ -27,8 +28,9 @@ export const ChartFlex = ({ data, changeChartData }) => {
         </span>
       );
     } else {
+      n = n + 1;
       return (
-        <span>
+        <span key={n}>
           <span>&nbsp; | &nbsp;</span>
           <span
             className={selected}
