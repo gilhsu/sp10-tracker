@@ -12,7 +12,7 @@ export const HomeContainer = () => {
   const [records, setRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [chartData, setChartData] = useState([]);
-  const recordsPerPage = 20;
+  const recordsPerPage = 10;
 
   useEffect(() => {
     fetchData();
@@ -122,12 +122,9 @@ export const HomeContainer = () => {
         </div>
         <div className="small-12 columns container">
           <div className="outline">
-            <DailyHistoryContainer records={currentRecords} />
-          </div>
-        </div>
-        <div className="small-12 columns">
-          <div className="outline">
-            <Pagination
+            <DailyHistoryContainer
+              records={records}
+              currentRecords={currentRecords}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               recordsPerPage={recordsPerPage}

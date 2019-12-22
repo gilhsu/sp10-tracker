@@ -32,24 +32,37 @@ export const Pagination = ({
   const enableRightArrow =
     currentPage !== totalPages ? "arrow" : "arrow unavailable";
 
+  const prevButton =
+    currentPage === 1 ? (
+      <span className="history-page-button-disabled">prev</span>
+    ) : (
+      <span
+        className="history-page-button"
+        onClick={() => setCurrentPage(currentPage - 1)}
+      >
+        prev
+      </span>
+    );
+
+  const nextButton =
+    currentPage === totalPages ? (
+      <span className="history-page-button-disabled">next</span>
+    ) : (
+      <span
+        className="history-page-button"
+        onClick={() => setCurrentPage(currentPage + 1)}
+      >
+        next
+      </span>
+    );
+
   return (
-    <div className="pagination-centered">
-      <ul className="pagination">
-        <li className={enableLeftArrow}>
-          <a onClick={() => setCurrentPage(currentPage - 1)}>&laquo; PREV</a>
-        </li>
-        {pageNumbers.map(number => {
-          const current = number === currentPage ? "current" : "";
-          return (
-            <li className={current} key={number}>
-              <a onClick={() => setCurrentPage(number)}>{number}</a>
-            </li>
-          );
-        })}
-        <li className={enableRightArrow}>
-          <a onClick={() => setCurrentPage(currentPage + 1)}>NEXT &raquo;</a>
-        </li>
-      </ul>
+    <div className="flex-center">
+      {prevButton}
+      <span className="history-page-number w7">{currentPage}</span>
+      <span className="history-page-number w7">/</span>
+      <span className="history-page-number w7">{totalPages}</span>
+      {nextButton}
     </div>
   );
 };
