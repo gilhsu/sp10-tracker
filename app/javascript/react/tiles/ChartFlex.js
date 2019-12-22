@@ -155,7 +155,7 @@ export const ChartFlex = ({ data, changeChartData }) => {
     );
 
   return (
-    <div className="container" style={{ marginBottom: "-35px" }}>
+    <div className="chart-container">
       <div className="section-title">
         <span className="w7">Growth of 10,000</span>
         <span>{chartOptions}</span>

@@ -18,16 +18,15 @@ export const Heatmap = ({ records }) => {
     return dataRow;
   });
 
-  const mobileScroll =
-    window.innerWidth < 1024 ? "scrolling-wrapper-mobile" : "";
-
   const endDate = new Date();
   const startDate = new Date(offsetDate(endDate, -365));
 
   return (
     <div>
-      <div className="section-title">SP10 / S&P 500 Delta Heatmap </div>
-      <div className={mobileScroll}>
+      <div className="heatmap-section-title">
+        SP10 vs. S&P 500 Delta Heatmap
+      </div>
+      <div className="heatmap">
         <CalendarHeatmap
           startDate={startDate}
           endDate={endDate}
@@ -50,6 +49,17 @@ export const Heatmap = ({ records }) => {
           }}
         />
         <ReactTooltip />
+      </div>
+      <div className="heatmap-legend">
+        <span className="text">{`< -0.50%`}</span>
+        <span className="heatmap-tile-1" />
+        <span className="heatmap-tile-2" />
+        <span className="heatmap-tile-3" />
+        <span className="heatmap-tile-4" />
+        <span className="heatmap-tile-5" />
+        <span className="heatmap-tile-6" />
+        <span className="heatmap-tile-7" />
+        <span className="text">> +0.50%</span>
       </div>
     </div>
   );

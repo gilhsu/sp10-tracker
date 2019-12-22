@@ -7,6 +7,21 @@
   cursor: pointer;
 }
 
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .w3 {
   font-weight: 300;
 }
@@ -38,6 +53,11 @@
 
 .container {
   padding: 20px 20px 30px 20px;
+}
+
+.chart-container {
+  padding: 20px 20px 0px 20px;
+  margin-bottom: -10px;
 }
 
 .text-right {
@@ -79,6 +99,15 @@
   justify-content: space-between;
 }
 
+.heatmap-section-title {
+  font-weight: 700;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgb(185, 185, 185);
+  display: flex;
+  justify-content: space-between;
+}
+
 .section-title-no-bottom {
   margin-bottom: 0px !important;
 }
@@ -97,16 +126,6 @@
 
 .ticker-name {
   font-size: 0.8rem;
-}
-
-.space-between {
-  display: flex;
-  justify-content: space-between;
-}
-
-.space-around {
-  display: flex;
-  justify-content: space-around;
 }
 
 .data-left {
@@ -132,7 +151,7 @@
 }
 
 .stock-row-symbol {
-  color: rgb(173, 173, 173);
+  color: rgb(156, 156, 156);
 }
 
 .stock-row-percent-green {
@@ -146,7 +165,7 @@
 
 .history-row {
   padding: 19px 0;
-  border-bottom: 1px solid rgb(231, 231, 231);
+  border-bottom: 1px solid rgb(156, 156, 156);
 }
 
 .stock-row-percent-red {
@@ -156,6 +175,71 @@
   background-color: #ec3d34 !important;
   border-radius: 3px;
   padding: 2px 13px;
+}
+
+.heatmap {
+  margin: 10px 0 -30px 0;
+}
+
+.heatmap-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  .text {
+    font-size: 0.8rem;
+    margin: 0 5px -2px 5px;
+    color: rgb(143, 143, 143);
+  }
+}
+
+.heatmap-tile-1 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #da5555;
+}
+
+.heatmap-tile-2 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #f18d8d;
+}
+
+.heatmap-tile-3 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #fccdcd;
+}
+
+.heatmap-tile-4 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #777777;
+}
+
+.heatmap-tile-5 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #d6e685;
+}
+
+.heatmap-tile-6 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #8cc665;
+}
+
+.heatmap-tile-7 {
+  width: 14px;
+  height: 14px;
+  margin: 1px;
+  background-color: #4c9949;
 }
 
 @media (max-width: 600px) {
@@ -181,5 +265,20 @@
 
   .history-row {
     font-size: 0.8rem;
+  }
+
+  .heatmap {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    .react-calendar-heatmap {
+      width: 1024px;
+      display: inline-block;
+    }
+  }
+
+  .heatmap-legend {
+    justify-content: center;
   }
 }
