@@ -4,7 +4,6 @@ import { StocksContainer } from "./StocksContainer";
 import { ChartFlex } from "../tiles/ChartFlex";
 import { TickerFlex } from "../tiles/TickerFlex";
 import { DailyHistoryContainer } from "./DailyHistoryContainer";
-import { Pagination } from "../tiles/Pagination";
 import { Heatmap } from "../tiles/Heatmap";
 
 const customStyles = {
@@ -15,7 +14,8 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    width: "75%"
+    width: "60%",
+    padding: "40px"
   },
   overlay: {
     background: "rgba(0, 0, 0, 0.5)"
@@ -124,14 +124,18 @@ export const HomeContainer = () => {
               contentLabel="Example Modal"
               ariaHideApp={false}
             >
-              <div className="section-title">SP10 Fund Thesis</div>
-              <div className="horizontal-spacer">
+              <div className="section-title horizontal-spacer">
+                SP10 Fund Thesis
+              </div>
+              <div className="horizontal-paragraph-spacer">
                 The SP10 tracks the average return of the top 10 stock
                 constituents of the S&P 500. These 10 stocks disproportionately
-                combine to represent ~22.5% of the US market index. Therefore,
-                if you believe that the US market will grow in the long-term,
-                the highest-weighted stocks will be disproportionately
-                responsible for this growth.
+                combine to represent ~22.5% of the US market index.
+              </div>
+              <div className="horizontal-spacer">
+                Therefore, if you believe that the US market will grow in the
+                long-term, the highest-weighted stocks will be
+                disproportionately responsible for this growth.
               </div>
             </Modal>
           </div>
