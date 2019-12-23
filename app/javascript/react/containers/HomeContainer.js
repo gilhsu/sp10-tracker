@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
 import { StocksContainer } from "./StocksContainer";
 import { ChartFlex } from "../tiles/ChartFlex";
 import { TickerFlex } from "../tiles/TickerFlex";
@@ -6,12 +7,28 @@ import { DailyHistoryContainer } from "./DailyHistoryContainer";
 import { Pagination } from "../tiles/Pagination";
 import { Heatmap } from "../tiles/Heatmap";
 
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "75%"
+  },
+  overlay: {
+    background: "rgba(0, 0, 0, 0.5)"
+  }
+};
+
 export const HomeContainer = () => {
   const [loading, isLoading] = useState(true);
   const [data, setData] = useState({});
   const [records, setRecords] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [chartData, setChartData] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const recordsPerPage = 10;
 
   useEffect(() => {
@@ -45,6 +62,14 @@ export const HomeContainer = () => {
         setChartData(body.chartData20);
         isLoading(false);
       });
+  };
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   // resolves record reversing issue
@@ -87,7 +112,30 @@ export const HomeContainer = () => {
           SP10
         </div>
         <div className="small-12 columns" id="sp10-subtitle">
-          Top 10 S&P 500 Stock Tracker
+          <div>
+            Top 10 S&P 500 Stock Tracker{" "}
+            <a onClick={openModal}>
+              <i className="fas fa-info-circle"></i>
+            </a>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              style={customStyles}
+              contentLabel="Example Modal"
+              ariaHideApp={false}
+            >
+              <div className="section-title">SP10 Fund Thesis</div>
+              <div className="horizontal-spacer">
+                The SP10 tracks the average return of the top 10 stock
+                constituents of the S&P 500. These 10 stocks disproportionately
+                combine to represent ~22.5% of the US market index. Therefore,
+                if you believe that the US market will grow in the long-term,
+                the highest-weighted stocks will be disproportionately
+                responsible for this growth.
+              </div>
+            </Modal>
+          </div>
+          <a>Funds Calculator</a>
         </div>
       </div>
       <div className="row">
