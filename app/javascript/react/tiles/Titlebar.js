@@ -2,19 +2,12 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 
 export const Titlebar = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
+  const [thesisModalIsOpen, setThesisModalIsOpen] = useState(false);
+  const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
 
   let modalStyle = {
     content: {
-      top: "35%",
+      top: "50%",
       left: "50%",
       right: "auto",
       bottom: "auto",
@@ -60,20 +53,20 @@ export const Titlebar = () => {
       <div className="small-12 columns" id="sp10-subtitle">
         <div>
           Top 10 S&P 500 Stock Tracker{" "}
-          <a onClick={openModal}>
+          <a onClick={() => setThesisModalIsOpen(true)}>
             <i className="fas fa-info-circle"></i>
           </a>
           <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
+            isOpen={thesisModalIsOpen}
+            onRequestClose={() => setThesisModalIsOpen(false)}
             style={modalStyle}
-            contentLabel="Example Modal"
+            contentLabel="Thesis Modal"
             ariaHideApp={false}
           >
             <div className="section-title horizontal-spacer">
               SP10 Fund Thesis
               <i
-                onClick={closeModal}
+                onClick={() => setThesisModalIsOpen(false)}
                 className="fas fa-times flex-end gray"
               ></i>
             </div>
@@ -89,7 +82,37 @@ export const Titlebar = () => {
             </div>
           </Modal>
         </div>
-        <a>Funds Calculator</a>
+        <a onClick={() => setCalcModalIsOpen(true)}>Allocation Calculator</a>
+        <Modal
+          isOpen={calcModalIsOpen}
+          onRequestClose={() => setCalcModalIsOpen(false)}
+          style={modalStyle}
+          contentLabel="Calc Modal"
+          ariaHideApp={false}
+        >
+          <div className="section-title horizontal-spacer">
+            Allocation Calculator
+            <i
+              onClick={() => setCalcModalIsOpen(false)}
+              className="fas fa-times flex-end gray"
+            ></i>
+          </div>
+          <div className="row">
+            <div className="small-12 large-6 columns">
+              <div class="row collapse">
+                <div className="small-8 columns">
+                  <input type="text" placeholder="Enter Dollar Amount" />
+                </div>
+                <div className="small-4 columns">
+                  <a href="#" class="button postfix">
+                    Calculate
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="small-12 large-6 columns container">Content</div>
+          </div>
+        </Modal>
       </div>
     </div>
   );
