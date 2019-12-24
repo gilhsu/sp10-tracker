@@ -72,6 +72,10 @@ export const Titlebar = () => {
           >
             <div className="section-title horizontal-spacer">
               SP10 Fund Thesis
+              <i
+                onClick={closeModal}
+                className="fas fa-times flex-end gray"
+              ></i>
             </div>
             <div className="horizontal-paragraph-spacer">
               The SP10 tracks the average return of the top 10 stock
