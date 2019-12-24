@@ -99,12 +99,12 @@ export const Titlebar = () => {
           </div>
           <div className="row">
             <div className="small-12 large-6 columns">
-              <div class="row collapse">
+              <div className="row collapse">
                 <div className="small-8 columns">
                   <input type="text" placeholder="Enter Dollar Amount" />
                 </div>
                 <div className="small-4 columns">
-                  <a href="#" class="button postfix">
+                  <a href="#" className="button postfix">
                     Calculate
                   </a>
                 </div>
