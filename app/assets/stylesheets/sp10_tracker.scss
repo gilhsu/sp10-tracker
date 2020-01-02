@@ -108,6 +108,14 @@
   justify-content: space-between;
 }
 
+.section-title-no-flex {
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgb(185, 185, 185);
+}
+
 .heatmap-section-title {
   font-weight: 700;
   padding-bottom: 5px;
@@ -284,6 +292,17 @@
   color: rgb(231, 231, 231);
 }
 
+.padding-right {
+  padding-right: 25px;
+}
+
+.allocation-button {
+  padding-top: 0;
+  font-size: 0.875rem;
+  height: 2.3125rem;
+  line-height: 2.3125rem;
+}
+
 @media (max-width: 600px) {
   #sp10-title {
     text-align: center;
@@ -293,7 +312,7 @@
     text-align: center;
   }
 
-  .padding-right-30 {
+  .padding-right {
     padding-right: 0px;
   }
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { AllocationCalculator } from "./AllocationCalculator";
+import { AllocationCalculator } from "../containers/AllocationCalculator";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
 export const Titlebar = () => {
@@ -20,7 +20,10 @@ export const Titlebar = () => {
           <Modal
             isOpen={thesisModalIsOpen}
             onRequestClose={() => setThesisModalIsOpen(false)}
-            style={ResponsiveModalStyle()}
+            style={ResponsiveModalStyle({
+              mobileWidthPercent: 50,
+              desktopWidthPercent: 40
+            })}
             contentLabel="Thesis Modal"
             ariaHideApp={false}
           >
