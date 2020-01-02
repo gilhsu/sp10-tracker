@@ -1,49 +1,10 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import { AllocationCalculator } from "./AllocationCalculator";
+import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
 export const Titlebar = () => {
   const [thesisModalIsOpen, setThesisModalIsOpen] = useState(false);
-  const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
-
-  let modalStyle = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      width: "50%",
-      padding: "50px"
-    },
-    overlay: {
-      background: "rgba(0, 0, 0, 0.5)"
-    }
-  };
-
-  const mobileFormat = x => {
-    if (x.matches) {
-      modalStyle = {
-        content: {
-          top: "50%",
-          left: "50%",
-          right: "auto",
-          bottom: "auto",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)",
-          width: "75%",
-          padding: "20px"
-        },
-        overlay: {
-          background: "rgba(0, 0, 0, 0.5)"
-        }
-      };
-    }
-  };
-
-  const x = window.matchMedia("(max-width: 600px)");
-  mobileFormat(x); // Call listener function at run time
-  x.addListener(mobileFormat); // Attach listener function on state changes
 
   return (
     <div className="row container">
@@ -59,7 +20,7 @@ export const Titlebar = () => {
           <Modal
             isOpen={thesisModalIsOpen}
             onRequestClose={() => setThesisModalIsOpen(false)}
-            style={modalStyle}
+            style={ResponsiveModalStyle()}
             contentLabel="Thesis Modal"
             ariaHideApp={false}
           >
@@ -82,37 +43,7 @@ export const Titlebar = () => {
             </div>
           </Modal>
         </div>
-        <a onClick={() => setCalcModalIsOpen(true)}>Allocation Calculator</a>
-        <Modal
-          isOpen={calcModalIsOpen}
-          onRequestClose={() => setCalcModalIsOpen(false)}
-          style={modalStyle}
-          contentLabel="Calc Modal"
-          ariaHideApp={false}
-        >
-          <div className="section-title horizontal-spacer">
-            Allocation Calculator
-            <i
-              onClick={() => setCalcModalIsOpen(false)}
-              className="fas fa-times flex-end gray"
-            ></i>
-          </div>
-          <div className="row">
-            <div className="small-12 large-6 columns">
-              <div className="row collapse">
-                <div className="small-8 columns">
-                  <input type="text" placeholder="Enter Dollar Amount" />
-                </div>
-                <div className="small-4 columns">
-                  <a href="#" className="button postfix">
-                    Calculate
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="small-12 large-6 columns container">Content</div>
-          </div>
-        </Modal>
+        <AllocationCalculator />
       </div>
     </div>
   );
