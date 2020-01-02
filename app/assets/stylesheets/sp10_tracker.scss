@@ -51,6 +51,10 @@
   font-weight: 900;
 }
 
+.t2 {
+  font-size: 0.8rem;
+}
+
 #sp10-title {
   font-size: 4rem;
 }
@@ -301,6 +305,10 @@
   font-size: 0.875rem;
   height: 2.3125rem;
   line-height: 2.3125rem;
+}
+
+.allocation-input {
+  width: 50px !important;
 }
 
 @media (max-width: 600px) {

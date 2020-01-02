@@ -3,16 +3,14 @@ import Modal from "react-modal";
 import { AllocationRow } from "../tiles/AllocationRow";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
-export const AllocationCalculator = () => {
+export const AllocationCalculator = ({ stockData }) => {
   const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
   const [formValue, setFormValue] = useState(0);
 
-  const stocks = [{ name: "cheese" }, { name: "cheese" }, { name: "cheese" }];
-
   let n = 0;
-  const allocationRows = stocks.map(stock => {
+  const allocationRows = stockData.map(stockIndividualData => {
     n = n + 1;
-    return <AllocationRow />;
+    return <AllocationRow key={n} stockIndividualData={stockIndividualData} />;
   });
 
   return (
@@ -73,17 +71,33 @@ export const AllocationCalculator = () => {
           </div>
         </div>
         <div className="row section-title-no-flex">
-          <div className="small-4 columns w7">Stock</div>
-          <div className="small-8 columns ">
-            <div className="space-between">
-              <span>Price</span>
-              <span>Quantity</span>
-              <span>Value</span>
-              <span>Allocation</span>
+          <span className="small-4 columns w7">Stock</span>
+          <span className="w7 small-2 columns text-right">Price</span>
+          <span className="w7 small-2 columns text-right">Quantity</span>
+          <span className="w7 small-2 columns text-right">Value</span>
+          <span className="w7 small-2 columns text-right">Allocation</span>
+        </div>
+        {allocationRows}
+        <div className="row t2 stock-row">
+          <div className="small-12">
+            <div className="row">
+              <span className="small-8 columns text-right w7">
+                Cash Remainder
+              </span>
+              <span className="small-2 columns text-right">$0.00</span>
+              <span className="small-2 columns text-right">0.00%</span>
+            </div>
+          </div>
+          <div className="small-12">
+            <div className="row">
+              <span className="small-8 columns text-right w7">
+                Total Stock Value
+              </span>
+              <span className="small-2 columns text-right">$0.00</span>
+              <span className="small-2 columns text-right">0.00%</span>
             </div>
           </div>
         </div>
-        <div className="small-12">{allocationRows}</div>
       </Modal>
     </div>
   );

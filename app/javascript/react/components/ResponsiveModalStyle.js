@@ -13,7 +13,8 @@ export const ResponsiveModalStyle = ({
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         width: `${mobileWidthPercent}%`,
-        padding: "20px"
+        padding: "20px",
+        height: "500px"
       },
       overlay: {
         background: "rgba(0, 0, 0, 0.5)"
@@ -29,7 +30,9 @@ export const ResponsiveModalStyle = ({
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       width: `${desktopWidthPercent}%`,
-      padding: "50px"
+      padding: "50px",
+      height: "700px",
+      display: "block"
     },
     overlay: {
       background: "rgba(0, 0, 0, 0.5)"

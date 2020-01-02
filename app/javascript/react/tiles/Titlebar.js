@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { AllocationCalculator } from "../containers/AllocationCalculator";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
-export const Titlebar = () => {
+export const Titlebar = ({ stockData }) => {
   const [thesisModalIsOpen, setThesisModalIsOpen] = useState(false);
 
   return (
@@ -46,7 +46,7 @@ export const Titlebar = () => {
             </div>
           </Modal>
         </div>
-        <AllocationCalculator />
+        <AllocationCalculator stockData={stockData} />
       </div>
     </div>
   );

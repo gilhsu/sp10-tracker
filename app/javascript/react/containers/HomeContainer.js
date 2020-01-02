@@ -82,7 +82,7 @@ export const HomeContainer = () => {
 
   return (
     <div>
-      <Titlebar />
+      <Titlebar stockData={data.indivStockData} />
       <div className="row">
         <div className="outline small-12 large-8 columns">
           <div className="row">
