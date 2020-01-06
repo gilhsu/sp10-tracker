@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { AllocationRow } from "../tiles/AllocationRow";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
@@ -6,11 +6,43 @@ import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 export const AllocationCalculator = ({ stockData }) => {
   const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
   const [formValue, setFormValue] = useState(0);
+  const [stockQuantities, setStockQuantities] = useState([]);
+
+  useEffect(() => {
+    let key = 0;
+    const tempStockQuantities = stockData.map(stockIndividualData => {
+      key = key + 1;
+      return {
+        stockNumber: key,
+        quantity: 0
+      };
+    });
+    setStockQuantities(tempStockQuantities);
+  }, []);
+
+  const changeQuantity = (stockNumber, value) => {
+    const newStockQuantities = stockQuantities.map(stock => {
+      if (stock.stockNumber === stockNumber) {
+        return { stockNumber: stock.stockNumber, quantity: value };
+      } else {
+        return stock;
+      }
+    });
+    setStockQuantities(newStockQuantities);
+  };
 
   let n = 0;
   const allocationRows = stockData.map(stockIndividualData => {
     n = n + 1;
-    return <AllocationRow key={n} stockIndividualData={stockIndividualData} />;
+    return (
+      <AllocationRow
+        key={n}
+        stockNumber={n}
+        stockIndividualData={stockIndividualData}
+        stockQuantities={stockQuantities}
+        changeQuantity={changeQuantity}
+      />
+    );
   });
 
   return (
