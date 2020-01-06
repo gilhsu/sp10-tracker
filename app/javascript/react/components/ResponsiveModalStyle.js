@@ -1,20 +1,22 @@
 export const ResponsiveModalStyle = ({
   mobileWidthPercent,
-  desktopWidthPercent
+  desktopWidthPercent,
+  mobileWidth
 }) => {
   if (window.matchMedia("(max-width: 600px)").matches)
     // mobile style
     return {
       content: {
-        top: "50%",
+        top: "10px",
         left: "50%",
         right: "auto",
         bottom: "auto",
         marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
+        transform: "translate(-50%, 0%)",
         width: `${mobileWidthPercent}%`,
         padding: "20px",
-        height: "500px"
+        height: "95%",
+        display: "block"
       },
       overlay: {
         background: "rgba(0, 0, 0, 0.5)"
@@ -23,15 +25,15 @@ export const ResponsiveModalStyle = ({
   // desktop style
   return {
     content: {
-      top: "50%",
+      top: "10px",
       left: "50%",
       right: "auto",
       bottom: "auto",
       marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
+      transform: "translate(-50%, 0%)",
       width: `${desktopWidthPercent}%`,
       padding: "50px",
-      height: "700px",
+      height: "95%",
       display: "block"
     },
     overlay: {
