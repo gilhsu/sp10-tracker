@@ -1,6 +1,7 @@
 export const ResponsiveModalStyle = ({
   mobileWidthPercent,
   desktopWidthPercent,
+  heightPercent,
   mobileWidth
 }) => {
   if (window.matchMedia("(max-width: 600px)").matches)
@@ -15,7 +16,7 @@ export const ResponsiveModalStyle = ({
         transform: "translate(-50%, 0%)",
         width: `${mobileWidthPercent}%`,
         padding: "20px",
-        height: "95%",
+        height: `${heightPercent}%`,
         display: "block"
       },
       overlay: {
@@ -33,7 +34,7 @@ export const ResponsiveModalStyle = ({
       transform: "translate(-50%, 0%)",
       width: `${desktopWidthPercent}%`,
       padding: "50px",
-      height: "95%",
+      height: `${heightPercent}%`,
       display: "block"
     },
     overlay: {

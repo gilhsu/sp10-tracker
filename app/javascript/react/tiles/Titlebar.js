@@ -21,8 +21,8 @@ export const Titlebar = ({ stockData }) => {
             isOpen={thesisModalIsOpen}
             onRequestClose={() => setThesisModalIsOpen(false)}
             style={ResponsiveModalStyle({
-              mobileWidthPercent: 50,
-              desktopWidthPercent: 40
+              mobileWidthPercent: 95,
+              desktopWidthPercent: 50
             })}
             contentLabel="Thesis Modal"
             ariaHideApp={false}

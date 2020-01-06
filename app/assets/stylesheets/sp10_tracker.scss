@@ -55,6 +55,10 @@
   font-size: 0.8rem;
 }
 
+.t3 {
+  font-size: 0.7rem;
+}
+
 #sp10-title {
   font-size: 4rem;
 }
@@ -114,7 +118,6 @@
 
 .section-title-no-flex {
   font-weight: 700;
-  font-size: 0.8rem;
   padding-bottom: 5px;
   margin-bottom: 10px;
   border-bottom: 1px solid rgb(185, 185, 185);
@@ -303,12 +306,31 @@
 .allocation-button {
   padding-top: 0;
   font-size: 0.875rem;
-  height: 2.3125rem;
-  line-height: 2.3125rem;
+  height: 2.2rem;
+  line-height: 2.2rem;
 }
 
 .allocation-input {
-  width: 50px !important;
+  width: 45px !important;
+  margin: 0 !important;
+}
+
+.allocation-text {
+  font-size: 0.8rem;
+}
+
+.allocation-padding {
+  padding-top: 10px;
+}
+
+.allocation-row {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
+.allocation-totals {
+  padding-bottom: 5px;
 }
 
 @media (max-width: 600px) {
@@ -353,5 +375,13 @@
 
   .heatmap-legend {
     justify-content: center;
+  }
+
+  .allocation-button {
+    width: 100%;
+  }
+
+  .allocation-text {
+    font-size: 0.7rem;
   }
 }
