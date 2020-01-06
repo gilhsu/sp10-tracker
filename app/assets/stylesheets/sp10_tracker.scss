@@ -333,6 +333,10 @@
   padding-bottom: 5px;
 }
 
+.allocation-intro {
+  padding: 20px 0 30px 0;
+}
+
 @media (max-width: 600px) {
   #sp10-title {
     text-align: center;
@@ -383,5 +387,9 @@
 
   .allocation-text {
     font-size: 0.7rem;
+  }
+
+  .allocation-intro {
+    padding: 10px 0 20px 0;
   }
 }

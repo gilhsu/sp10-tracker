@@ -34,7 +34,7 @@ export const AllocationCalculator = ({ stockData }) => {
             className="fas fa-times flex-end gray"
           ></i>
         </div>
-        <div className="row">
+        <div className="row allocation-intro">
           <div className="small-12 large-6 columns padding-right">
             <div className="small-12 columns horizontal-spacer ">
               The minimum total value necessary for equal allocation of stocks
