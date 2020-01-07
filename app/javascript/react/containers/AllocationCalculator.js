@@ -6,29 +6,48 @@ import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 export const AllocationCalculator = ({ stockData }) => {
   const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
   const [formValue, setFormValue] = useState(0);
-  const [stockQuantities, setStockQuantities] = useState([]);
+  const [stockRowsData, setStockRowsData] = useState([]);
+  const [totalRowsValue, setTotalRowsValue] = useState(0);
 
   useEffect(() => {
     let key = 0;
-    const tempStockQuantities = stockData.map(stockIndividualData => {
+    const tempStockRowsData = stockData.map(stockIndividualData => {
       key = key + 1;
       return {
         stockNumber: key,
-        quantity: 0
+        price: stockIndividualData.price,
+        quantity: 0,
+        value: 0.0
       };
     });
-    setStockQuantities(tempStockQuantities);
+    setStockRowsData(tempStockRowsData);
   }, []);
 
-  const changeQuantity = (stockNumber, value) => {
-    const newStockQuantities = stockQuantities.map(stock => {
+  useEffect(() => {
+    let tempTotalRowsValue = 0;
+    stockRowsData.forEach(stock => {
+      tempTotalRowsValue = tempTotalRowsValue + stock.value;
+    });
+    setTotalRowsValue(tempTotalRowsValue);
+  }, [stockRowsData]);
+
+  // use if else conditional to ask the stockNumber, if 1 change stock1Data. make stock1Data and setStock1Data for
+  // each data row
+
+  const changeQuantity = ({ stockNumber, price, quantity }) => {
+    const newStockRowsData = stockRowsData.map(stock => {
       if (stock.stockNumber === stockNumber) {
-        return { stockNumber: stock.stockNumber, quantity: value };
+        return {
+          stockNumber: stock.stockNumber,
+          price: price,
+          quantity: quantity,
+          value: +quantity * price
+        };
       } else {
         return stock;
       }
     });
-    setStockQuantities(newStockQuantities);
+    setStockRowsData(newStockRowsData);
   };
 
   let n = 0;
@@ -39,11 +58,22 @@ export const AllocationCalculator = ({ stockData }) => {
         key={n}
         stockNumber={n}
         stockIndividualData={stockIndividualData}
-        stockQuantities={stockQuantities}
+        stockRowsData={stockRowsData}
         changeQuantity={changeQuantity}
+        totalRowsValue={totalRowsValue}
       />
     );
   });
+
+  let totalStockValue = 0;
+  stockRowsData.forEach(stock => {
+    totalStockValue = totalStockValue + stock.value;
+  });
+
+  const displayTotalStockValue =
+    totalStockValue === 0
+      ? "0.00"
+      : totalStockValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 
   return (
     <div>
@@ -126,7 +156,9 @@ export const AllocationCalculator = ({ stockData }) => {
               <span className="small-8 columns text-right w7">
                 Total Stock Value
               </span>
-              <span className="small-2 columns text-right">$0.00</span>
+              <span className="small-2 columns text-right">
+                ${displayTotalStockValue}
+              </span>
               <span className="small-2 columns text-right">0.00%</span>
             </div>
           </div>
