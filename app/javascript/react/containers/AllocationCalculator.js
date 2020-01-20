@@ -70,10 +70,23 @@ export const AllocationCalculator = ({ stockData }) => {
     totalStockValue = totalStockValue + stock.value;
   });
 
+  console.log("stockRowsData", stockRowsData);
+
   const displayTotalStockValue =
     totalStockValue === 0
       ? "0.00"
       : totalStockValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+
+  let cashRemainderValue = 0;
+  const displayTotalStockAllocation =
+    totalStockValue === 0
+      ? "0.00%"
+      : `${(
+          ((totalStockValue - cashRemainderValue) / totalStockValue) *
+          100
+        ).toFixed(2)}%`;
+
+  // equal allocation quick calculator logic
 
   return (
     <div>
@@ -159,7 +172,9 @@ export const AllocationCalculator = ({ stockData }) => {
               <span className="small-2 columns text-right">
                 ${displayTotalStockValue}
               </span>
-              <span className="small-2 columns text-right">0.00%</span>
+              <span className="small-2 columns text-right">
+                {displayTotalStockAllocation}
+              </span>
             </div>
           </div>
           <div className="row text-right">
