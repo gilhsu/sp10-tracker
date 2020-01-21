@@ -97,6 +97,17 @@ export const AllocationCalculator = ({ stockData }) => {
           100
         ).toFixed(2);
 
+  let allocationTitle = "Allocation";
+  let nameColumnWidth = "small-3";
+  let valueColumnWidth = "small-2";
+  let formTotalsTitlesWidth = "small-8";
+  if (window.matchMedia("(max-width: 600px)").matches) {
+    allocationTitle = "Alloc.";
+    nameColumnWidth = "small-2";
+    valueColumnWidth = "small-3";
+    formTotalsTitlesWidth = "small-7";
+  }
+
   let n = 0;
   const allocationRows = stockRowsData.map(stockIndividualData => {
     n = n + 1;
@@ -105,6 +116,8 @@ export const AllocationCalculator = ({ stockData }) => {
         key={n}
         stockIndividualData={stockIndividualData}
         changeQuantity={changeQuantity}
+        nameColumnWidth={nameColumnWidth}
+        valueColumnWidth={valueColumnWidth}
       />
     );
   });
@@ -173,29 +186,39 @@ export const AllocationCalculator = ({ stockData }) => {
           </div>
         </div>
         <div className="row section-title-no-flex allocation-text">
-          <span className="small-3 columns w7">Stock</span>
+          <span className={`${nameColumnWidth} columns w7`}>Stock</span>
           <span className="w7 small-2 columns text-right">Price</span>
           <span className="w7 small-3 columns text-right">Quantity</span>
-          <span className="w7 small-2 columns text-right">Value</span>
-          <span className="w7 small-2 columns text-right">Alloc.</span>
+          <span className={`w7 ${valueColumnWidth} columns text-right`}>
+            Value
+          </span>
+          <span className="w7 small-2 columns text-right">
+            {allocationTitle}
+          </span>
         </div>
         {allocationRows}
         <div className="row allocation-text">
           <div className="small-12">
             <div className="row allocation-totals">
-              <span className="small-8 columns text-right w7">
+              <span
+                className={`${formTotalsTitlesWidth} columns text-right w7`}
+              >
                 Cash Remainder
               </span>
-              <span className="small-2 columns text-right">$0.00</span>
+              <span className={`${valueColumnWidth} columns text-right`}>
+                $0.00
+              </span>
               <span className="small-2 columns text-right">0.00%</span>
             </div>
           </div>
           <div className="small-12">
             <div className="row allocation-row">
-              <span className="small-8 columns text-right w7">
+              <span
+                className={`${formTotalsTitlesWidth} columns text-right w7`}
+              >
                 Total Stock Value
               </span>
-              <span className="small-2 columns text-right">
+              <span className={`${valueColumnWidth} columns text-right`}>
                 ${displayTotalStockValue}
               </span>
               <span className="small-2 columns text-right">
