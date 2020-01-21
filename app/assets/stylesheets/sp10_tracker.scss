@@ -311,7 +311,7 @@
 }
 
 .allocation-input {
-  width: 45px !important;
+  width: 60px !important;
   margin: 0 !important;
 }
 
@@ -391,5 +391,9 @@
 
   .allocation-intro {
     padding: 10px 0 20px 0;
+  }
+
+  .allocation-input {
+    width: 45px !important;
   }
 }

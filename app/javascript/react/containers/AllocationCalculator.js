@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { AllocationRow } from "../tiles/AllocationRow";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
@@ -6,11 +6,107 @@ import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 export const AllocationCalculator = ({ stockData }) => {
   const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
   const [formValue, setFormValue] = useState(0);
+  const [stockRowsData, setStockRowsData] = useState([]);
+  const [totalRowsValue, setTotalRowsValue] = useState(0);
+
+  // set stockRows Data on pageMount
+  useEffect(() => {
+    const tempStockRowsData = stockData.map(stockIndividualData => {
+      return {
+        name: stockIndividualData.name,
+        full_name: stockIndividualData.full_name,
+        price: stockIndividualData.price,
+        quantity: 0,
+        value: 0,
+        allocation: 0
+      };
+    });
+    setStockRowsData(tempStockRowsData);
+  }, []);
+
+  // when stockRowsData updates, update the TotalRowsValue data
+  useEffect(() => {
+    let tempTotalRowsValue = 0;
+    stockRowsData.forEach(stock => {
+      tempTotalRowsValue = tempTotalRowsValue + stock.value;
+    });
+    setTotalRowsValue(tempTotalRowsValue);
+  }, [stockRowsData]);
+
+  // general method for changing stock quantities in calculator
+  const changeQuantity = ({ name, price, quantity }) => {
+    let tempStockRowData = stockRowsData.map(stock => {
+      if (stock.name === name) {
+        stock.quantity = quantity;
+        stock.value = +quantity * price;
+        return stock;
+      } else {
+        return stock;
+      }
+    });
+    let totalStocksValue = 0;
+    tempStockRowData.forEach(stock => {
+      totalStocksValue = totalStocksValue + stock.value;
+    });
+    tempStockRowData = tempStockRowData.map(stock => {
+      stock.allocation = (stock.value / totalStocksValue) * 100;
+      return stock;
+    });
+    setStockRowsData(tempStockRowData);
+  };
+
+  // equal allocation quick calc logic
+  const handleEqualSplit = () => {
+    let sortedStocks = stockRowsData.concat().sort((a, b) => {
+      return b.price - a.price;
+    });
+
+    sortedStocks.forEach(stock => {
+      const largestStockPrice = sortedStocks[0].price;
+      const stockQuantity = Math.round(largestStockPrice / stock.price);
+      changeQuantity({
+        name: stock.name,
+        price: stock.price,
+        quantity: stockQuantity
+      });
+    });
+  };
+
+  // clear form values
+  const handleClear = () => {
+    let tempStockRowsData = stockRowsData.map(stock => {
+      stock.quantity = 0;
+      stock.value = 0;
+      stock.allocation = 0;
+      return stock;
+    });
+    setStockRowsData(tempStockRowsData);
+  };
+
+  const displayTotalStockValue =
+    totalRowsValue === 0
+      ? "0.00"
+      : totalRowsValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+
+  let cashRemainderValue = 0;
+  const displayTotalStockAllocation =
+    totalRowsValue === 0
+      ? "0.00"
+      : (
+          ((totalRowsValue - cashRemainderValue) / totalRowsValue) *
+          100
+        ).toFixed(2);
 
   let n = 0;
-  const allocationRows = stockData.map(stockIndividualData => {
+  const allocationRows = stockRowsData.map(stockIndividualData => {
     n = n + 1;
-    return <AllocationRow key={n} stockIndividualData={stockIndividualData} />;
+    return (
+      <AllocationRow
+        key={n}
+        stockIndividualData={stockIndividualData}
+        changeQuantity={changeQuantity}
+      />
+    );
   });
 
   return (
@@ -40,7 +136,12 @@ export const AllocationCalculator = ({ stockData }) => {
               The minimum total value necessary for equal allocation of stocks
               given current stock prices.
             </div>
-            <div className="button allocation-button">Calculate</div>
+            <div
+              className="button allocation-button"
+              onClick={handleEqualSplit}
+            >
+              Calculate
+            </div>
           </div>
           <div className="small-12 large-6 columns">
             <div className="small-12 columns horizontal-spacer">
@@ -94,13 +195,19 @@ export const AllocationCalculator = ({ stockData }) => {
               <span className="small-8 columns text-right w7">
                 Total Stock Value
               </span>
-              <span className="small-2 columns text-right">$0.00</span>
-              <span className="small-2 columns text-right">0.00%</span>
+              <span className="small-2 columns text-right">
+                ${displayTotalStockValue}
+              </span>
+              <span className="small-2 columns text-right">
+                {displayTotalStockAllocation}%
+              </span>
             </div>
           </div>
           <div className="row text-right">
             <div className="small-12 columns" style={{ marginTop: "1.25rem" }}>
-              <div className="button allocation-button">Clear</div>
+              <div className="button allocation-button" onClick={handleClear}>
+                Clear
+              </div>
             </div>
           </div>
         </div>
