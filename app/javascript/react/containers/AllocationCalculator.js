@@ -11,11 +11,8 @@ export const AllocationCalculator = ({ stockData }) => {
 
   // set stockRows Data on pageMount
   useEffect(() => {
-    let key = 0;
     const tempStockRowsData = stockData.map(stockIndividualData => {
-      key = key + 1;
       return {
-        stockNumber: key,
         name: stockIndividualData.name,
         full_name: stockIndividualData.full_name,
         price: stockIndividualData.price,
@@ -37,9 +34,9 @@ export const AllocationCalculator = ({ stockData }) => {
   }, [stockRowsData]);
 
   // general method for changing stock quantities in calculator
-  const changeQuantity = ({ stockNumber, price, quantity }) => {
+  const changeQuantity = ({ name, price, quantity }) => {
     let tempStockRowData = stockRowsData.map(stock => {
-      if (stock.stockNumber === stockNumber) {
+      if (stock.name === name) {
         stock.quantity = quantity;
         stock.value = +quantity * price;
         return stock;
@@ -68,7 +65,7 @@ export const AllocationCalculator = ({ stockData }) => {
       const largestStockPrice = sortedStocks[0].price;
       const stockQuantity = Math.round(largestStockPrice / stock.price);
       changeQuantity({
-        stockNumber: stock.stockNumber,
+        name: stock.name,
         price: stock.price,
         quantity: stockQuantity
       });
@@ -105,10 +102,12 @@ export const AllocationCalculator = ({ stockData }) => {
           100
         ).toFixed(2)}%`;
 
+  let n = 0;
   const allocationRows = stockRowsData.map(stockIndividualData => {
+    n = n + 1;
     return (
       <AllocationRow
-        key={stockIndividualData.stockNumber}
+        key={n}
         stockIndividualData={stockIndividualData}
         changeQuantity={changeQuantity}
       />

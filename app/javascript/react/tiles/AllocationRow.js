@@ -2,7 +2,6 @@ import React from "react";
 
 export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
   const {
-    stockNumber,
     name,
     full_name,
     price,
@@ -23,7 +22,7 @@ export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
     e.preventDefault;
     const validValue = e.target.validity.valid ? e.target.value : 0;
     changeQuantity({
-      stockNumber: stockNumber,
+      name: name,
       price: price,
       quantity: validValue
     });
