@@ -1,6 +1,11 @@
 import React from "react";
 
-export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
+export const AllocationRow = ({
+  stockIndividualData,
+  changeQuantity,
+  nameColumnWidth,
+  valueColumnWidth
+}) => {
   const {
     name,
     full_name,
@@ -31,7 +36,9 @@ export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
   return (
     <div className="row allocation-row">
       <div className="allocation-text">
-        <div className="small-3 columns allocation-padding">{displayName}</div>
+        <div className={`${nameColumnWidth} columns allocation-padding`}>
+          {displayName}
+        </div>
         <span className="small-2 columns text-right allocation-padding">
           ${displayPrice}
         </span>
@@ -45,7 +52,9 @@ export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
             onChange={handleChange}
           />
         </span>
-        <span className="small-2 columns text-right allocation-padding">
+        <span
+          className={`${valueColumnWidth} columns text-right allocation-padding`}
+        >
           ${displayValue}
         </span>
         <span className="small-2 columns text-right allocation-padding">
