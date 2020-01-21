@@ -91,11 +91,11 @@ export const AllocationCalculator = ({ stockData }) => {
   let cashRemainderValue = 0;
   const displayTotalStockAllocation =
     totalRowsValue === 0
-      ? "0.00%"
-      : `${(
+      ? "0.00"
+      : (
           ((totalRowsValue - cashRemainderValue) / totalRowsValue) *
           100
-        ).toFixed(2)}%`;
+        ).toFixed(2);
 
   let n = 0;
   const allocationRows = stockRowsData.map(stockIndividualData => {
@@ -199,7 +199,7 @@ export const AllocationCalculator = ({ stockData }) => {
                 ${displayTotalStockValue}
               </span>
               <span className="small-2 columns text-right">
-                {displayTotalStockAllocation}
+                {displayTotalStockAllocation}%
               </span>
             </div>
           </div>
