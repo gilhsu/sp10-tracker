@@ -9,6 +9,11 @@ export const AllocationCalculator = ({ stockData }) => {
   const [stockRowsData, setStockRowsData] = useState([]);
   const [totalRowsValue, setTotalRowsValue] = useState(0);
 
+  const displayTotalStockValue =
+    totalRowsValue === 0
+      ? "0.00"
+      : totalRowsValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+
   // set stockRows Data on pageMount
   useEffect(() => {
     const tempStockRowsData = stockData.map(stockIndividualData => {
@@ -83,22 +88,12 @@ export const AllocationCalculator = ({ stockData }) => {
     setStockRowsData(tempStockRowsData);
   };
 
-  let totalStockValue = 0;
-  stockRowsData.forEach(stock => {
-    totalStockValue = totalStockValue + stock.value;
-  });
-
-  const displayTotalStockValue =
-    totalStockValue === 0
-      ? "0.00"
-      : totalStockValue.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-
   let cashRemainderValue = 0;
   const displayTotalStockAllocation =
-    totalStockValue === 0
+    totalRowsValue === 0
       ? "0.00%"
       : `${(
-          ((totalStockValue - cashRemainderValue) / totalStockValue) *
+          ((totalRowsValue - cashRemainderValue) / totalRowsValue) *
           100
         ).toFixed(2)}%`;
 
