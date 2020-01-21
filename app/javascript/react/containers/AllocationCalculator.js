@@ -9,20 +9,25 @@ export const AllocationCalculator = ({ stockData }) => {
   const [stockRowsData, setStockRowsData] = useState([]);
   const [totalRowsValue, setTotalRowsValue] = useState(0);
 
+  // set stockRows Data on pageMount
   useEffect(() => {
     let key = 0;
     const tempStockRowsData = stockData.map(stockIndividualData => {
       key = key + 1;
       return {
         stockNumber: key,
+        name: stockIndividualData.name,
+        full_name: stockIndividualData.full_name,
         price: stockIndividualData.price,
         quantity: 0,
-        value: 0.0
+        value: 0,
+        allocation: 0
       };
     });
     setStockRowsData(tempStockRowsData);
   }, []);
 
+  // when stockRowsData updates, update the TotalRowsValue data
   useEffect(() => {
     let tempTotalRowsValue = 0;
     stockRowsData.forEach(stock => {
@@ -31,46 +36,60 @@ export const AllocationCalculator = ({ stockData }) => {
     setTotalRowsValue(tempTotalRowsValue);
   }, [stockRowsData]);
 
-  // use if else conditional to ask the stockNumber, if 1 change stock1Data. make stock1Data and setStock1Data for
-  // each data row
-
+  // general method for changing stock quantities in calculator
   const changeQuantity = ({ stockNumber, price, quantity }) => {
-    const newStockRowsData = stockRowsData.map(stock => {
+    let tempStockRowData = stockRowsData.map(stock => {
       if (stock.stockNumber === stockNumber) {
-        return {
-          stockNumber: stock.stockNumber,
-          price: price,
-          quantity: quantity,
-          value: +quantity * price
-        };
+        stock.quantity = quantity;
+        stock.value = +quantity * price;
+        return stock;
       } else {
         return stock;
       }
     });
-    setStockRowsData(newStockRowsData);
+    let totalStocksValue = 0;
+    tempStockRowData.forEach(stock => {
+      totalStocksValue = totalStocksValue + stock.value;
+    });
+    tempStockRowData = tempStockRowData.map(stock => {
+      stock.allocation = (stock.value / totalStocksValue) * 100;
+      return stock;
+    });
+    setStockRowsData(tempStockRowData);
   };
 
-  let n = 0;
-  const allocationRows = stockData.map(stockIndividualData => {
-    n = n + 1;
-    return (
-      <AllocationRow
-        key={n}
-        stockNumber={n}
-        stockIndividualData={stockIndividualData}
-        stockRowsData={stockRowsData}
-        changeQuantity={changeQuantity}
-        totalRowsValue={totalRowsValue}
-      />
-    );
-  });
+  // equal allocation quick calc logic
+  const handleEqualSplit = () => {
+    let sortedStocks = stockRowsData.concat().sort((a, b) => {
+      return b.price - a.price;
+    });
+
+    sortedStocks.forEach(stock => {
+      const largestStockPrice = sortedStocks[0].price;
+      const stockQuantity = Math.round(largestStockPrice / stock.price);
+      changeQuantity({
+        stockNumber: stock.stockNumber,
+        price: stock.price,
+        quantity: stockQuantity
+      });
+    });
+  };
+
+  // clear form values
+  const handleClear = () => {
+    let tempStockRowsData = stockRowsData.map(stock => {
+      stock.quantity = 0;
+      stock.value = 0;
+      stock.allocation = 0;
+      return stock;
+    });
+    setStockRowsData(tempStockRowsData);
+  };
 
   let totalStockValue = 0;
   stockRowsData.forEach(stock => {
     totalStockValue = totalStockValue + stock.value;
   });
-
-  console.log("stockRowsData", stockRowsData);
 
   const displayTotalStockValue =
     totalStockValue === 0
@@ -86,7 +105,15 @@ export const AllocationCalculator = ({ stockData }) => {
           100
         ).toFixed(2)}%`;
 
-  // equal allocation quick calculator logic
+  const allocationRows = stockRowsData.map(stockIndividualData => {
+    return (
+      <AllocationRow
+        key={stockIndividualData.stockNumber}
+        stockIndividualData={stockIndividualData}
+        changeQuantity={changeQuantity}
+      />
+    );
+  });
 
   return (
     <div>
@@ -115,7 +142,12 @@ export const AllocationCalculator = ({ stockData }) => {
               The minimum total value necessary for equal allocation of stocks
               given current stock prices.
             </div>
-            <div className="button allocation-button">Calculate</div>
+            <div
+              className="button allocation-button"
+              onClick={handleEqualSplit}
+            >
+              Calculate
+            </div>
           </div>
           <div className="small-12 large-6 columns">
             <div className="small-12 columns horizontal-spacer">
@@ -179,7 +211,9 @@ export const AllocationCalculator = ({ stockData }) => {
           </div>
           <div className="row text-right">
             <div className="small-12 columns" style={{ marginTop: "1.25rem" }}>
-              <div className="button allocation-button">Clear</div>
+              <div className="button allocation-button" onClick={handleClear}>
+                Clear
+              </div>
             </div>
           </div>
         </div>

@@ -1,31 +1,23 @@
 import React from "react";
 
-export const AllocationRow = ({
-  stockNumber,
-  stockIndividualData,
-  stockRowsData,
-  changeQuantity,
-  totalRowsValue
-}) => {
-  const { name, full_name, price } = stockIndividualData;
+export const AllocationRow = ({ stockIndividualData, changeQuantity }) => {
+  const {
+    stockNumber,
+    name,
+    full_name,
+    price,
+    allocation,
+    quantity,
+    value
+  } = stockIndividualData;
 
   let displayName = window.matchMedia("(max-width: 600px)").matches
     ? name
     : full_name;
 
-  let displayQuantity = 0;
-  let displayValue = 0;
-  let displayAllocation = 0;
-  stockRowsData.forEach(stock => {
-    if (stock.stockNumber === stockNumber) {
-      displayQuantity = stock.quantity;
-      displayValue = stock.value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-      displayAllocation =
-        totalRowsValue === 0
-          ? "0.00"
-          : ((stock.value / totalRowsValue) * 100).toFixed(2);
-    }
-  });
+  let displayValue = value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  let displayAllocation = allocation.toFixed(2);
+  let displayPrice = price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
 
   const handleChange = e => {
     e.preventDefault;
@@ -42,7 +34,7 @@ export const AllocationRow = ({
       <div className="allocation-text">
         <div className="small-3 columns allocation-padding">{displayName}</div>
         <span className="small-2 columns text-right allocation-padding">
-          ${price}
+          ${displayPrice}
         </span>
         <span className="small-3 columns text-right flex-end">
           <input
@@ -50,7 +42,7 @@ export const AllocationRow = ({
             type="number"
             min="0"
             step="1"
-            value={displayQuantity}
+            value={quantity}
             onChange={handleChange}
           />
         </span>
