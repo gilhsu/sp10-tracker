@@ -172,7 +172,7 @@ class Stock < ApplicationRecord
       history_record = {}
       sp500_record = Record.where(stock: sp500, date: record.date)[0]
       history_record["name"] = record.stock.name
-      history_record["date"] = record.date.strftime("%a %b %e, %Y")
+      history_record["date"] = record.date.strftime("%a, %b %e, %Y")
       history_record["date_raw"] = record.date
       history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
       history_record["change_percent"] = record.change_percent.round(2)
