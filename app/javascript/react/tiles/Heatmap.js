@@ -11,7 +11,9 @@ export const Heatmap = ({ records }) => {
     dataRow["date"] = offsetDate(record["date_raw"], 1);
     dataRow["date_string"] = record["date"];
     const formatDelta =
-      record["delta"] > 0 ? `+${record["delta"]}%` : `${record["delta"]}%`;
+      record["delta"] > 0
+        ? `+${record["delta"].toFixed(2)}%`
+        : `${record["delta"].toFixed(2)}%`;
     dataRow["delta"] = formatDelta;
     dataRow["color"] = pickColor(record["delta"]);
 
