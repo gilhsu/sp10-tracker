@@ -131,7 +131,9 @@ export const AllocationCalculator = ({ stockData }) => {
         style={ResponsiveModalStyle({
           mobileWidthPercent: 95,
           desktopWidthPercent: 70,
-          heightPercent: 95
+          heightPercent: 95,
+          transform: 0,
+          top: "10px"
         })}
         contentLabel="Calc Modal"
         ariaHideApp={false}
