@@ -11,7 +11,7 @@ class Stock < ApplicationRecord
     end
   end
 
-  def fetch_data(full_data = false)
+  def fetch_data(days = nil)
     endpoint = "https://www.alphavantage.co/"
     output_size = "full"
 
@@ -20,7 +20,7 @@ class Stock < ApplicationRecord
     response = response_raw["Time Series (Daily)"]
 
     # used to collect the number of records to parse
-    number_of_records = full_data ? 253 : (Date.today - Record.where(stock: Stock.last).last.date).to_i
+    number_of_records = days ? days : (Date.today - Record.where(stock: Stock.last).last.date).to_i
 
     # create array of hashes with daily data
     format_data_array = []
@@ -88,7 +88,7 @@ class Stock < ApplicationRecord
 
     # creates array of dates that exist in Stocks but does not exist yet on SP10
     dates_array = []
-    stock_records_dates.each do |date|
+    stock_records_dates.reverse.each do |date|
       if !sp10_records_dates.include? date
         dates_array << date
       end
@@ -120,24 +120,24 @@ class Stock < ApplicationRecord
     puts "Data merge for SP10 complete."
   end
 
-  def fetch_data_master(full_data = false)
+  def fetch_data_master(days = nil)
     sp500 = Stock.find_by(name: "SPX")
     stocks = Stock.where(in_fund: true)
     stocks_first_five = stocks[0...5]
     stocks_last_five = stocks[5...10]
 
-    sp500.fetch_data(full_data)
+    sp500.fetch_data(days)
 
     Stock.last.timer(60)
 
     stocks_first_five.each do |stock|
-      stock.fetch_data(full_data)
+      stock.fetch_data(days)
     end
 
     Stock.last.timer(60)
 
     stocks_last_five.each do |stock|
-      stock.fetch_data(full_data)
+      stock.fetch_data(days)
     end
 
     Stock.last.fetch_data_sp10
