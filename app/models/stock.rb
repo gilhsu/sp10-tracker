@@ -16,21 +16,21 @@ class Stock < ApplicationRecord
     output_size = "full"
 
     request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
-    response_raw = HTTParty.get(request_url)
-    response = response_raw["Time Series (Daily)"]
+
+    response = nil
+    while !response
+      binding.pry
+      puts "Problem fetching data"
+      Stock.last.timer(60)
+      response_raw = HTTParty.get(request_url)
+      response = response_raw["Time Series (Daily)"]
+    end
 
     # used to collect the number of records to parse
     number_of_records = days ? days : (Date.today - Record.where(stock: Stock.last).last.date).to_i
 
     # create array of hashes with daily data
     format_data_array = []
-    n = 0
-
-    if !response.keys[n]
-      puts "Problem fetching data"
-      Stock.last.timer(60)
-    end
-
     number_of_records.times do
       format_data = {}
       format_data["name"] = self.name
