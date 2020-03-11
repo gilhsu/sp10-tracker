@@ -4,5 +4,9 @@ task backfill_stock_data: :environment do
 
   ARGV.each { |a| task a.to_sym do ; end }
 
-  Stock.last.fetch_data_master(ARGV[1].to_i)
+  if ARGV[1].to_i != 0 || ARGV[1].to_i == nil
+    Stock.last.fetch_data_master(ARGV[1].to_i)
+  else
+    puts "Number of days argument required and must be an integer. Rake format: 'rake backfill_stock_data 100'"
+  end
 end
