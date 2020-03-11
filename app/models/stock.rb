@@ -121,28 +121,35 @@ class Stock < ApplicationRecord
   end
 
   def fetch_data_master(days = nil)
-    sp500 = Stock.find_by(name: "SPX")
-    stocks = Stock.where(in_fund: true)
-    stocks_first_five = stocks[0...5]
-    stocks_last_five = stocks[5...10]
+    # if Record.last exists, check number of records needed to fetch. if no records default to 1 so it fetches
+    number_of_records = Record.last ? (Date.today - Record.where(stock: Stock.last).last.date).to_i : 1
 
-    sp500.fetch_data(days)
+    if number_of_records > 0
+      sp500 = Stock.find_by(name: "SPX")
+      stocks = Stock.where(in_fund: true)
+      stocks_first_five = stocks[0...5]
+      stocks_last_five = stocks[5...10]
 
-    Stock.last.timer(60)
+      sp500.fetch_data(days)
 
-    stocks_first_five.each do |stock|
-      stock.fetch_data(days)
+      Stock.last.timer(60)
+
+      stocks_first_five.each do |stock|
+        stock.fetch_data(days)
+      end
+
+      Stock.last.timer(60)
+
+      stocks_last_five.each do |stock|
+        stock.fetch_data(days)
+      end
+
+      Stock.last.fetch_data_sp10
+
+      puts "Data update is complete."
+    else
+      puts "Stock data is up to date! No fetch executed."
     end
-
-    Stock.last.timer(60)
-
-    stocks_last_five.each do |stock|
-      stock.fetch_data(days)
-    end
-
-    Stock.last.fetch_data_sp10
-
-    puts "Data update is complete."
   end
 
 
