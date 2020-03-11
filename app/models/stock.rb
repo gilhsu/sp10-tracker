@@ -21,7 +21,7 @@ class Stock < ApplicationRecord
     while !response
       binding.pry
       puts "Problem fetching data"
-      Stock.last.timer(60)
+      Stock.last.timer(70)
       response_raw = HTTParty.get(request_url)
       response = response_raw["Time Series (Daily)"]
     end
@@ -132,13 +132,13 @@ class Stock < ApplicationRecord
 
       sp500.fetch_data(days)
 
-      Stock.last.timer(60)
+      Stock.last.timer(70)
 
       stocks_first_five.each do |stock|
         stock.fetch_data(days)
       end
 
-      Stock.last.timer(60)
+      Stock.last.timer(70)
 
       stocks_last_five.each do |stock|
         stock.fetch_data(days)

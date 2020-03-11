@@ -7,13 +7,13 @@ task add_names: :environment do
 
   sp500.add_full_name
 
-  Stock.last.timer(60)
+  Stock.last.timer(70)
 
   stocks[0...5].each do |stock|
     stock.add_full_name
   end
   
-  Stock.last.timer(60)
+  Stock.last.timer(70)
 
   stocks[5...10].each do |stock|
     stock.add_full_name
