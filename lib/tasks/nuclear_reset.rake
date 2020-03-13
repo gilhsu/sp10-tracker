@@ -7,6 +7,8 @@ task nuclear_reset: :environment do
       puts "db:#{rake}"
       Rake::Task["db:#{rake}"].invoke
     end
+    puts "Attaching full stock names to stocks"
+    Rake::Task["add_names"].invoke
     puts "Backfilling stock data from api"
     Stock.last.fetch_data_master(ARGV[1].to_i)
   else

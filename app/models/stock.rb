@@ -171,7 +171,7 @@ class Stock < ApplicationRecord
   end
 
   def fetch_year_data
-    year_data = Record.where(stock: self).reverse[0...252]
+    year_data = Record.where(stock: self).order("date ASC").reverse[0...252]
     year_data_reverse = year_data.reverse
     change_percent_total = 1
     year_data_reverse.each do |record|

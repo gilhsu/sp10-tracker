@@ -52,13 +52,13 @@ class Api::V1::FetchController < ApplicationController
 
   def get_10k_data(number_of_days)
     sp10 = Stock.find_by(name: "SP10")
-    sp10_records = Record.where(stock: sp10)
+    sp10_records = Record.where(stock: sp10).order("date ASC")
     sp10_records_range = sp10_records[sp10_records.length - number_of_days, sp10_records.length]
 
     sp500 = Stock.find_by(name: "SPX")
-    sp500_records = Record.where(stock: sp500)
+    sp500_records = Record.where(stock: sp500).order("date ASC")
     sp500_records_range = sp500_records[sp500_records.length - number_of_days, sp500_records.length]
-
+    
     combined_10k_data = []
     sp10_10k_value = 10000
     sp500_10k_value = 10000
