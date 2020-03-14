@@ -3,7 +3,7 @@ task nuclear_reset: :environment do
   ARGV.each { |a| task a.to_sym do ; end }
   
   if ARGV[1].to_i != 0 
-    ["drop", "create", "migrate", "seed"].each do |rake|
+    ["create", "migrate", "seed"].each do |rake|
       puts "db:#{rake}"
       Rake::Task["db:#{rake}"].invoke
     end
