@@ -1,10 +1,8 @@
 import React from "react";
 
 export const StockRow = ({ stockData }) => {
-  const name = stockData["name"];
   const fullName = stockData["full_name"];
-
-  const price = `$${stockData["price"].toFixed(2)}`;
+  const weight = stockData["weight"].toFixed(2);
 
   const percentChange =
     stockData["change_percent"] >= 0 ? (
@@ -30,7 +28,7 @@ export const StockRow = ({ stockData }) => {
         <div className="small-7 columns">{fullName}</div>
         <div className="small-5 columns">
           <div className="space-between">
-            <span className="stock-row-symbol text-center">{name}</span>
+            <span className="stock-row-symbol text-center">{weight}%</span>
             <span className="text-center">{percentChange}</span>
           </div>
         </div>
