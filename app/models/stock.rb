@@ -240,6 +240,6 @@ class Stock < ApplicationRecord
         new_stock.add_full_name
       end
     end
-    Stock.find_by(name: "SPX").update(weight: total_10_weight)
+    Stock.find_by(name: "SP10").update(weight: total_10_weight)
   end
 end

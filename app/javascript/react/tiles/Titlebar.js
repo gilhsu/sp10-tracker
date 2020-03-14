@@ -3,8 +3,9 @@ import Modal from "react-modal";
 import { AllocationCalculator } from "../containers/AllocationCalculator";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
-export const Titlebar = ({ stockData }) => {
+export const Titlebar = ({ sp10, stockData }) => {
   const [thesisModalIsOpen, setThesisModalIsOpen] = useState(false);
+  const { weight: sp10Weight } = sp10;
 
   return (
     <div className="row container">
@@ -37,7 +38,8 @@ export const Titlebar = ({ stockData }) => {
             <div className="horizontal-paragraph-spacer">
               The SP10 tracks the average return of the top 10 stock
               constituents of the S&P 500. These 10 stocks disproportionately
-              combine to represent ~22.5% of the US market index.
+              combine to represent ${sp10Weight.toFixed(2)}% of the US market
+              index.
             </div>
             <div>
               Therefore, if you believe that the US market will grow in the
