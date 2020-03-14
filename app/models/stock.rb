@@ -20,7 +20,7 @@ class Stock < ApplicationRecord
     response = response_raw["Time Series (Daily)"]
 
     while !response
-      puts "Problem fetching data"
+      puts "Problem fetching data from api..."
       Stock.last.timer(70)
       response_raw = HTTParty.get(request_url)
       response = response_raw["Time Series (Daily)"]
@@ -128,20 +128,10 @@ class Stock < ApplicationRecord
     if number_of_records > 0
       sp500 = Stock.find_by(name: "SPX")
       stocks = Stock.where(in_fund: true)
-      stocks_first_five = stocks[0...5]
-      stocks_last_five = stocks[5...10]
 
       sp500.fetch_data(days)
 
-      Stock.last.timer(70)
-
-      stocks_first_five.each do |stock|
-        stock.fetch_data(days)
-      end
-
-      Stock.last.timer(70)
-
-      stocks_last_five.each do |stock|
+      stocks.each do |stock|
         stock.fetch_data(days)
       end
 
@@ -208,7 +198,15 @@ class Stock < ApplicationRecord
   
       request_url = "#{endpoint}query?function=SYMBOL_SEARCH&keywords=#{self.name}&apikey=#{ENV["API_KEY1"]}"
       response_raw = HTTParty.get(request_url)
-      full_name = response_raw["bestMatches"][0]["2. name"]
+
+      full_name = response_raw["bestMatches"] ? response_raw["bestMatches"][0]["2. name"] : nil
+
+      while !full_name
+        puts "Problem fetching name from api..."
+        Stock.last.timer(70)
+        response_raw = HTTParty.get(request_url)
+        full_name = response_raw["bestMatches"][0]["2. name"]
+      end
     
       self.update(full_name: full_name)
       puts "#{full_name} added to record!"
