@@ -217,7 +217,7 @@ class Stock < ApplicationRecord
     end
   end
 
-  def check_stock_weights(seed = false)
+  def check_stock_positions
     url = "https://www.slickcharts.com/sp500"
     unparsed_page = HTTParty.get(url)
     parsed_page = Nokogiri::HTML(unparsed_page)
@@ -239,9 +239,7 @@ class Stock < ApplicationRecord
         Stock.find_by(name: symbol).update(in_fund: true, position: position, weight: weight)
       else
         new_stock = Stock.create(name: symbol, in_fund: true, position: position, weight: weight)
-        if !seed
-          new_stock.add_full_name
-        end
+        new_stock.add_full_name
       end
     end
     Stock.find_by(name: "SPX").update(weight: total_10_weight)
