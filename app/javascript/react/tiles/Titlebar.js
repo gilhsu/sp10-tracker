@@ -38,7 +38,7 @@ export const Titlebar = ({ sp10, stockData }) => {
             <div className="horizontal-paragraph-spacer">
               The SP10 tracks the average return of the top 10 stock
               constituents of the S&P 500. These 10 stocks disproportionately
-              combine to represent ${sp10Weight.toFixed(2)}% of the US market
+              combine to represent {sp10Weight.toFixed(2)}% of the US market
               index.
             </div>
             <div>
