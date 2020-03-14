@@ -8,7 +8,7 @@ class Api::V1::FetchController < ApplicationController
     sp500 = Stock.find_by(name: "SPX")
     sp500_last_data = sp500.fetch_last_data
 
-    stocks = Stock.where(in_fund: true)
+    stocks = Stock.where(in_fund: true).order("weight DESC")
     stocks_data = []
     stocks.each do |stock|
       stocks_data << stock.fetch_last_data

@@ -149,8 +149,8 @@ class Stock < ApplicationRecord
     format_data = {}
     record  = Record.where(stock: self).last
     format_data["date"] = record.date
-    format_data["name"] = self.name
     format_data["full_name"] = self.full_name
+    format_data["weight"] = self.weight ? self.weight : nil
     if record.price
       format_data["price"] = record.price.round(2)
       format_data["change_price"] = record.change_price.round(2)
