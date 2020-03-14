@@ -27,3 +27,8 @@ seed_stocks.each do |stock|
     Stock.create(name: stock[:name], in_fund: stock[:in_fund])
   end
 end
+
+puts "Attaching full stock names to stocks"
+Rake::Task["add_names"].invoke
+
+
