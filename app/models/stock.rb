@@ -216,4 +216,34 @@ class Stock < ApplicationRecord
       puts "Full name already exists"
     end
   end
+
+  def check_stock_weights(seed = false)
+    url = "https://www.slickcharts.com/sp500"
+    unparsed_page = HTTParty.get(url)
+    parsed_page = Nokogiri::HTML(unparsed_page)
+    stocks_raw_data = parsed_page.css('tr')[1, 10]
+    current_stocks = Stock.all
+    
+    # temporarily set all stocks in sp10 to false
+    current_stocks.each do |stock|
+      stock.update(in_fund: false)
+    end
+
+    total_10_weight = 0
+    stocks_raw_data.each do |stock|
+      symbol = stock.css('td')[2].children.children[0].text.gsub('.', '-')
+      position = stock.css('td')[0].children.text.to_i
+      weight = stock.css('td')[3].children.text.to_f
+      total_10_weight = total_10_weight + weight
+      if Stock.find_by(name: symbol)
+        Stock.find_by(name: symbol).update(in_fund: true, position: position, weight: weight)
+      else
+        new_stock = Stock.create(name: symbol, in_fund: true, position: position, weight: weight)
+        if !seed
+          new_stock.add_full_name
+        end
+      end
+    end
+    Stock.find_by(name: "SPX").update(weight: total_10_weight)
+  end
 end
