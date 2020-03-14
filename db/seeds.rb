@@ -9,16 +9,6 @@
 seed_stocks = [
   {name: "SP10", in_fund: false},
   {name: "SPX", in_fund: false}, 
-  {name: "MSFT", in_fund: true},
-  {name: "AAPL", in_fund: true}, 
-  {name: "AMZN", in_fund: true}, 
-  {name: "FB", in_fund: true}, 
-  {name: "BRK-B", in_fund: true}, 
-  {name: "GOOG", in_fund: true}, 
-  {name: "GOOGL", in_fund: true}, 
-  {name: "JPM", in_fund: true}, 
-  {name: "JNJ", in_fund: true}, 
-  {name: "V", in_fund: true}
 ]
 
 seed_stocks.each do |stock|
@@ -28,7 +18,6 @@ seed_stocks.each do |stock|
   end
 end
 
-puts "Attaching full stock names to stocks"
-Rake::Task["add_names"].invoke
+Stock.find_by(name: "SPX").add_full_name
 
-
+Stock.last.check_stock_positions

@@ -20,7 +20,7 @@ class Stock < ApplicationRecord
     response = response_raw["Time Series (Daily)"]
 
     while !response
-      puts "Problem fetching data"
+      puts "Problem fetching data from api..."
       Stock.last.timer(70)
       response_raw = HTTParty.get(request_url)
       response = response_raw["Time Series (Daily)"]
@@ -128,20 +128,10 @@ class Stock < ApplicationRecord
     if number_of_records > 0
       sp500 = Stock.find_by(name: "SPX")
       stocks = Stock.where(in_fund: true)
-      stocks_first_five = stocks[0...5]
-      stocks_last_five = stocks[5...10]
 
       sp500.fetch_data(days)
 
-      Stock.last.timer(70)
-
-      stocks_first_five.each do |stock|
-        stock.fetch_data(days)
-      end
-
-      Stock.last.timer(70)
-
-      stocks_last_five.each do |stock|
+      stocks.each do |stock|
         stock.fetch_data(days)
       end
 
@@ -208,12 +198,48 @@ class Stock < ApplicationRecord
   
       request_url = "#{endpoint}query?function=SYMBOL_SEARCH&keywords=#{self.name}&apikey=#{ENV["API_KEY1"]}"
       response_raw = HTTParty.get(request_url)
-      full_name = response_raw["bestMatches"][0]["2. name"]
+
+      full_name = response_raw["bestMatches"] ? response_raw["bestMatches"][0]["2. name"] : nil
+
+      while !full_name
+        puts "Problem fetching name from api..."
+        Stock.last.timer(70)
+        response_raw = HTTParty.get(request_url)
+        full_name = response_raw["bestMatches"][0]["2. name"]
+      end
     
       self.update(full_name: full_name)
       puts "#{full_name} added to record!"
     else
       puts "Full name already exists"
     end
+  end
+
+  def check_stock_positions
+    url = "https://www.slickcharts.com/sp500"
+    unparsed_page = HTTParty.get(url)
+    parsed_page = Nokogiri::HTML(unparsed_page)
+    stocks_raw_data = parsed_page.css('tr')[1, 10]
+    current_stocks = Stock.all
+    
+    # temporarily set all stocks in sp10 to false
+    current_stocks.each do |stock|
+      stock.update(in_fund: false)
+    end
+
+    total_10_weight = 0
+    stocks_raw_data.each do |stock|
+      symbol = stock.css('td')[2].children.children[0].text.gsub('.', '-')
+      position = stock.css('td')[0].children.text.to_i
+      weight = stock.css('td')[3].children.text.to_f
+      total_10_weight = total_10_weight + weight
+      if Stock.find_by(name: symbol)
+        Stock.find_by(name: symbol).update(in_fund: true, position: position, weight: weight)
+      else
+        new_stock = Stock.create(name: symbol, in_fund: true, position: position, weight: weight)
+        new_stock.add_full_name
+      end
+    end
+    Stock.find_by(name: "SPX").update(weight: total_10_weight)
   end
 end
