@@ -11,7 +11,7 @@ class Stock < ApplicationRecord
     end
   end
 
-  def fetch_data(full_data = false)
+  def fetch_data(days = nil)
     endpoint = "https://www.alphavantage.co/"
     output_size = "full"
 
@@ -19,8 +19,15 @@ class Stock < ApplicationRecord
     response_raw = HTTParty.get(request_url)
     response = response_raw["Time Series (Daily)"]
 
-    # used to collect either full year or 1 day of records
-    number_of_records = full_data ? 253 : 1
+    while !response
+      puts "Problem fetching data"
+      Stock.last.timer(70)
+      response_raw = HTTParty.get(request_url)
+      response = response_raw["Time Series (Daily)"]
+    end
+
+    # used to collect the number of records to parse
+    number_of_records = days ? days : (Date.today - Record.where(stock: Stock.last).last.date).to_i
 
     # create array of hashes with daily data
     format_data_array = []
@@ -65,15 +72,27 @@ class Stock < ApplicationRecord
     puts "Data fetch for #{self.name} complete."
   end
 
-  def fetch_data_sp10(full_data = false)
+  def fetch_data_sp10
     sp10 = Stock.find_by(name: "SP10")
-    stock = Stock.second
-    get_records = full_data ? Record.where(stock: stock) : [Record.where(stock: stock).last]
+    sp10_records = Record.where(stock: sp10)
+    sp10_records_dates = []
+    sp10_records.each do |record|
+      sp10_records_dates << record.date
+    end
 
+    stock = Stock.second
+    stock_records = Record.where(stock: stock).order('date ASC')
+    stock_records_dates = []
+    stock_records.each do |record|
+      stock_records_dates << record.date
+    end
+
+    # creates array of dates that exist in Stocks but does not exist yet on SP10
     dates_array = []
-    # use records to insert dates into an array
-    get_records.reverse.each do |record|
-      dates_array << record.date
+    stock_records_dates.each do |date|
+      if !sp10_records_dates.include? date
+        dates_array << date
+      end
     end
 
     dates_array.each do |date|
@@ -82,7 +101,7 @@ class Stock < ApplicationRecord
       # make an array of SP10 records from this specific day
       records_by_date_array = []
       fund_stocks.each do |stock|
-        records_by_date_array << Record.where(date: date, stock: stock)[0]
+        records_by_date_array << Record.find_by(date: date, stock: stock)
       end
       
       # add up the change_percent from this specifc day
@@ -93,44 +112,45 @@ class Stock < ApplicationRecord
       
       # get average of change_percent
       change_percent_average = change_percent_sum / records_by_date_array.length
-
-      # create SP10 record if today's record doesn't exist yet
-      if Record.where(date: date, stock: sp10).length === 0
-        Record.create(stock: sp10, date: date, change_percent: change_percent_average)
-        puts "SP10 record for #{date} created"
-      else
-        puts "SP10 record for #{date} already exists"
-      end
+      
+      # create SP10 record
+      Record.create(stock: sp10, date: date, change_percent: change_percent_average)
+      puts "SP10 record for #{date} created"
     end
 
     puts "Data merge for SP10 complete."
   end
 
-  def fetch_data_master(full_data = false)
-    sp500 = Stock.find_by(name: "SPX")
-    stocks = Stock.where(in_fund: true)
-    stocks_first_five = stocks[0...5]
-    stocks_last_five = stocks[5...10]
+  def fetch_data_master(days = nil)
+    # if Record.last exists, check number of records needed to fetch. if no records default to 1 so it fetches
+    number_of_records = Record.last ? (Date.today - Record.where(stock: Stock.find_by(name: "SP10")).last.date).to_i : 1
 
-    sp500.fetch_data(full_data)
+    if number_of_records > 0
+      sp500 = Stock.find_by(name: "SPX")
+      stocks = Stock.where(in_fund: true)
+      stocks_first_five = stocks[0...5]
+      stocks_last_five = stocks[5...10]
 
-    Stock.last.timer(60)
+      sp500.fetch_data(days)
 
-    stocks_first_five.each do |stock|
-      stock.fetch_data(full_data)
+      Stock.last.timer(70)
+
+      stocks_first_five.each do |stock|
+        stock.fetch_data(days)
+      end
+
+      Stock.last.timer(70)
+
+      stocks_last_five.each do |stock|
+        stock.fetch_data(days)
+      end
+
+      Stock.last.fetch_data_sp10
+
+      puts "Data update is complete."
+    else
+      puts "Stock data is up to date! No fetch executed."
     end
-
-    Stock.last.timer(60)
-
-    stocks_last_five.each do |stock|
-      stock.fetch_data(full_data)
-    end
-
-    Stock.last.fetch_data_sp10(full_data)
-
-    request_label = full_data ? "1 year's worth of" : "today's"
-
-    puts "Fetch for #{request_label} data is complete."
   end
 
 
@@ -151,7 +171,7 @@ class Stock < ApplicationRecord
   end
 
   def fetch_year_data
-    year_data = Record.where(stock: self).reverse[0...252]
+    year_data = Record.where(stock: self).order("date ASC").reverse[0...252]
     year_data_reverse = year_data.reverse
     change_percent_total = 1
     year_data_reverse.each do |record|
@@ -182,7 +202,6 @@ class Stock < ApplicationRecord
     daily_history_array.reverse
   end
 
-
   def add_full_name
     if self.full_name === nil 
       endpoint = "https://www.alphavantage.co/"
@@ -197,5 +216,4 @@ class Stock < ApplicationRecord
       puts "Full name already exists"
     end
   end
-
 end

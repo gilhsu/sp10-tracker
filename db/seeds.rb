@@ -27,5 +27,3 @@ seed_stocks.each do |stock|
     Stock.create(name: stock[:name], in_fund: stock[:in_fund])
   end
 end
-
-Stock.last.fetch_data_master(true)
