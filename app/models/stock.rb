@@ -81,7 +81,7 @@ class Stock < ApplicationRecord
     end
 
     stock = Stock.second
-    stock_records = Record.where(stock: stock)
+    stock_records = Record.where(stock: stock).order('date ASC')
     stock_records_dates = []
     stock_records.each do |record|
       stock_records_dates << record.date
@@ -89,7 +89,7 @@ class Stock < ApplicationRecord
 
     # creates array of dates that exist in Stocks but does not exist yet on SP10
     dates_array = []
-    stock_records_dates.reverse.each do |date|
+    stock_records_dates.each do |date|
       if !sp10_records_dates.include? date
         dates_array << date
       end
@@ -123,7 +123,7 @@ class Stock < ApplicationRecord
 
   def fetch_data_master(days = nil)
     # if Record.last exists, check number of records needed to fetch. if no records default to 1 so it fetches
-    number_of_records = Record.last ? (Date.today - Record.where(stock: Stock.last).last.date).to_i : 1
+    number_of_records = Record.last ? (Date.today - Record.where(stock: Stock.find_by(name: "SP10")).last.date).to_i : 1
 
     if number_of_records > 0
       sp500 = Stock.find_by(name: "SPX")
