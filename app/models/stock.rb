@@ -26,8 +26,10 @@ class Stock < ApplicationRecord
       response = response_raw["Time Series (Daily)"]
     end
 
-    # used to collect the number of records to parse
-    number_of_records = days ? days : (Date.today - Record.where(stock: Stock.last).last.date).to_i
+    # determines how many records to parse
+    last_sp10_record_date = Record.where(stock: Stock.find_by(name: "SP10")).last.date
+    number_of_records = business_days_between(last_sp10_record_date, Date.today)
+
 
     # create array of hashes with daily data
     format_data_array = []
@@ -122,8 +124,9 @@ class Stock < ApplicationRecord
   end
 
   def fetch_data_master(days = nil)
-    # if Record.last exists, check number of records needed to fetch. if no records default to 1 so it fetches
-    number_of_records = Record.last ? (Date.today - Record.where(stock: Stock.find_by(name: "SP10")).last.date).to_i : 1
+    # determine now many business days to fetch
+    last_sp10_record_date = Record.where(stock: Stock.find_by(name: "SP10")).last.date
+    number_of_records = business_days_between(last_sp10_record_date, Date.today)
 
     if number_of_records > 0
       sp500 = Stock.find_by(name: "SPX")
@@ -241,5 +244,14 @@ class Stock < ApplicationRecord
       end
     end
     Stock.find_by(name: "SP10").update(weight: total_10_weight)
+  end
+
+  def business_days_between(start_date, end_date)
+    business_days = 0
+    while end_date > start_date
+      business_days = business_days + 1 unless end_date.saturday? or end_date.sunday?
+      end_date = end_date - 1.day
+    end
+    business_days
   end
 end
