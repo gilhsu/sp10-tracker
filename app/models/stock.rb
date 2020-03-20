@@ -181,6 +181,7 @@ class Stock < ApplicationRecord
     daily_history_array = []
     year_data = Record.where(stock: self).order("date ASC")
     sp500 = Stock.find_by(name: "SPX")
+    n = -1
     year_data.each do |record|
       history_record = {}
       sp500_record = Record.where(stock: sp500, date: record.date)[0]
@@ -190,12 +191,20 @@ class Stock < ApplicationRecord
       history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
       history_record["change_percent"] = record.change_percent.round(2)
       history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
-      constituentsArray = []
+      constituents_array = []
       record.constituents.each do |constituent|
         parsed_constituent = JSON.parse(constituent)
-        constituentsArray << parsed_constituent
+        constituents_array << parsed_constituent
       end
-      history_record["constituents"] = constituentsArray
+      history_record["constituents"] = constituents_array
+
+      # checks data history to see if sp10 constituents have changed
+      if n != 0
+        changed_constituents = check_constituent_change(year_data[n], record)
+      end
+      n = n + 1
+      history_record["changed_constituents"] = changed_constituents
+
       daily_history_array << history_record
     end
     daily_history_array.reverse
@@ -259,5 +268,26 @@ class Stock < ApplicationRecord
       end_date = end_date - 1.day
     end
     business_days
+  end
+  
+  def check_constituent_change(previous_record, current_record)
+    previous_record_constituents = []
+    previous_record.constituents.each do |record|
+      parsed_record = JSON.parse(record)
+      previous_record_constituents << parsed_record["symbol"]
+    end
+
+    current_record_constituents = []
+    current_record.constituents.each do |record|
+      parsed_record = JSON.parse(record)
+      current_record_constituents << parsed_record["symbol"]
+    end
+
+    previous_record_constituents.each do |symbol|
+      if !current_record_constituents.include? symbol
+        return true
+      end
+    end
+    return false
   end
 end

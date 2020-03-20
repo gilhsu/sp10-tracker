@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
+import ReactTooltip from "react-tooltip";
 
 export const DailyHistoryRow = props => {
   const [showConstituents, setShowConstituents] = useState(false);
@@ -10,6 +11,9 @@ export const DailyHistoryRow = props => {
   let sp500PercentChange = "N/A";
   let delta = "N/A";
   let constituents = props.data ? props.data.constituents : [];
+  let changed_constituents = props.data
+    ? props.data.changed_constituents
+    : false;
 
   if (props.data) {
     date = props.data["date"];
@@ -80,7 +84,16 @@ export const DailyHistoryRow = props => {
         className="row history-row"
         onClick={() => setShowConstituents(true)}
       >
-        <div className="small-6 columns">{date}</div>
+        <div className="small-6 columns">
+          {date}
+          {changed_constituents && (
+            <i
+              data-tip="SP10 Constituents Changed"
+              className="fas fa-sync-alt change_constituent_icon"
+            ></i>
+          )}
+          <ReactTooltip />
+        </div>
         <div className="small-6 history-row-flex">
           <div>{percentChange}</div>
           <div>{sp500PercentChange}</div>
