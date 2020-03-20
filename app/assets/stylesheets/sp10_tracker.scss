@@ -197,6 +197,13 @@
   border-bottom: 1px solid rgb(231, 231, 231);
 }
 
+.history-row-container {
+  cursor: pointer;
+  :hover {
+    background-color: rgb(245, 245, 245);
+  }
+}
+
 .stock-row-percent-red {
   font-weight: 400;
   width: 100px;

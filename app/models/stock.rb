@@ -179,7 +179,7 @@ class Stock < ApplicationRecord
 
   def fetch_daily_history
     daily_history_array = []
-    year_data = Record.where(stock: self)
+    year_data = Record.where(stock: self).order("date ASC")
     sp500 = Stock.find_by(name: "SPX")
     year_data.each do |record|
       history_record = {}
@@ -190,6 +190,7 @@ class Stock < ApplicationRecord
       history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
       history_record["change_percent"] = record.change_percent.round(2)
       history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
+      history_record["constituents"] = record.constituents
       daily_history_array << history_record
     end
     daily_history_array.reverse
