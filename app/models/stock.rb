@@ -309,17 +309,29 @@ class Stock < ApplicationRecord
   end
 
   def get_constituents(date)
-    date_records = Record.where(date: date).order('position ASC')
-    constituents = []
+    date_records = Record.where(date: date)
+
+    # build raw constituents array
+    temp_constituents = []
     date_records.each do |record|
       indiv_constituent = {}
       if record.stock.name != "SP10" && record.stock.name != "SPX"
         indiv_constituent["symbol"] = record.stock.full_name
         indiv_constituent["position"] = record.stock.position
         indiv_constituent["weight"] = record.stock.weight
-        constituents << indiv_constituent.to_json
+        temp_constituents << indiv_constituent
       end
     end
+
+    # sort by position
+    sort_temp_constituents = temp_constituents.sort_by { |constituent| constituent["position"] }
+
+    # format constituents to json
+    constituents = []
+    sort_temp_constituents.each do |constituent|
+      constituents << constituent.to_json
+    end
+
     constituents
   end
 end
