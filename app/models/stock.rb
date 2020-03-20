@@ -66,8 +66,6 @@ class Stock < ApplicationRecord
         change_percent = record["change_percent"]
         position = date == Date.today ? self.position : nil
         weight = date == Date.today ? self.weight : nil
-        binding.pry
-        binding.pry
         Record.create(
           stock: self, 
           date: date, 
