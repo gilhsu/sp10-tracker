@@ -42,8 +42,13 @@ export const DailyHistoryRow = props => {
   let n = 0;
   const constituentList = constituents.map(constituent => {
     n = n + 1;
-    console.log(n);
-    return <div>{constituent}</div>;
+    const weight = constituent["weight"] ? constituent["weight"] : "N/A";
+    return (
+      <div key={n} className="space-between constituent-row">
+        <div className="t2">{`${constituent["position"]}. ${constituent["symbol"]}`}</div>
+        <div className="t2">{weight}</div>
+      </div>
+    );
   });
 
   return (
@@ -52,21 +57,22 @@ export const DailyHistoryRow = props => {
         isOpen={showConstituents}
         onRequestClose={() => setShowConstituents(false)}
         style={ResponsiveModalStyle({
-          mobileWidthPercent: 95,
-          desktopWidthPercent: 70,
-          heightPercent: 95,
-          transform: 0,
-          top: "10px"
+          mobileWidthPercent: 60,
+          desktopWidthPercent: 30
         })}
         contentLabel="Calc Modal"
         ariaHideApp={false}
       >
-        <div className="section-title horizontal-spacer">
-          Constituents
+        <div className="section-title section-title-no-bottom horizontal-spacer">
+          {date}
           <i
             onClick={() => setShowConstituents(false)}
             className="fas fa-times flex-end gray"
           />
+        </div>
+        <div className="space-between constituent-row">
+          <div className="w7 t2">Constituents</div>
+          <div className="w7 t2">Weight</div>
         </div>
         {constituentList}
       </Modal>

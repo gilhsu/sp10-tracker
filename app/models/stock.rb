@@ -190,7 +190,12 @@ class Stock < ApplicationRecord
       history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
       history_record["change_percent"] = record.change_percent.round(2)
       history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
-      history_record["constituents"] = record.constituents
+      constituentsArray = []
+      record.constituents.each do |constituent|
+        parsed_constituent = JSON.parse(constituent)
+        constituentsArray << parsed_constituent
+      end
+      history_record["constituents"] = constituentsArray
       daily_history_array << history_record
     end
     daily_history_array.reverse
