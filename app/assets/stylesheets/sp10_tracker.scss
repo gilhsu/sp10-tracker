@@ -197,6 +197,18 @@
   border-bottom: 1px solid rgb(231, 231, 231);
 }
 
+.history-row-container {
+  cursor: pointer;
+  :hover {
+    background-color: rgb(245, 245, 245);
+  }
+}
+
+.constituent-row {
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(231, 231, 231);
+}
+
 .stock-row-percent-red {
   font-weight: 400;
   width: 100px;
@@ -336,6 +348,12 @@
 
 .allocation-intro {
   padding: 20px 0 30px 0;
+}
+
+.change_constituent_icon {
+  color: green;
+  padding-left: 0.5rem;
+  cursor: pointer;
 }
 
 @media (max-width: 600px) {
