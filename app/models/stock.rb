@@ -64,7 +64,19 @@ class Stock < ApplicationRecord
         price = record["price"]
         change_price = record["change_price"]
         change_percent = record["change_percent"]
-        Record.create(date: date, price: price, change_price: change_price, change_percent: change_percent, stock: self)
+        position = date == Date.today ? self.position : nil
+        weight = date == Date.today ? self.weight : nil
+        binding.pry
+        binding.pry
+        Record.create(
+          stock: self, 
+          date: date, 
+          price: price, 
+          change_price: change_price, 
+          change_percent: change_percent, 
+          position: position, 
+          weight: weight
+        )
         puts "#{self.name} record for #{date} created"
       else
         puts "#{self.name} record for #{date} already exists."
@@ -114,9 +126,12 @@ class Stock < ApplicationRecord
       
       # get average of change_percent
       change_percent_average = change_percent_sum / records_by_date_array.length
+
+      # get sp10 constituents
+      constituents = get_constituents(date)
       
       # create SP10 record
-      Record.create(stock: sp10, date: date, change_percent: change_percent_average)
+      Record.create(stock: sp10, date: date, change_percent: change_percent_average, constituents: constituents)
       puts "SP10 record for #{date} created"
     end
 
@@ -191,12 +206,9 @@ class Stock < ApplicationRecord
       history_record["sp500_change_percent"] = sp500_record.change_percent.round(2)
       history_record["change_percent"] = record.change_percent.round(2)
       history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
-      constituents_array = []
-      record.constituents.each do |constituent|
-        parsed_constituent = JSON.parse(constituent)
-        constituents_array << parsed_constituent
-      end
-      history_record["constituents"] = constituents_array
+
+      # parse constituents into json
+      history_record["constituents"] = parse_constituents(record)
 
       # checks data history to see if sp10 constituents have changed
       if n != 0
@@ -234,6 +246,7 @@ class Stock < ApplicationRecord
   end
 
   def check_stock_positions
+    puts "Checking today SP10 constituents..."
     url = "https://www.slickcharts.com/sp500"
     unparsed_page = HTTParty.get(url)
     parsed_page = Nokogiri::HTML(unparsed_page)
@@ -259,6 +272,7 @@ class Stock < ApplicationRecord
       end
     end
     Stock.find_by(name: "SP10").update(weight: total_10_weight)
+    puts "Today's SP10 constituents updated!"
   end
 
   def business_days_between(start_date, end_date)
@@ -269,7 +283,7 @@ class Stock < ApplicationRecord
     end
     business_days
   end
-  
+
   def check_constituent_change(previous_record, current_record)
     previous_record_constituents = []
     previous_record.constituents.each do |record|
@@ -289,5 +303,29 @@ class Stock < ApplicationRecord
       end
     end
     return false
+  end
+
+  def parse_constituents(record)
+    constituents_array = []
+    record.constituents.each do |constituent|
+      parsed_constituent = JSON.parse(constituent)
+      constituents_array << parsed_constituent
+    end
+    constituents_array
+  end
+
+  def get_constituents(date)
+    date_records = Record.where(date: date)
+    constituents = []
+    date_records.each do |record|
+      indiv_constituent = {}
+      if record.stock.name != "SP10" && record.stock.name != "SPX"
+        indiv_constituent["symbol"] = record.stock.full_name
+        indiv_constituent["position"] = record.stock.position
+        indiv_constituent["weight"] = record.stock.weight
+        constituents << indiv_constituent.to_json
+      end
+    end
+    constituents
   end
 end
