@@ -64,16 +64,12 @@ class Stock < ApplicationRecord
         price = record["price"]
         change_price = record["change_price"]
         change_percent = record["change_percent"]
-        position = date == Date.today ? self.position : nil
-        weight = date == Date.today ? self.weight : nil
         Record.create(
           stock: self, 
           date: date, 
           price: price, 
           change_price: change_price, 
           change_percent: change_percent, 
-          position: position, 
-          weight: weight
         )
         puts "#{self.name} record for #{date} created"
       else
@@ -313,7 +309,7 @@ class Stock < ApplicationRecord
   end
 
   def get_constituents(date)
-    date_records = Record.where(date: date)
+    date_records = Record.where(date: date).order('position ASC')
     constituents = []
     date_records.each do |record|
       indiv_constituent = {}

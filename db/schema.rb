@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_20_220534) do
+ActiveRecord::Schema.define(version: 2020_03_19_215623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,6 @@ ActiveRecord::Schema.define(version: 2020_03_20_220534) do
     t.datetime "updated_at", null: false
     t.float "change_price"
     t.text "constituents", default: [], array: true
-    t.integer "position"
-    t.float "weight"
     t.index ["stock_id"], name: "index_records_on_stock_id"
   end
 
