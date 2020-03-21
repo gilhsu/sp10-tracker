@@ -76,18 +76,19 @@ export const HomeContainer = () => {
     }
   };
 
-  if (loading) {
-    return <h1>Page Loading...</h1>;
-  }
-
   return (
     <div>
-      <Titlebar sp10={data.sp10} stockData={data.indivStockData} />
+      <Titlebar
+        loading={loading}
+        sp10={data.sp10}
+        stockData={data.indivStockData}
+      />
       <div className="row">
         <div className="outline small-12 large-8 columns">
           <div className="row">
             <div className="outline small-12 large-6 columns">
               <TickerFlex
+                loading={loading}
                 title={data.last_update}
                 sp10={data.sp10}
                 sp500={data.sp500}
@@ -96,6 +97,7 @@ export const HomeContainer = () => {
             </div>
             <div className="outline small-12 large-6 columns">
               <TickerFlex
+                loading={loading}
                 title="Last Year"
                 sp10={data.sp10_year}
                 sp500={data.sp500_year}
@@ -103,19 +105,24 @@ export const HomeContainer = () => {
               />
             </div>
             <div className="outline small-12 columns">
-              <ChartFlex data={chartData} changeChartData={changeChartData} />
+              <ChartFlex
+                loading={loading}
+                data={chartData}
+                changeChartData={changeChartData}
+              />
             </div>
           </div>
         </div>
         <div className="outline small-12 large-4 columns container">
-          <StocksContainer stockData={data.indivStockData} />
+          <StocksContainer loading={loading} stockData={data.indivStockData} />
         </div>
         <div className="small-12 columns outline container">
-          <Heatmap records={records} />
+          <Heatmap loading={loading} records={records} />
         </div>
         <div className="small-12 columns container">
           <div className="outline">
             <DailyHistoryContainer
+              loading={loading}
               records={records}
               currentRecords={currentRecords}
               currentPage={currentPage}

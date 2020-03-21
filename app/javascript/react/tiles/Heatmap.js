@@ -2,7 +2,7 @@ import React from "react";
 import CalendarHeatmap from "react-calendar-heatmap";
 import ReactTooltip from "react-tooltip";
 
-export const Heatmap = ({ records }) => {
+export const Heatmap = ({ loading, records }) => {
   const chronologicalRecords = records && records.reverse();
 
   // format records for heatmap data needs
@@ -23,11 +23,10 @@ export const Heatmap = ({ records }) => {
   const endDate = new Date();
   const startDate = new Date(offsetDate(endDate, -365));
 
-  return (
+  const content = loading ? (
+    <div className="loading" style={{ padding: "100px" }} />
+  ) : (
     <div>
-      <div className="heatmap-section-title">
-        SP10 vs. S&P 500 Delta Heatmap
-      </div>
       <div className="heatmap">
         <CalendarHeatmap
           startDate={startDate}
@@ -63,6 +62,15 @@ export const Heatmap = ({ records }) => {
         <span className="heatmap-tile-7" />
         <span className="text">> +0.50%</span>
       </div>
+    </div>
+  );
+
+  return (
+    <div>
+      <div className="heatmap-section-title">
+        SP10 vs. S&P 500 Delta Heatmap
+      </div>
+      {content}
     </div>
   );
 };
