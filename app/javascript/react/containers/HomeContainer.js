@@ -76,10 +76,6 @@ export const HomeContainer = () => {
     }
   };
 
-  // if (loading) {
-  //   return <h1>Page Loading...</h1>;
-  // }
-
   return (
     <div>
       <Titlebar
