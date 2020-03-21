@@ -120,12 +120,13 @@ export const HomeContainer = () => {
         <div className="outline small-12 large-4 columns container">
           <StocksContainer loading={loading} stockData={data.indivStockData} />
         </div>
-        {/* <div className="small-12 columns outline container">
-          <Heatmap records={records} />
+        <div className="small-12 columns outline container">
+          <Heatmap loading={loading} records={records} />
         </div>
         <div className="small-12 columns container">
           <div className="outline">
             <DailyHistoryContainer
+              loading={loading}
               records={records}
               currentRecords={currentRecords}
               currentPage={currentPage}
@@ -134,7 +135,7 @@ export const HomeContainer = () => {
               totalRecords={recordsArray.length}
             />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export const StocksContainer = ({ loading, stockData }) => {
   let loadingRows = [];
   for (let i = 0; i < 10; i++) {
     loadingRows.push(
-      <div className="stock-row-container">
+      <div key={i} className="stock-row-container">
         <div className="row stock-row">
           <div className="loading" style={{ padding: "9.5px" }} />
         </div>
