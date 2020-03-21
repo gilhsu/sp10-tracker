@@ -117,10 +117,10 @@ export const HomeContainer = () => {
             </div>
           </div>
         </div>
-        {/* <div className="outline small-12 large-4 columns container">
-          <StocksContainer stockData={data.indivStockData} />
+        <div className="outline small-12 large-4 columns container">
+          <StocksContainer loading={loading} stockData={data.indivStockData} />
         </div>
-        <div className="small-12 columns outline container">
+        {/* <div className="small-12 columns outline container">
           <Heatmap records={records} />
         </div>
         <div className="small-12 columns container">

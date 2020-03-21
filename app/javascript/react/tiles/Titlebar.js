@@ -9,7 +9,17 @@ export const Titlebar = ({ loading, sp10, stockData }) => {
   const displaySp10Weight =
     sp10 && sp10.weight ? sp10.weight.toFixed(2) : "~25";
 
-  return (
+  const content = loading ? (
+    <div className="row container">
+      <div className="small-12 columns w7" id="sp10-title">
+        SP10
+      </div>
+      <div className="small-12 columns" id="sp10-subtitle">
+        <div>Top 10 S&P 500 Stock Tracker</div>
+      </div>
+      <div id="sp10-subtitle">Allocation Calculator</div>
+    </div>
+  ) : (
     <div className="row container">
       <div className="small-12 columns w7" id="sp10-title">
         SP10
@@ -49,8 +59,10 @@ export const Titlebar = ({ loading, sp10, stockData }) => {
             </div>
           </Modal>
         </div>
-        {!loading && <AllocationCalculator stockData={stockData} />}
+        <AllocationCalculator stockData={stockData} />
       </div>
     </div>
   );
+
+  return content;
 };
