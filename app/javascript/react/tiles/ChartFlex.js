@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart as GoogleChart } from "react-google-charts";
 
-export const ChartFlex = ({ data, changeChartData }) => {
+export const ChartFlex = ({ loading, data, changeChartData }) => {
   const chartRangeArray = [
     { name: "1M", length: 20 },
     { name: "3M", length: 62 },
@@ -156,12 +156,14 @@ export const ChartFlex = ({ data, changeChartData }) => {
       </span>
     );
 
-  return (
-    <div className="chart-container">
-      <div className="section-title">
-        <span className="w7">Growth of 10,000</span>
-        <span>{chartOptions}</span>
-      </div>
+  const content = loading ? (
+    <div>
+      <div className="loading" style={{ padding: "29px" }} />
+      <br />
+      <div className="loading" style={{ padding: "200px 0" }} />
+    </div>
+  ) : (
+    <div>
       <div className="space-between horizontal-spacer">
         <div className="text-center">
           <span className="chart-number">
@@ -223,6 +225,16 @@ export const ChartFlex = ({ data, changeChartData }) => {
           }
         ]}
       />
+    </div>
+  );
+
+  return (
+    <div className="chart-container">
+      <div className="section-title">
+        <span className="w7">Growth of 10,000</span>
+        <span>{chartOptions}</span>
+      </div>
+      {content}
     </div>
   );
 };

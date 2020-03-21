@@ -3,9 +3,11 @@ import Modal from "react-modal";
 import { AllocationCalculator } from "../containers/AllocationCalculator";
 import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
-export const Titlebar = ({ sp10, stockData }) => {
+export const Titlebar = ({ loading, sp10, stockData }) => {
   const [thesisModalIsOpen, setThesisModalIsOpen] = useState(false);
-  const { weight: sp10Weight } = sp10;
+
+  const displaySp10Weight =
+    sp10 && sp10.weight ? sp10.weight.toFixed(2) : "~25";
 
   return (
     <div className="row container">
@@ -38,8 +40,7 @@ export const Titlebar = ({ sp10, stockData }) => {
             <div className="horizontal-paragraph-spacer">
               The SP10 tracks the average return of the top 10 stock
               constituents of the S&P 500. These 10 stocks disproportionately
-              combine to represent {sp10Weight.toFixed(2)}% of the US market
-              index.
+              combine to represent {displaySp10Weight}% of the US market index.
             </div>
             <div>
               Therefore, if you believe that the US market will grow in the
@@ -48,7 +49,7 @@ export const Titlebar = ({ sp10, stockData }) => {
             </div>
           </Modal>
         </div>
-        <AllocationCalculator stockData={stockData} />
+        {!loading && <AllocationCalculator stockData={stockData} />}
       </div>
     </div>
   );
