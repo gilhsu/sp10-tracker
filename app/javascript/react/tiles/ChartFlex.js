@@ -156,6 +156,8 @@ export const ChartFlex = ({ loading, data, changeChartData }) => {
       </span>
     );
 
+  const displayChartOptions = loading ? "" : chartOptions;
+
   const content = loading ? (
     <div>
       <div className="loading" style={{ padding: "29px" }} />
@@ -232,7 +234,7 @@ export const ChartFlex = ({ loading, data, changeChartData }) => {
     <div className="chart-container">
       <div className="section-title">
         <span className="w7">Growth of 10,000</span>
-        <span>{chartOptions}</span>
+        <span>{displayChartOptions}</span>
       </div>
       {content}
     </div>
