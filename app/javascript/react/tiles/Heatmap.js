@@ -24,7 +24,7 @@ export const Heatmap = ({ loading, records }) => {
   const startDate = new Date(offsetDate(endDate, -365));
 
   const content = loading ? (
-    <div className="loading" style={{ padding: "100px" }} />
+    <div className="loading" style={{ height: "208px" }} />
   ) : (
     <div>
       <div className="heatmap">
