@@ -29,7 +29,7 @@ export const TickerFlex = ({ loading, title, sp10, sp500, delta }) => {
   }
 
   const content = loading ? (
-    <div className="loading" style={{ padding: "29px" }} />
+    <div className="loading" style={{ height: "58px" }} />
   ) : (
     <div className="space-between">
       <div className="text-center">

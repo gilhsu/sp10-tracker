@@ -160,9 +160,9 @@ export const ChartFlex = ({ loading, data, changeChartData }) => {
 
   const content = loading ? (
     <div>
-      <div className="loading" style={{ padding: "29px" }} />
+      <div className="loading" style={{ height: "58px" }} />
       <br />
-      <div className="loading" style={{ padding: "170px 0" }} />
+      <div className="loading" style={{ height: "340px" }} />
     </div>
   ) : (
     <div>

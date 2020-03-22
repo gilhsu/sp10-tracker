@@ -23,7 +23,7 @@ export const DailyHistoryContainer = ({
     loadingRows.push(
       <div key={i} className="history-row-container">
         <div className="row history-row">
-          <div className="loading" style={{ padding: "12px" }} />
+          <div className="loading" style={{ height: "24px" }} />
         </div>
       </div>
     );

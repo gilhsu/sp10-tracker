@@ -16,7 +16,7 @@ export const StocksContainer = ({ loading, stockData }) => {
     loadingRows.push(
       <div key={i} className="stock-row-container">
         <div className="row stock-row">
-          <div className="loading" style={{ padding: "9.5px" }} />
+          <div className="loading" style={{ height: "19px" }} />
         </div>
       </div>
     );
