@@ -5,9 +5,11 @@ import { ResponsiveModalStyle } from "../components/ResponsiveModalStyle";
 
 export const AllocationCalculator = ({ stockData }) => {
   const [calcModalIsOpen, setCalcModalIsOpen] = useState(false);
-  const [formValue, setFormValue] = useState(0);
+  const [formValue, setFormValue] = useState("");
   const [stockRowsData, setStockRowsData] = useState([]);
   const [totalRowsValue, setTotalRowsValue] = useState(0);
+  const [cashRemainder, setCashRemainder] = useState(0);
+  const [customValue, setCustomValue] = useState(0);
 
   // set stockRows Data on pageMount
   useEffect(() => {
@@ -15,6 +17,7 @@ export const AllocationCalculator = ({ stockData }) => {
       return {
         name: stockIndividualData.name,
         full_name: stockIndividualData.full_name,
+        position: stockIndividualData.position,
         price: stockIndividualData.price,
         quantity: 0,
         value: 0,
@@ -52,13 +55,31 @@ export const AllocationCalculator = ({ stockData }) => {
       stock.allocation = (stock.value / totalStocksValue) * 100;
       return stock;
     });
-    setStockRowsData(tempStockRowData);
+    const positionSortedStocks = sortStocks({
+      sortMethod: "position",
+      array: tempStockRowData
+    });
+    setStockRowsData(positionSortedStocks);
+    setCashRemainder(customValue - totalStocksValue);
+  };
+
+  const sortStocks = ({ sortMethod, array }) => {
+    return array.sort((a, b) => {
+      if (sortMethod === "price") {
+        return b.price - a.price;
+      } else if (sortMethod === "position") {
+        return a.position - b.position;
+      } else if (sortMethod === "allocation") {
+        return a.allocation - b.allocation;
+      }
+    });
   };
 
   // equal allocation quick calc logic
   const handleEqualSplit = () => {
-    let sortedStocks = stockRowsData.concat().sort((a, b) => {
-      return b.price - a.price;
+    const sortedStocks = sortStocks({
+      sortMethod: "price",
+      array: stockRowsData
     });
 
     sortedStocks.forEach(stock => {
@@ -70,6 +91,76 @@ export const AllocationCalculator = ({ stockData }) => {
         quantity: stockQuantity
       });
     });
+
+    setCashRemainder(0);
+    setFormValue("");
+  };
+
+  // custom value calculator logic
+  const customValueCalc = value => {
+    event.preventDefault();
+    setCustomValue(value);
+    const priceSortedStocks = sortStocks({
+      sortMethod: "price",
+      array: stockRowsData
+    });
+
+    let stockKey = 0;
+    let remainderValue = +value;
+    let calculatingCustomValue = false;
+    let allocationPercentage = 0;
+
+    // first pass allocation rounded down for stockAllocation to be less than maxAllocation
+    const customValueStockRowsData = priceSortedStocks.map(stock => {
+      const tempAllocationPercentage = 100 / (10 - stockKey) / 100;
+      if (tempAllocationPercentage > stock["price"] / value) {
+        if (!calculatingCustomValue) {
+          allocationPercentage = tempAllocationPercentage;
+          calculatingCustomValue = true;
+        }
+        const maxAllocation = allocationPercentage * value;
+
+        // modify stock instance
+        stock.quantity = Math.floor(maxAllocation / stock.price);
+        stock.value = stock.price * stock.quantity;
+        stock.allocation = (stock.value / value) * 100;
+        remainderValue = remainderValue - stock.value;
+        stockKey = stockKey + 1;
+        return stock;
+      } else {
+        // set stock instance to 0
+        stock.quantity = 0;
+        stock.value = 0;
+        stock.allocation = 0;
+        stockKey = stockKey + 1;
+        return stock;
+      }
+    });
+
+    const allocationSortedStocks = sortStocks({
+      sortMethod: "allocation",
+      array: customValueStockRowsData
+    });
+
+    // second pass to see if more stocks can adding using the remainderValue
+    const adjustedAllocationSortedStocks = allocationSortedStocks.map(stock => {
+      if (Math.floor(remainderValue / stock.price) > 0) {
+        stock.quantity = stock.quantity + 1;
+        stock.value = stock.quantity * stock.price;
+        stock.allocation = (stock.value / value) * 100;
+        remainderValue = remainderValue - stock.price;
+        return stock;
+      }
+      return stock;
+    });
+
+    const positionSortedStocks = sortStocks({
+      sortMethod: "position",
+      array: adjustedAllocationSortedStocks
+    });
+    setStockRowsData(positionSortedStocks);
+    setCashRemainder(remainderValue);
+    calculatingCustomValue = false;
   };
 
   // clear form values
@@ -81,6 +172,8 @@ export const AllocationCalculator = ({ stockData }) => {
       return stock;
     });
     setStockRowsData(tempStockRowsData);
+    setCashRemainder(0);
+    setFormValue("");
   };
 
   const displayTotalStockValue =
@@ -96,6 +189,11 @@ export const AllocationCalculator = ({ stockData }) => {
           ((totalRowsValue - cashRemainderValue) / totalRowsValue) *
           100
         ).toFixed(2);
+
+  const displayCashRemainder =
+    cashRemainder === 0
+      ? "0.00"
+      : ((cashRemainder / customValue) * 100).toFixed(2);
 
   let allocationTitle = "Allocation";
   let nameColumnWidth = "small-3";
@@ -163,28 +261,29 @@ export const AllocationCalculator = ({ stockData }) => {
               Calculate the equal allocation of stocks given a custom value and
               current stock prices.
             </div>
-            <form>
-              <div className="row collapse">
-                <div className="small-8 columns">
+            <div className="row collapse">
+              <div className="small-8 columns">
+                <form onSubmit={() => customValueCalc(formValue)}>
                   <input
                     type="number"
                     onChange={e => setFormValue(e.target.value)}
                     placeholder="Enter Dollar Amount"
+                    step="any"
                     required
                     value={formValue}
                   />
-                </div>
-                <div className="small-4 columns">
-                  <a
-                    href=""
-                    className="button postfix"
-                    onClick={() => calcValue(formValue)}
-                  >
-                    Calculate
-                  </a>
-                </div>
+                </form>
               </div>
-            </form>
+              <div className="small-4 columns">
+                <a
+                  href=""
+                  className="button postfix"
+                  onClick={() => customValueCalc(formValue)}
+                >
+                  Calculate
+                </a>
+              </div>
+            </div>
           </div>
         </div>
         <div className="row section-title-no-flex allocation-text">
@@ -208,9 +307,11 @@ export const AllocationCalculator = ({ stockData }) => {
                 Cash Remainder
               </span>
               <span className={`${valueColumnWidth} columns text-right`}>
-                $0.00
+                ${cashRemainder.toFixed(2)}
               </span>
-              <span className="small-2 columns text-right">0.00%</span>
+              <span className="small-2 columns text-right">
+                {displayCashRemainder}%
+              </span>
             </div>
           </div>
           <div className="small-12">
