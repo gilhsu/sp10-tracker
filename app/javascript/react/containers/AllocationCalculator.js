@@ -93,6 +93,7 @@ export const AllocationCalculator = ({ stockData }) => {
     });
 
     setCashRemainder(0);
+    setFormValue("");
   };
 
   // custom value calculator logic
@@ -172,7 +173,7 @@ export const AllocationCalculator = ({ stockData }) => {
     });
     setStockRowsData(tempStockRowsData);
     setCashRemainder(0);
-    setFormValue(0);
+    setFormValue("");
   };
 
   const displayTotalStockValue =
