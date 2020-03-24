@@ -10,7 +10,6 @@ export const AllocationCalculator = ({ stockData }) => {
   const [totalRowsValue, setTotalRowsValue] = useState(0);
   const [cashRemainder, setCashRemainder] = useState(0);
   const [customValue, setCustomValue] = useState(0);
-  // const [allocationPercentage, setAllocationPercentage] = useState(0.0);
 
   // set stockRows Data on pageMount
   useEffect(() => {
@@ -106,7 +105,7 @@ export const AllocationCalculator = ({ stockData }) => {
     });
 
     let stockKey = 0;
-    let remainderValue = value;
+    let remainderValue = +value;
     let calculatingCustomValue = false;
     let allocationPercentage = 0;
 
@@ -137,17 +136,14 @@ export const AllocationCalculator = ({ stockData }) => {
       }
     });
 
-    debugger;
-
-    // second pass to see if more stocks can adding using the remainderValue
     const allocationSortedStocks = sortStocks({
       sortMethod: "allocation",
       array: customValueStockRowsData
     });
 
+    // second pass to see if more stocks can adding using the remainderValue
     const adjustedAllocationSortedStocks = allocationSortedStocks.map(stock => {
       if (Math.floor(remainderValue / stock.price) > 0) {
-        console.log(`${stock.name} has changed!`);
         stock.quantity = stock.quantity + 1;
         stock.value = stock.quantity * stock.price;
         stock.allocation = (stock.value / value) * 100;
@@ -165,16 +161,6 @@ export const AllocationCalculator = ({ stockData }) => {
     setCashRemainder(remainderValue);
     calculatingCustomValue = false;
   };
-
-  const buildStockRow = ({
-    name,
-    full_name,
-    position,
-    price,
-    quantity,
-    value,
-    allocation
-  }) => ({ name, full_name, position, price, quantity, value, allocation });
 
   // clear form values
   const handleClear = () => {
