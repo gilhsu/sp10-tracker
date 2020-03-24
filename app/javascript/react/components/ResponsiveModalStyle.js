@@ -35,6 +35,7 @@ export const ResponsiveModalStyle = ({
       marginRight: "-50%",
       transform: `translate(-50%, ${transform}%)`,
       width: `${desktopWidthPercent}%`,
+      maxWidth: "1000px",
       padding: "50px",
       height: `${heightPercent}%`,
       display: "block"
