@@ -2,7 +2,6 @@ import React from "react";
 
 export const StockRow = ({ stockData }) => {
   const fullName = stockData["full_name"];
-  const name = stockData["name"];
   const weight = `${stockData["weight"].toFixed(2)}%`;
 
   const percentChange =
@@ -17,7 +16,10 @@ export const StockRow = ({ stockData }) => {
     );
 
   const stockLink = () => {
-    window.open(`https://finance.yahoo.com/quote/${name}/`, "_blank");
+    window.open(
+      `https://finance.yahoo.com/quote/${name}?p=${name}&.tsrc=fin-srch`,
+      "_blank"
+    );
   };
 
   return (
