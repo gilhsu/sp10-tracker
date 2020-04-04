@@ -47,7 +47,8 @@ export const AllocationRow = ({
             className="allocation-input"
             type="number"
             min="0"
-            step="1"
+            inputMode="numeric"
+            pattern="[0-9]*"
             value={quantity}
             onChange={handleChange}
           />

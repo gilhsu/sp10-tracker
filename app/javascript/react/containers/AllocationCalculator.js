@@ -265,11 +265,13 @@ export const AllocationCalculator = ({ stockData }) => {
               <div className="small-8 columns">
                 <form onSubmit={() => customValueCalc(formValue)}>
                   <input
+                    required
                     type="number"
+                    min="0"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     onChange={e => setFormValue(e.target.value)}
                     placeholder="Enter Dollar Amount"
-                    step="any"
-                    required
                     value={formValue}
                   />
                 </form>
