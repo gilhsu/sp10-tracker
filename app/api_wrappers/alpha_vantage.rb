@@ -46,6 +46,24 @@ module AlphaVantage
       return fetched_data
     end
 
+    def full_name_search(stock)
+      endpoint = "https://www.alphavantage.co/"
+  
+      request_url = "#{endpoint}query?function=SYMBOL_SEARCH&keywords=#{stock.name}&apikey=#{ENV["API_KEY1"]}"
+      response_raw = HTTParty.get(request_url)
+
+      full_name = response_raw["bestMatches"] ? response_raw["bestMatches"][0]["2. name"] : nil
+
+      while !full_name
+        puts "Problem fetching name from api..."
+        Helper.timer(70)
+        response_raw = HTTParty.get(request_url)
+        full_name = response_raw["bestMatches"][0]["2. name"]
+      end
+
+      return full_name
+    end
+
     def api_data_check(symbol)
       endpoint = "https://www.alphavantage.co/"
       output_size = "full"

@@ -7,7 +7,7 @@ task fetch_today_data: :environment do
   if today == "Sat" || today == "Sun"
     puts "It's the weekend! Not fetching data today."
   else
-    Stock.last.check_stock_positions
+    Constituents.check_stock_positions
     Stock.last.fetch_data_master
   end
 end

@@ -1,36 +1,12 @@
 class Stock < ApplicationRecord
   validates :name, presence: true
 
-  def timer(time)
-    n = time
-    rep = time
-    print "#{time} second timer"
-    rep.times do 
-      print "."
-      n = n - 1
-      sleep 1
-    end
-    puts
-  end
-
-  def fetch_data(days = nil)
-    endpoint = "https://www.alphavantage.co/"
-    output_size = "full"
-
-    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
-    response_raw = HTTParty.get(request_url)
-    response = response_raw["Time Series (Daily)"]
-
-    while !response
-      puts "Problem fetching data from api..."
-      Stock.last.timer(70)
-      response_raw = HTTParty.get(request_url)
-      response = response_raw["Time Series (Daily)"]
-    end
+  def fetch_data
+    response = AlphaVantage.daily_fetch(self)
 
     # determines how many records to parse
     last_sp10_record_date = Record.where(stock: Stock.find_by(name: "SP10")).last.date
-    number_of_records = business_days_between(last_sp10_record_date, Date.today)
+    number_of_records = Helper.business_days_between(last_sp10_record_date, Date.today)
 
     # create array of hashes with daily data
     format_data_array = []
@@ -123,7 +99,7 @@ class Stock < ApplicationRecord
       change_percent_average = change_percent_sum / records_by_date_array.length
 
       # get sp10 constituents
-      constituents = get_constituents(date)
+      constituents = Constituents.get(date)
       
       # create SP10 record
       Record.create(stock: sp10, date: date, change_percent: change_percent_average, constituents: constituents)
@@ -133,19 +109,19 @@ class Stock < ApplicationRecord
     puts "Data merge for SP10 complete."
   end
 
-  def fetch_data_master(days = nil)
+  def fetch_data_master
     # determine now many business days to fetch
     last_sp10_record_date = Record.where(stock: Stock.find_by(name: "SP10")).last.date
-    number_of_records = business_days_between(last_sp10_record_date, Date.today)
+    number_of_records = Helper.business_days_between(last_sp10_record_date, Date.today)
 
     if number_of_records > 0
       sp500 = Stock.find_by(name: "SPX")
       stocks = Stock.where(in_fund: true)
 
-      sp500.fetch_data(days)
+      sp500.fetch_data
 
       stocks.each do |stock|
-        stock.fetch_data(days)
+        stock.fetch_data
       end
 
       Stock.last.fetch_data_sp10
@@ -155,7 +131,6 @@ class Stock < ApplicationRecord
       puts "Stock data is up to date! No fetch executed."
     end
   end
-
 
   # front-end data fetches
   def fetch_last_data
@@ -176,7 +151,7 @@ class Stock < ApplicationRecord
   end
 
   def fetch_year_data
-    year_data = Record.where(stock: self).order("date ASC").reverse[0...252]
+    year_data = Record.where(stock: self).order("date DESC")[0...252]
     year_data_reverse = year_data.reverse
     change_percent_total = 1
     year_data_reverse.each do |record|
@@ -205,11 +180,11 @@ class Stock < ApplicationRecord
       history_record["delta"] = (history_record["change_percent"] - history_record["sp500_change_percent"]).round(2)
 
       # parse constituents into json
-      history_record["constituents"] = parse_constituents(record)
+      history_record["constituents"] = Constituents.parse(record)
 
       # checks data history to see if sp10 constituents have changed
       if n != 0
-        changed_constituents = check_constituent_change(year_data[n], record)
+        changed_constituents = Constituents.check_change(year_data[n], record)
       end
       n = n + 1
       history_record["changed_constituents"] = changed_constituents
@@ -221,121 +196,13 @@ class Stock < ApplicationRecord
 
   def add_full_name
     if self.full_name === nil 
-      endpoint = "https://www.alphavantage.co/"
-  
-      request_url = "#{endpoint}query?function=SYMBOL_SEARCH&keywords=#{self.name}&apikey=#{ENV["API_KEY1"]}"
-      response_raw = HTTParty.get(request_url)
-
-      full_name = response_raw["bestMatches"] ? response_raw["bestMatches"][0]["2. name"] : nil
-
-      while !full_name
-        puts "Problem fetching name from api..."
-        Stock.last.timer(70)
-        response_raw = HTTParty.get(request_url)
-        full_name = response_raw["bestMatches"][0]["2. name"]
-      end
+      full_name = AlphaVantage.full_name_search(self)
     
       self.update(full_name: full_name)
       puts "#{full_name} added to record!"
     else
       puts "Full name already exists"
     end
-  end
-
-  def check_stock_positions
-    puts "Checking today SP10 constituents..."
-    url = "https://www.slickcharts.com/sp500"
-    unparsed_page = HTTParty.get(url)
-    parsed_page = Nokogiri::HTML(unparsed_page)
-    stocks_raw_data = parsed_page.css('tr')[1, 10]
-    current_stocks = Stock.all
-    
-    # temporarily set all stocks in sp10 to false
-    current_stocks.each do |stock|
-      stock.update(in_fund: false)
-    end
-
-    total_10_weight = 0
-    stocks_raw_data.each do |stock|
-      symbol = stock.css('td')[2].children.children[0].text.gsub('.', '-')
-      position = stock.css('td')[0].children.text.to_i
-      weight = stock.css('td')[3].children.text.to_f
-      total_10_weight = total_10_weight + weight
-      if Stock.find_by(name: symbol)
-        Stock.find_by(name: symbol).update(in_fund: true, position: position, weight: weight)
-      else
-        new_stock = Stock.create(name: symbol, in_fund: true, position: position, weight: weight)
-        new_stock.add_full_name
-      end
-    end
-    Stock.find_by(name: "SP10").update(weight: total_10_weight)
-    puts "Today's SP10 constituents updated!"
-  end
-
-  def business_days_between(start_date, end_date)
-    business_days = 0
-    while end_date > start_date
-      business_days = business_days + 1 unless end_date.saturday? or end_date.sunday?
-      end_date = end_date - 1.day
-    end
-    business_days
-  end
-
-  def check_constituent_change(previous_record, current_record)
-    previous_record_constituents = []
-    previous_record.constituents.each do |record|
-      parsed_record = JSON.parse(record)
-      previous_record_constituents << parsed_record["symbol"]
-    end
-
-    current_record_constituents = []
-    current_record.constituents.each do |record|
-      parsed_record = JSON.parse(record)
-      current_record_constituents << parsed_record["symbol"]
-    end
-
-    previous_record_constituents.each do |symbol|
-      if !current_record_constituents.include? symbol
-        return true
-      end
-    end
-    return false
-  end
-
-  def parse_constituents(record)
-    constituents_array = []
-    record.constituents.each do |constituent|
-      parsed_constituent = JSON.parse(constituent)
-      constituents_array << parsed_constituent
-    end
-    constituents_array
-  end
-
-  def get_constituents(date)
-    date_records = Record.where(date: date)
-
-    # build raw constituents array
-    temp_constituents = []
-    date_records.each do |record|
-      indiv_constituent = {}
-      if record.stock.name != "SP10" && record.stock.name != "SPX"
-        indiv_constituent["symbol"] = record.stock.full_name
-        indiv_constituent["position"] = record.stock.position
-        indiv_constituent["weight"] = record.stock.weight
-        temp_constituents << indiv_constituent
-      end
-    end
-
-    # sort by position
-    sort_temp_constituents = temp_constituents.sort_by { |constituent| constituent["position"] }
-
-    # format constituents to json
-    constituents = []
-    sort_temp_constituents.each do |constituent|
-      constituents << constituent.to_json
-    end
-
-    constituents
   end
 
   def fix_record(record)
@@ -367,5 +234,4 @@ class Stock < ApplicationRecord
 
     puts "#{self.name} record for #{record.date} succesfully updated!"
   end
-
 end
