@@ -2,24 +2,23 @@ import React from "react";
 
 export const StockRow = ({ stockData }) => {
   const fullName = stockData["full_name"];
-  const weight = `${stockData["weight"].toFixed(2)}%`;
+  const weight = stockData["weight"];
+  const link = stockData["link"];
+  const change_percent = stockData["change_percent"];
 
-  const percentChange =
-    stockData["change_percent"] >= 0 ? (
+  const displayChangePercent =
+    change_percent >= 0 ? (
       <span className="stock-row-percent-green">
-        +{stockData["change_percent"].toFixed(2)}%
+        +{change_percent.toFixed(2)}%
       </span>
     ) : (
       <span className="stock-row-percent-red">
-        {stockData["change_percent"].toFixed(2)}%
+        {change_percent.toFixed(2)}%
       </span>
     );
 
   const stockLink = () => {
-    window.open(
-      `https://finance.yahoo.com/quote/${name}?p=${name}&.tsrc=fin-srch`,
-      "_blank"
-    );
+    window.open(`${link}`, "_blank");
   };
 
   return (
@@ -28,8 +27,10 @@ export const StockRow = ({ stockData }) => {
         <div className="small-7 columns">{fullName}</div>
         <div className="small-5 columns">
           <div className="space-between">
-            <span className="stock-row-symbol text-center">{weight}</span>
-            <span className="text-center">{percentChange}</span>
+            <span className="stock-row-symbol text-center">
+              {weight.toFixed(2)}%
+            </span>
+            <span className="text-center">{displayChangePercent}</span>
           </div>
         </div>
       </div>
