@@ -50,7 +50,7 @@ export const AllocationRow = ({
             inputMode="numeric"
             pattern="[0-9]*"
             value={quantity}
-            onChange={handleChange}
+            onChange={e => handleChange(e)}
           />
         </span>
         <span
