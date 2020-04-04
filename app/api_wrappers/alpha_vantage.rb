@@ -45,5 +45,25 @@ module AlphaVantage
       end
       return fetched_data
     end
+
+    def api_data_check(symbol)
+      endpoint = "https://www.alphavantage.co/"
+      output_size = "full"
+      
+      request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{symbol}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
+      
+      n = 1
+      5.times do
+        response_raw = HTTParty.get(request_url)
+        response = response_raw["Time Series (Daily)"]
+        m = 0
+        10.times do
+          puts "#{symbol} #{response.keys[m]} fetch #{n} = #{response[response.keys[m]]["5. adjusted close"]}"
+          m = m + 1
+        end
+        Helper.timer(13)
+        n = n + 1
+      end
+    end
   end
 end

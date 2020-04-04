@@ -368,23 +368,4 @@ class Stock < ApplicationRecord
     puts "#{self.name} record for #{record.date} succesfully updated!"
   end
 
-  def check(fetch_number, symbol)
-    endpoint = "https://www.alphavantage.co/"
-    output_size = "full"
-    
-    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{symbol}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
-    
-    n = 1
-    fetch_number.times do
-      response_raw = HTTParty.get(request_url)
-      response = response_raw["Time Series (Daily)"]
-      m = 0
-      10.times do
-        puts "#{symbol} #{response.keys[m]} fetch #{n} = #{response[response.keys[m]]["5. adjusted close"]}"
-        m = m + 1
-      end
-      self.timer(13)
-      n = n + 1
-    end
-  end
 end
