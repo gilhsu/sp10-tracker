@@ -63,7 +63,7 @@ module Constituents
 
     def get(date)
     constituents = []
-      # if date == Date.today
+      if date == Date.today
         date_records = Record.where(date: date)
 
         # build raw constituents array
@@ -85,7 +85,7 @@ module Constituents
         sort_temp_constituents.each do |constituent|
           constituents << constituent.to_json
         end
-      # end
+      end
 
       constituents
     end
