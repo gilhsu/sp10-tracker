@@ -339,19 +339,7 @@ class Stock < ApplicationRecord
   end
 
   def fix_record(record)
-    endpoint = "https://www.alphavantage.co/"
-    output_size = "full"
-
-    request_url = "#{endpoint}query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=#{self.name}&outputsize=#{output_size}&apikey=#{ENV["API_KEY1"]}"
-    response_raw = HTTParty.get(request_url)
-    response = response_raw["Time Series (Daily)"]
-
-    while !response
-      puts "Problem fetching data from api..."
-      Stock.last.timer(70)
-      response_raw = HTTParty.get(request_url)
-      response = response_raw["Time Series (Daily)"]
-    end
+    response = AlphaVantage.daily_fetch(self)
 
     n = 0
     response.each do |fetched_record|
@@ -375,9 +363,9 @@ class Stock < ApplicationRecord
     change_price = fix_date_price - previous_date_price
     change_percent = ((fix_date_price / previous_date_price) - 1) * 100
 
-    binding.pry
+    record.update(price: fix_date_price, change_price: change_price, change_percent: change_percent)
 
-    # record.update(price: fix_date_price, change_price: change_price, change_percent: change_percent)
+    puts "#{self.name} record for #{record.date} succesfully updated!"
   end
 
   def check(fetch_number, symbol)
@@ -398,6 +386,5 @@ class Stock < ApplicationRecord
       self.timer(13)
       n = n + 1
     end
-
   end
 end
