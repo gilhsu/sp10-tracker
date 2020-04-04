@@ -4,11 +4,13 @@ class Stock < ApplicationRecord
   def timer(time)
     n = time
     rep = time
+    print "#{time} second timer"
     rep.times do 
-      puts "#{n} seconds left"
+      print "."
       n = n - 1
       sleep 1
     end
+    puts
   end
 
   def fetch_data(days = nil)
@@ -29,7 +31,6 @@ class Stock < ApplicationRecord
     # determines how many records to parse
     last_sp10_record_date = Record.where(stock: Stock.find_by(name: "SP10")).last.date
     number_of_records = business_days_between(last_sp10_record_date, Date.today)
-
 
     # create array of hashes with daily data
     format_data_array = []
@@ -336,4 +337,35 @@ class Stock < ApplicationRecord
 
     constituents
   end
+
+  def fix_record(record)
+    response = AlphaVantage.daily_fetch(self)
+
+    n = 0
+    response.each do |fetched_record|
+      if Date.parse(fetched_record[0]) == record.date
+        break
+      end
+      n = n + 1
+    end
+    today_index = n
+    previous_index = n + 1
+
+    fix_date = response.keys[today_index]
+    previous_date = response.keys[previous_index]
+
+    fix_date_record = response[fix_date]
+    fix_date_price = fix_date_record["5. adjusted close"].to_f
+
+    previous_date_record = response[previous_date]
+    previous_date_price = previous_date_record["5. adjusted close"].to_f
+
+    change_price = fix_date_price - previous_date_price
+    change_percent = ((fix_date_price / previous_date_price) - 1) * 100
+
+    record.update(price: fix_date_price, change_price: change_price, change_percent: change_percent)
+
+    puts "#{self.name} record for #{record.date} succesfully updated!"
+  end
+
 end
