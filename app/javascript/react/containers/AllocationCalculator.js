@@ -60,7 +60,7 @@ export const AllocationCalculator = ({ stockData }) => {
       array: tempStockRowData
     });
     setStockRowsData(positionSortedStocks);
-    setCashRemainder(customValue - totalStocksValue);
+    setCashRemainder(0);
   };
 
   const sortStocks = ({ sortMethod, array }) => {
