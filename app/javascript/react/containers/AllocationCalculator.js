@@ -270,7 +270,6 @@ export const AllocationCalculator = ({ stockData }) => {
                     min="0"
                     inputMode="numeric"
                     pattern="[0-9]*"
-                    title="Non-negative integral number"
                     onChange={e => setFormValue(e.target.value)}
                     placeholder="Enter Dollar Amount"
                     value={formValue}
