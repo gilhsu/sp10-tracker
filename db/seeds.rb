@@ -20,4 +20,4 @@ end
 
 Stock.find_by(name: "SPX").add_full_name
 
-Stock.last.check_stock_positions
+Constituents.check_stock_positions
