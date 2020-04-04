@@ -65,13 +65,13 @@ class Stock < ApplicationRecord
         price = record["price"]
         change_price = record["change_price"]
         change_percent = record["change_percent"]
-        # Record.create(
-        #   stock: self, 
-        #   date: date, 
-        #   price: price, 
-        #   change_price: change_price, 
-        #   change_percent: change_percent, 
-        # )
+        Record.create(
+          stock: self, 
+          date: date, 
+          price: price, 
+          change_price: change_price, 
+          change_percent: change_percent, 
+        )
         puts "#{self.name} record for #{date} created"
       else
         puts "#{self.name} record for #{date} already exists."
