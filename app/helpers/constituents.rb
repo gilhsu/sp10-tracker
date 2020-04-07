@@ -61,9 +61,9 @@ module Constituents
       constituents_array
     end
 
-    def get(date)
-    constituents = []
-      if date == Date.today
+    def get(date, override = false)
+      constituents = []
+      if date == Date.today || override == true
         date_records = Record.where(date: date)
 
         # build raw constituents array
