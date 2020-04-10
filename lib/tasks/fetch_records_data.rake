@@ -1,6 +1,6 @@
-desc "fetch today's data"
-task fetch_today_data: :environment do
-  puts "Attempting to fetch today's data from api..."
+desc "fetch records data"
+task fetch_records_data: :environment do
+  puts "Attempting to fetch records data from api..."
 
   today = Time.now.in_time_zone('Eastern Time (US & Canada)').to_date.strftime('%a')
 
