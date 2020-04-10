@@ -12,7 +12,7 @@ www.sp10.gilberthsu.com
 2. `bundle install && yarn install`
 3. Get a free AlphaVantage API key here: `https://www.alphavantage.co/support/#api-key`
 4. Create an ENV file in the main directory called: `.env`
-5. Add the following value to the `.env` file: `AV_API_KEY={YOUR_ALPHA_VANTAGE_API_KEY}`
+5. Add the following value to the `.env` file: `API_KEY1={YOUR_ALPHA_VANTAGE_API_KEY}`
 6. In your terminal to set up the database, migrate and seed: `rake db:create && rake db:migrate && rake db:seed`
 7. In your terminal to backfill 1 year's worth of data: `rake fetch_records_data`
 8. In your terminal run: `rails s`
