@@ -21,15 +21,14 @@ export const HomeContainer = () => {
   const fetchData = () => {
     isLoading(true);
     fetch(`/api/v1/fetch/`, {
-      method: "POST",
-      body: JSON.stringify(),
+      method: "GET",
       credentials: "same-origin",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response;
         } else {
@@ -38,8 +37,8 @@ export const HomeContainer = () => {
           throw error;
         }
       })
-      .then(response => response.json())
-      .then(body => {
+      .then((response) => response.json())
+      .then((body) => {
         setData(body);
         setRecords(body.sp10_daily_history);
         setChartData(body.chartData20);
@@ -64,7 +63,7 @@ export const HomeContainer = () => {
   );
 
   // trigger to change chart data
-  const changeChartData = range => {
+  const changeChartData = (range) => {
     if (range === 20) {
       setChartData(data.chartData20);
     } else if (range === 62) {

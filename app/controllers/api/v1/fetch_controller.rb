@@ -1,7 +1,7 @@
 class Api::V1::FetchController < ApplicationController
   protect_from_forgery unless: -> { request.format.json? }
 
-  def create
+  def index
     sp10 = Stock.find_by(name: "SP10")
     sp10_last_data = sp10.fetch_last_data
     
