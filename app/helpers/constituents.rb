@@ -70,7 +70,7 @@ module Constituents
         temp_constituents = []
         date_records.each do |record|
           indiv_constituent = {}
-          if record.stock.name != "SP10" && record.stock.name != "SPX"
+          if record.stock.name != "SP10" && record.stock.name != "FXAIX"
             indiv_constituent["symbol"] = record.stock.full_name
             indiv_constituent["position"] = record.stock.position
             indiv_constituent["weight"] = record.stock.weight

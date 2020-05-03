@@ -115,7 +115,7 @@ class Stock < ApplicationRecord
     number_of_records = Helper.business_days_between(last_sp10_record_date, Date.today)
 
     if number_of_records > 0
-      sp500 = Stock.find_by(name: "SPX")
+      sp500 = Stock.find_by(name: "FXAIX")
       stocks = Stock.where(in_fund: true)
 
       sp500.fetch_data
@@ -168,7 +168,7 @@ class Stock < ApplicationRecord
   def fetch_daily_history
     daily_history_array = []
     year_data = Record.where(stock: self).order("date ASC")
-    sp500 = Stock.find_by(name: "SPX")
+    sp500 = Stock.find_by(name: "FXAIX")
     n = -1
     year_data.each do |record|
       history_record = {}
