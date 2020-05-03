@@ -15,6 +15,6 @@ task fix_stock_record: :environment do
       puts "Problem fixing record. Either Stock or Record with date provided does not exist on the database."
     end
   else
-    puts "Problem fixing record. Please make sure syntax is correct. Rake syntax: 'rake fix_stock_record SPX 2020-3-25'"
+    puts "Problem fixing record. Please make sure syntax is correct. Rake syntax: 'rake fix_stock_record FXAIX 2020-3-25'"
   end
 end

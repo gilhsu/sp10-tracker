@@ -8,7 +8,7 @@
 
 seed_stocks = [
   {name: "SP10", in_fund: false},
-  {name: "SPX", in_fund: false}, 
+  {name: "FXAIX", in_fund: false}, 
 ]
 
 seed_stocks.each do |stock|
@@ -18,6 +18,6 @@ seed_stocks.each do |stock|
   end
 end
 
-Stock.find_by(name: "SPX").add_full_name
+Stock.find_by(name: "FXAIX").add_full_name
 
 Constituents.check_stock_positions

@@ -10,7 +10,7 @@ indivStockData: [
 {date: "2019-11-18", name: "JNJ", price: "134.83", "change_price": "-0.11", "change_percent": "-0.08"},
 {date: "2019-11-18", name: "V", price: "179.66", "change_price": "-0.11", "change_percent": "-0.06"},
 ],
-sp500: {date: "2019-11-18", name: "SPX", price: "3122.03", "change_price": "1.57", "change_percent": "0.05"},
+sp500: {date: "2019-11-18", name: "FXAIX", price: "3122.03", "change_price": "1.57", "change_percent": "0.05"},
 sp10: {date: "2019-11-18", name: "SP10", "change_percent": "0.11"},
 delta: "0.06"
 

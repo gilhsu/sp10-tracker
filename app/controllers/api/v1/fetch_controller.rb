@@ -5,7 +5,7 @@ class Api::V1::FetchController < ApplicationController
     sp10 = Stock.find_by(name: "SP10")
     sp10_last_data = sp10.fetch_last_data
     
-    sp500 = Stock.find_by(name: "SPX")
+    sp500 = Stock.find_by(name: "FXAIX")
     sp500_last_data = sp500.fetch_last_data
 
     stocks = Stock.where(in_fund: true).order("weight DESC")
@@ -54,7 +54,7 @@ class Api::V1::FetchController < ApplicationController
     sp10_records = Record.where(stock: sp10).order("date ASC")
     sp10_records_range = sp10_records[sp10_records.length - number_of_days, sp10_records.length]
 
-    sp500 = Stock.find_by(name: "SPX")
+    sp500 = Stock.find_by(name: "FXAIX")
     sp500_records = Record.where(stock: sp500).order("date ASC")
     sp500_records_range = sp500_records[sp500_records.length - number_of_days, sp500_records.length]
     
