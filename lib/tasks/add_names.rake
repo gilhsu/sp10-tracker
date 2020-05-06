@@ -2,7 +2,7 @@ desc "add full names to existing stocks"
 task add_names: :environment do
   puts "Adding names to existing stocks"
 
-  sp500 = Stock.find_by(name: "FXAIX")
+  sp500 = Stock.find_by(name: "VOO")
   stocks = Stock.where(in_fund: true)
 
   sp500.add_full_name
